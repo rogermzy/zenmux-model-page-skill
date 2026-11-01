@@ -55,7 +55,7 @@ SEO 目标：model + API 词族。
   "template_id": "acme-model-page",
   "page_language": "en",
   "url_pattern": "/{developer}/{model-slug}",
-  "title_pattern": "{Entity} API, Pricing & Providers | AcmeHub",
+  "title_pattern": "{Entity} API{Variants} | AcmeHub",
   "h1_pattern": "{Entity} API",
   "meta_description_rule": "One sentence.",
   "default_endpoint_rule": "M1 prices come from default_endpoint.",

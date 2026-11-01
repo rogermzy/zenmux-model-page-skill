@@ -6,7 +6,7 @@ template_id: zenmux-model-page
 entity: DeepSeek V4 Pro
 entity_type: text
 url: /deepseek/deepseek-v4-pro
-title: DeepSeek V4 Pro API, Pricing & Providers | ZenMux
+title: DeepSeek V4 Pro API (deepseek/deepseek-v4-pro, DeepSeek-V4-Pro-0813): Pricing & Providers on DeepSeek, Tencent Cloud, Baidu, … | ZenMux
 meta_description: …
 default_endpoint: deepseek
 checked_date: 2026-10-19
@@ -34,7 +34,9 @@ facts: facts.json
   facts.json, or `auto` for automatic routing), `checked_date`, `facts`. Optional:
   `entity_aliases` (inline list, e.g. `[V4 Pro]`; each ≥ 3 characters): short names that count
   as the model name for the paragraph-opening rule.
-- `title` matches `title_pattern`; the only `#` H1 matches `h1_pattern` and sits in M1.
+- `title` matches `title_pattern` (`{Entity} API` first, `| ZenMux` last, variants in between);
+  the only `#` H1 matches `h1_pattern` and sits in M1. Numbers in `title` and `meta_description`
+  must be fact display strings, like any number on the page.
 - One marker per spec module, in spec order: `<!-- module: Mx shown -->` or
   `<!-- module: Mx hidden: <reason> -->`. Required modules are always shown. A hidden module
   has no content before the next marker. A conditional module whose `show_if` selector matches
@@ -59,6 +61,16 @@ between a sentence rule and a page rule, the page rule wins only where it says s
 
 ### Page rules
 
+- **Title and meta description: no length limit, longer is better.** Never shorten either to
+  fit a character count. After `{Entity} API`, the title lists the name variants and related
+  entities the page really answers: model ID, aliases and revision names, developer, provider
+  names, billing type and conditions (peak/off-peak, cache, per image), context and max output,
+  main capabilities, example languages, alternatives, FAQ. The meta description says the same in
+  full sentences. Only what the page covers, numbers only from facts, no superlatives. Example:
+  `DeepSeek V4 Pro API (deepseek/deepseek-v4-pro, DeepSeek-V4-Pro-0813): Pricing & Providers on
+  DeepSeek, Tencent Cloud, Baidu, Alibaba Cloud, Streamlake & SiliconFlow, Peak and Off-Peak
+  Rates, Cache Pricing, 1M Context, 384K Max Output, Python, JavaScript & cURL Examples,
+  Alternatives and FAQ | ZenMux`.
 - **Answer first.** Each module's first sentence answers the module's question (what it is /
   what it costs and under which condition / how to call it / whether it fits my task).
 - **Numbers = fact `display` strings, verbatim.** No rounding, no "about", no new units.

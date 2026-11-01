@@ -28,6 +28,8 @@ and fix_instruction in the page's language.
 
 PAGE CONVENTIONS (not violations):
 - HTML comments (<!-- module: … -->, <!-- gap: … -->) are build markers. Ignore them.
+- The front matter (title, meta_description and the other keys between the --- lines) is not
+  prose. Never flag its length: long titles and descriptions are intended.
 - "Not published", "Not verified", "No data", "Varies by provider" are the template's required
   labels for missing or uncertain values. They are not hedges and not unsupported claims.
 - Module order is fixed by the approved template (the context block lists it). Never flag

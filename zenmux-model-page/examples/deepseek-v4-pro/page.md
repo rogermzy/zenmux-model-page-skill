@@ -3,8 +3,8 @@ template_id: zenmux-model-page
 entity: DeepSeek V4 Pro
 entity_type: text
 url: /deepseek/deepseek-v4-pro
-title: DeepSeek V4 Pro API, Pricing & Providers | ZenMux
-meta_description: DeepSeek V4 Pro on ZenMux: compare provider prices with their peak and off-peak conditions, check capabilities, and copy an API example for model ID deepseek/deepseek-v4-pro.
+title: DeepSeek V4 Pro API (deepseek/deepseek-v4-pro, DeepSeek-V4-Pro-0813): Pricing & Providers on DeepSeek, Tencent Cloud, Baidu, Alibaba Cloud, Streamlake & SiliconFlow, Peak and Off-Peak Rates, Cache Pricing, 1M Context, 384K Max Output, Python, JavaScript & cURL Examples, Alternatives and FAQ | ZenMux
+meta_description: DeepSeek V4 Pro (model ID deepseek/deepseek-v4-pro) is DeepSeek's open-weight Mixture-of-Experts text model with 1.6 trillion total parameters and 49 billion activated per token. On ZenMux it runs on DeepSeek, Tencent Cloud, Baidu, Alibaba Cloud, Streamlake and SiliconFlow: compare their input, output and cache-read prices with peak and off-peak conditions, check the 1M context window and 384K max output, see which revision each provider serves, read DeepSeek's V4 Pro phase-out notice, compare alternatives, and copy a Chat Completions example in Python, JavaScript or cURL.
 default_endpoint: deepseek
 checked_date: 2026-10-28
 facts: facts.json

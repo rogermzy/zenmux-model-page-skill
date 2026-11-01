@@ -8,9 +8,10 @@ It is the contract the page writer and `check_page.py` read.
   "template_id": "zenmux-model-page",
   "page_language": "en",
   "url_pattern": "/{developer}/{model-slug}",
-  "title_pattern": "{Entity} API, Pricing & Providers | ZenMux",
+  "title_pattern": "{Entity} API{Variants} | ZenMux",
+  "title_rule": "No length limit; longer is better. Add the model's name variants and related entities the page answers.",
   "h1_pattern": "{Entity} API",
-  "meta_description_rule": "One sentence: what the model is + where pricing/providers/API example are. No superlatives.",
+  "meta_description_rule": "No length limit; longer is better. Name the model, its variants and related entities, and what the page covers. No superlatives.",
   "default_endpoint_rule": "M1 prices, M3 code and M4 capabilities describe the same endpoint (front matter default_endpoint).",
   "status_vocabulary": ["Supported", "Not supported", "Not verified", "Varies by provider"],
   "missing_value_labels": {"price": "Not published", "version": "Not verified", "metric": "No data"},
@@ -55,7 +56,8 @@ It is the contract the page writer and `check_page.py` read.
 | Field | Rule |
 |---|---|
 | `template_id` | kebab-case; matches `plan_slug` in front matter |
-| `title_pattern`, `h1_pattern` | contain `{Entity}` |
+| `title_pattern`, `h1_pattern` | contain `{Entity}`. Add a free `{…}` token to `title_pattern` (e.g. `{Entity} API{Variants} | Brand`) so the title can carry variants and related entities |
+| `title_rule`, `meta_description_rule` | optional prose for the writer. Never set a character limit on either: longer titles and descriptions with more variants and related entities are better |
 | `modules[].id` | `M1`, `M2`, … unique, consecutive, in page order |
 | `modules[].required` | boolean |
 | `modules[].h2` | non-empty string pattern (usually contains `{Entity}`; a generic heading such as "Related Models & Guides" is allowed), or `null` (only allowed for M1 — the H1 module) |

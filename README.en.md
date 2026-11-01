@@ -45,6 +45,11 @@ Ask the agent, for example:
 All pages share one workspace (default `./zenmux-pages/`), so ZenMux's shared docs are fetched
 once and reused for 14 days.
 
+Titles and meta descriptions have no length limit: longer is better, with more name variants
+and related entities (model ID, aliases and revision, developer, providers, billing conditions,
+context, capabilities, example languages). A title starts with `{Model} API` and ends with
+`| ZenMux`; any number in it must come from the fact ledger, like every number on the page.
+
 ## What a person still decides
 
 - Whether to publish a page; the skill never marks one as ready while items are open.

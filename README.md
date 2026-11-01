@@ -74,6 +74,7 @@ skill 本体是 `zenmux-model-page/` 这个文件夹（里面有 `SKILL.md`）�
 - **不跳过检查、事实核查和写作评审**；页面若还在用被核查判定为错误（REFUTED）的事实，或有未豁免的写作阻断项，检查会失败。
 - **只改被标记的句子**：其余句子保持不变；每页最多 3 轮修改，之后把剩余问题交给人处理。agent 不能自行豁免任何问题，只有人可以在 `review.json` 中标注 `waived_by`。
 - **不写入任何密钥**；示例代码只用 `$ZENMUX_API_KEY`。
+- **Title 和 meta description 不设字数上限**：越长、包含的名称变体和相关实体越多越好（model ID、别名与修订版本、开发者、各供应商、计费条件、上下文、能力、示例语言等）。Title 以「{模型名} API」开头、以「| ZenMux」结尾；其中的数字同样必须来自事实台账，只写本页确实回答的内容。
 
 ## 需要人来决定的事
 
@@ -101,7 +102,7 @@ skill 本体是 `zenmux-model-page/` 这个文件夹（里面有 `SKILL.md`）�
   - doubao-seedance-2.5（视频）：40 条核实，11 条收窄措辞，记录 17 个问题。
   - gemini-3.8-flash-tts（语音）：37 条核实，7 条收窄措辞，记录 15 个问题。
 - 加入 Wendy 写作规则后，在 Codex 里端到端跑了 claude-opus-5.5（文本）：检查 PASS，59 条事实全部核实，写作评审 0 个问题，每段都以模型名开头（之前的页面每页有 20–30 段不符合）。
-- 自动化测试：`cd zenmux-model-page && bash tests/run_tests.sh && bash tests/test_new_page.sh`（共 200 项，不需要联网）。
+- 自动化测试：`cd zenmux-model-page && bash tests/run_tests.sh && bash tests/test_new_page.sh`（共 203 项，不需要联网）。
 
 ## 修改模板
 

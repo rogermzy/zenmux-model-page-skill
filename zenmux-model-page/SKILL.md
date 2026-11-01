@@ -148,6 +148,9 @@ later). Every number you type must already be a fact's `display` value (or one o
 (inside the table cell for tables). FAQ answers restate facts already on the page; never a
 second hand-typed copy. Set `entity_aliases` in the front matter to the short names the page
 really uses for the model (e.g. `[V4 Pro]`), so paragraph openers using them count.
+Write the `title` and `meta_description` long: there is no character limit, and more name
+variants and related entities (model ID, aliases, revision, developer, providers, billing
+conditions, context, capabilities, example languages) are better. Never trim them to a length.
 
 ### 6. Check
 

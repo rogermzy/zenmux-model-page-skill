@@ -3,8 +3,8 @@ template_id: zenmux-model-page
 entity: GPT Image 2
 entity_type: image
 url: /openai/gpt-image-2
-title: GPT Image 2 API, Pricing & Providers | ZenMux
-meta_description: GPT Image 2 on ZenMux: token-based image pricing on the OpenAI and Azure providers, image size and edit limits, and a copyable image-generation example for model ID openai/gpt-image-2.
+title: GPT Image 2 API (openai/gpt-image-2, gpt-image-2-2026-04-21): Image Generation & Editing Pricing and Providers on OpenAI and Azure, Image Input and Output Token Rates, Billing Items, Image Sizes, Reference Images, 10K Context, Python & cURL Examples, Alternatives and FAQ | ZenMux
+meta_description: GPT Image 2 (model ID openai/gpt-image-2, alias gpt-image-2) is OpenAI's image generation and editing model: it takes text and image input and returns an image. On ZenMux it runs on the OpenAI and Azure providers at the same token rates, $8 per million image input tokens and $30 per million image output tokens, plus a $5 prompt fee item. See every billing item, the image sizes and edit limits, reference-image support and the 10K context window, compare alternatives, and copy an Images API example in Python or cURL.
 default_endpoint: auto
 checked_date: 2026-10-29
 facts: facts.json

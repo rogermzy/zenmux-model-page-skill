@@ -3,7 +3,7 @@ plan_slug: zenmux-model-page
 status: approved
 approved_by: rogermzy
 approved_at: 2026-10-28
-amended: 2026-10-30 — image-model variant (6 rules from the GPT Image 2 page), approved by rogermzy
+amended: 2026-10-30 — image-model variant (6 rules from the GPT Image 2 page), approved by rogermzy; 2026-11-01 — Title and meta description have no length limit and should carry the model's name variants and related entities, set by rogermzy
 checked_date: 2026-10-19
 sample_url: https://zenmux.ai/deepseek/deepseek-v4-pro
 sample_entity: DeepSeek V4 Pro
@@ -167,7 +167,8 @@ M9 展示开发者 hub、同系列/同任务模型、相关 Quickstart 或教程
 ## **SEO 与移动端：作为开发验收项**
 
 - 保留现有 /{developer}/{model-slug} URL 与自引用 canonical；provider、代码语言和图表筛选不新增可索引页面。
-- 只有一个页面 H1；各正文模块使用 H2。DeepSeek 示例 Title：DeepSeek V4 Pro API, Pricing & Providers | ZenMux。
+- 只有一个页面 H1；各正文模块使用 H2。
+- Title 与 meta description 不设字数上限（2026-11-01 增补）：越长、包含的名称变体和相关实体越多越好。Title 以「{模型名} API」开头、以「| ZenMux」结尾，中间写入 model ID、别名与修订版本、开发者、各供应商名、计费方式、上下文与最大输出、主要能力、示例语言、对比与 FAQ 等本页确实回答的内容；meta description 用完整句子写出同样的名称变体与相关实体。所有数字必须来自事实台账，不写本页没有的内容，不写最高级或宣传语。DeepSeek 示例 Title：DeepSeek V4 Pro API (deepseek/deepseek-v4-pro, DeepSeek-V4-Pro-0813): Pricing & Providers on DeepSeek, Tencent Cloud, Baidu, Alibaba Cloud, Streamlake & SiliconFlow, Peak and Off-Peak Rates, Cache Pricing, 1M Context, 384K Max Output, Python, JavaScript & cURL Examples, Alternatives and FAQ | ZenMux。
 - 首屏事实、报价、默认代码、能力和 FAQ 在服务端 HTML 中可读，且与渲染后正文一致；导航和相关链接使用真实 href。
 - 390px 移动端先显示短摘要、关键规格/价格和 CTA；供应商表改为卡片或局部横滚，页面本身不能横向溢出；长图表延后加载。
 
@@ -203,9 +204,10 @@ M9 展示开发者 hub、同系列/同任务模型、相关 Quickstart 或教程
   "template_id": "zenmux-model-page",
   "page_language": "en",
   "url_pattern": "/{developer}/{model-slug}",
-  "title_pattern": "{Entity} API, Pricing & Providers | ZenMux",
+  "title_pattern": "{Entity} API{Variants} | ZenMux",
+  "title_rule": "No length limit; longer is better. After '{Entity} API', add the variants and related entities this page really answers: model ID, aliases and revision names, developer, provider names, billing type, context and max output, main capabilities, example languages, alternatives, FAQ. Numbers only as fact display strings; nothing the page does not cover; no superlatives.",
   "h1_pattern": "{Entity} API",
-  "meta_description_rule": "Title, description and H1 correspond to this specific model; no undifferentiated promotion.",
+  "meta_description_rule": "No length limit; longer is better. Full sentences that name this specific model and its variants (model ID, aliases, revision), the developer, modalities, the providers, the billing items and conditions, context and max output, and what the page offers (pricing table, capabilities, API example languages, alternatives). Title, description and H1 correspond to this model; numbers only as fact display strings; no undifferentiated promotion.",
   "default_endpoint_rule": "One shared 'currently selected endpoint' state: choosing an endpoint in M2 updates the M1 summary, M3 code and M4 capabilities.",
   "status_vocabulary": ["Supported", "Not supported", "Not verified", "Varies by provider"],
   "missing_value_labels": {"price": "Not published", "version": "Not verified", "metric": "No data"},

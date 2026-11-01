@@ -135,6 +135,15 @@ newpage t15; mut $W/t15/page.md '# Acme Model 7.5 API' '# Acme Model 7.5 Review'
 newpage t16; mut $W/t16/page.md '## Acme Model 7.5 Capabilities' '## Capabilities'; expect "page: h2 pattern" 1 H2_PATTERN page t16
 newpage t17; mut $W/t17/page.md '## Acme Model 7.5 Pricing' $'# Acme Model 7.5 API\n\n## Acme Model 7.5 Pricing'; expect "page: two H1s" 1 H1_COUNT page t17
 newpage t18; mut $W/t18/page.md 'title: Acme Model 7.5 API, Pricing & Providers | AcmeHub' 'title: Acme Model 7.5 is great'; expect "page: title pattern" 1 TITLE_PATTERN page t18
+newpage t18b; mut $W/t18b/page.md 'title: Acme Model 7.5 API, Pricing & Providers | AcmeHub' 'title: Acme Model 7.5 API: Pricing and Providers on Acme Cloud and Beta Host, Input and Output Token Rates, Cache Read Pricing, Context Window and Max Output, Streaming, Tool Calling, Structured Output, Chat Completions and Responses Protocols, Python, JavaScript and cURL Examples, Alternatives, Related Models and FAQ, Developer Docs and Provider Routing | AcmeHub'; expect "page: long title with variants -> PASS (no length limit)" 0 PASS page t18b
+newpage t18c; mut $W/t18c/page.md 'title: Acme Model 7.5 API, Pricing & Providers | AcmeHub' 'title: Acme Model 7.5 API, Pricing & Providers'; expect "page: title without brand suffix" 1 TITLE_PATTERN page t18c
+newpage t18d; python3 - "$W/t18d/page.md" <<'PY'
+import re,sys
+p=sys.argv[1]; s=open(p).read()
+s=re.sub(r"(?m)^meta_description:.*$", "meta_description: Acme Model 7.5 is the text model from Acme. On AcmeHub it runs on Acme Cloud and Beta Host: compare their input, output and cache-read token prices and the conditions behind each rate, check the context window and max output on every provider, see which protocols and parameters each endpoint supports, including streaming, tool calling and structured output, compare alternatives and related models, read the FAQ, and copy a Chat Completions or Responses example in Python, JavaScript or cURL with your API key kept in an environment variable. Acme Model 7.5 is the text model from Acme. On AcmeHub it runs on Acme Cloud and Beta Host: compare their input, output and cache-read token prices and the conditions behind each rate, check the context window and max output on every provider, see which protocols and parameters each endpoint supports, including streaming, tool calling and structured output, compare alternatives and related models, read the FAQ, and copy a Chat Completions or Responses example in Python, JavaScript or cURL with your API key kept in an environment variable.", s, count=1)
+open(p,"w").write(s)
+PY
+expect "page: long meta description -> PASS (no length limit)" 0 PASS page t18d
 newpage t19; mut $W/t19/page.md 'default_endpoint: acme' 'default_endpoint: nowhere'; expect "page: default_endpoint unknown" 1 DEFAULT_ENDPOINT_UNKNOWN page t19
 newpage t20; mut $W/t20/page.md 'meta_description:' 'meta_desc:'; expect "page: front matter key missing" 1 PAGE_MISSING_KEY page t20
 newpage t21; jmut $W/t21/facts.json 'd["facts"][0]["source_url"]=""'; expect "page: fact without source_url" 1 FACT_NO_SOURCE page t21
