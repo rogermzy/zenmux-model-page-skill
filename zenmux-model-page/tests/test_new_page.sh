@@ -91,7 +91,8 @@ PORT="$("$PY" -c 'import socket;s=socket.socket();s.bind(("127.0.0.1",0));print(
 SRV=$!
 for _ in $(seq 1 50); do curl -s -o /dev/null "http://127.0.0.1:$PORT/acme/clip-2" && break; sleep 0.1; done
 cat > "$W/site.json" <<JSON
-{"models_api": "http://127.0.0.1:$PORT/api/v1/models", "page_url_template": "http://127.0.0.1:$PORT/{id}"}
+{"models_api": "http://127.0.0.1:$PORT/api/v1/models", "page_url_template": "http://127.0.0.1:$PORT/{id}",
+ "sitemap": "http://127.0.0.1:$PORT/sitemap-models.xml"}
 JSON
 WS="$W/ws"
 expect "text page (display name, case/space-insensitive)" 0 "type          text" NP "$WS" "ACME:  tiered text 1.0" --site-config "$W/site.json" --date 2026-11-01
@@ -159,6 +160,71 @@ idx = json.load(open(os.environ["WS"] + "/sources/index.json", encoding="utf-8")
 roles = {(e["url"].split("/", 3)[-1], e["role"]) for e in idx}
 assert ("acme/tiered-text", "fact") in roles and ("acme/tiered-text", "data") in roles, roles
 assert any(e["role"] == "data" and "api/v1/models?id=acme/clip-2" in e["url"] for e in idx), roles
+PY
+
+echo "new_page.py: --no-api (sitemap + page data) and the automatic fallback"
+NA() { "$PY" "$S/new_page.py" "$@" --site-config "$W/site.json" --skip-docs --date 2026-11-01; }
+expect "--no-api, by name (slug, case/space/punctuation-insensitive)" 0 "resolved via: sitemap + page data (no API)" NA "$W/ws-na" "TIERED  text" --no-api
+expect "--no-api, by developer-prefixed name" 0 "type          video" NA "$W/ws-na" "Acme: Clip 2" --no-api
+expect "--no-api, by id" 0 "type          video" NA "$W/ws-na" acme/clip-2 --no-api --force
+expect "--no-api, by URL" 0 "type          video" NA "$W/ws-na" https://zenmux.ai/acme/clip-2 --no-api --force
+expect "--no-api: facts.json exists is still exit 4" 4 "already exists" NA "$W/ws-na" acme/clip-2 --no-api
+expect "--no-api names the skipped API checks" 0 "API vs page price cross-check" NA "$W/ws-na" acme/clip-2 --no-api --force
+expect "--no-api, ambiguous name lists candidates" 2 "other/twin" NA "$W/ws-na2" twin --no-api
+expect "--no-api, no sitemap match" 2 "no model URL in the sitemap matches" NA "$W/ws-na2" "no such model" --no-api
+expect "--no-api, provider page is not a model (sitemap skips /provider/)" 2 "no model URL in the sitemap matches" NA "$W/ws-na2" "acme" --no-api
+expect "--no-api, provider URL refused" 2 "not a model page URL" NA "$W/ws-na2" https://zenmux.ai/provider/acme --no-api
+expect "--no-api, unsupported type from the page data" 3 "no page template for model type transcription.*approved plan covers" NA "$W/ws-na2" acme/listen-1 --no-api
+expect "--no-api and --api-json together" 1 "contradict" NA "$W/ws-na2" acme/clip-2 --no-api --api-json "$FX/models-api.json"
+[ ! -e "$W/ws-na2/pages" ] && ok "refused --no-api runs wrote no pages/" || bad "refused --no-api runs wrote no pages/" "pages/ exists"
+
+DEADPORT="$("$PY" -c 'import socket;s=socket.socket();s.bind(("127.0.0.1",0));print(s.getsockname()[1])')"   # bound then released: nothing listens
+cat > "$W/site-dead.json" <<JSON
+{"models_api": "http://127.0.0.1:$DEADPORT/api/v1/models", "page_url_template": "http://127.0.0.1:$PORT/{id}",
+ "sitemap": "http://127.0.0.1:$PORT/sitemap-models.xml"}
+JSON
+expect "API unreachable -> automatic fallback, says so" 0 "NOTICE the models API is unavailable.*WITHOUT it" \
+  "$PY" "$S/new_page.py" "$W/ws-fb" "Tiered Text" --site-config "$W/site-dead.json" --skip-docs --date 2026-11-01
+expect "fallback summary states the mode" 0 "resolved via: sitemap + page data (no API)" \
+  "$PY" "$S/new_page.py" "$W/ws-fb" "Tiered Text" --site-config "$W/site-dead.json" --skip-docs --date 2026-11-01 --force
+expect "API answers but does not know the model -> exit 2, no fallback" 2 "no model matches" \
+  "$PY" "$S/new_page.py" "$W/ws-live" "no such model" --site-config "$W/site.json" --skip-docs
+[ ! -e "$W/ws-live" ] && ok "API not-found wrote nothing" || bad "API not-found wrote nothing" "workspace created"
+expect "live (served) API still used when it works" 0 "resolved via: models API" \
+  "$PY" "$S/new_page.py" "$W/ws-live" "Acme: Clip 2" --site-config "$W/site.json" --skip-docs --date 2026-11-01
+
+W="$W" S="$S" pyt "no-API facts.json: quotes verified, equal to the API run, API-only facts absent" <<'PY'
+import json, os, sys
+sys.path.insert(0, os.environ["S"])
+import check_page
+W = os.environ["W"]
+norm = lambda s: " ".join(s.split())
+def load(ws, slug):
+    idx = json.load(open(f"{ws}/sources/index.json", encoding="utf-8"))
+    def text_of(url):
+        return norm(" ".join(open(f"{ws}/sources/" + e["txt"], encoding="utf-8").read() for e in idx if e["url"] == url))
+    d = json.load(open(f"{ws}/pages/{slug}/facts.json", encoding="utf-8"))
+    errs = []
+    E = lambda code, msg, line=None: errs.append((code, msg))
+    assert check_page.validate_facts(d, E) and not errs, errs
+    for f in d["facts"]:
+        assert norm(f["quote"]) in text_of(f["source_url"]), (ws, f["id"], f["quote"][:60])
+    return d, idx
+for slug, ws_na, ws_api in (("tiered-text", "ws-na", "ws"), ("clip-2", "ws-na", "ws")):
+    na, idx = load(f"{W}/{ws_na}", slug)
+    api, _ = load(f"{W}/{ws_api}", slug)
+    assert na["gaps"] == [] and all(f["verdict"] == "UNCHECKED" for f in na["facts"])
+    A = {f["id"]: f for f in api["facts"]}; N = {f["id"]: f for f in na["facts"]}
+    assert not [i for i in N if i.endswith(".api")], "API-derived fact in no-API mode"
+    assert set(N) == {i for i in A if not i.endswith(".api")}, sorted(set(N) ^ set(A))
+    for i in N:
+        assert N[i]["display"] == A[i]["display"] and N[i]["source_url"].split("/", 3)[-1] == A[i]["source_url"].split("/", 3)[-1], i
+    assert na["entity"] == api["entity"] and na["entity_type"] == api["entity_type"]
+    assert not any("api/v1/models" in e["url"] for e in idx), "an API snapshot was written in no-API mode"
+roles = {(e["url"].rsplit("/", 1)[-1], e["role"]) for e in idx}
+assert ("sitemap-models.xml", "data") in roles, roles   # the resolution is auditable
+fb, _ = load(f"{W}/ws-fb", "tiered-text")
+assert fb["entity"] == "Tiered Text 1.0" and fb["entity_type"] == "text"
 PY
 
 echo

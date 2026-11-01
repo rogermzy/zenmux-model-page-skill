@@ -79,10 +79,11 @@ First run only: `mkdir -p <workspace> && cp $SKILL_DIR/references/plan.md <works
 python3 $SKILL_DIR/scripts/new_page.py <workspace> "<model name, id or URL>"
 ```
 
-Always run this, even when told to make no API calls or when no API key is available. ZenMux's
-public models list (`https://zenmux.ai/api/v1/models`) is a keyless, read-only page fetch like
-any other source, not a model call. "No API calls" means no generation requests (calls that use
-`$ZENMUX_API_KEY` and cost money). Don't rebuild this step by hand.
+Never skip this step or rebuild it by hand. If you were told not to make API calls, add
+`--no-api`: the model is then resolved from the sitemap and the model page's own data, with no
+request to any API. Without the flag it also reads ZenMux's keyless public models list
+(`https://zenmux.ai/api/v1/models`) for extra cross-checks, and falls back to no-API mode by
+itself if that list can't be fetched. No API key is ever needed here.
 
 It resolves the model through ZenMux's public models API, picks the template variant from the
 model's output type, snapshots the model page, decodes the page's embedded data (per-provider

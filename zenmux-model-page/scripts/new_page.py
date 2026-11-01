@@ -6,15 +6,22 @@ new_page.py — start a ZenMux model page: resolve the model, snapshot every sou
 Usage:
     python3 new_page.py <workspace> "<model name | id like deepseek/deepseek-v4-pro | zenmux.ai URL>"
                         [--date YYYY-MM-DD] [--max-age-days 14] [--force]
-                        [--api-json FILE] [--skip-docs] [--site-config FILE]
+                        [--api-json FILE] [--no-api] [--skip-docs] [--site-config FILE]
 
 What it does (nothing is written before steps 1-2 succeed):
   1. Resolve the query to a model id with the public API (https://zenmux.ai/api/v1/models): match on id, on
      display name with or without the "Developer: " prefix, on the id's model part; case/space-insensitive.
+     --no-api (also the automatic fallback when the API cannot be fetched: network error, HTTP error, not
+     JSON, changed shape; stderr says so) resolves without it: a URL or an id (developer/slug) is used as
+     is; a name is matched by slug against the model URLs of the sitemap (zenmux-site.json "sitemap",
+     /provider/ pages skipped; the sitemap is snapshotted, role data). An API that answers but does not
+     know the model is still exit 2, never a fallback.
   2. Map output_modalities to a page type: text, image, video, speech->audio. Anything else
-     (transcription, embeddings, rerank, decisions, unknown) has no template: exit 3, nothing written.
+     (transcription, embeddings, rerank, decisions, unknown) has no template: exit 3, nothing written
+     (no-API mode reads the modalities from the page data, so the page snapshot already exists then).
   3. Snapshot (via snapshot.py, into <workspace>/sources/): the model page (role fact), its decoded flight
-     data (role data, via zenmux_data.py), the model's public-API record (role data).
+     data (role data, via zenmux_data.py), the model's public-API record (role data; not in no-API mode,
+     where the summary lists the skipped API-derived checks).
   4. Re-snapshot the shared ZenMux docs listed in zenmux-site.json (plus the per-type extras) when they are
      missing or older than --max-age-days.
   5. Write <workspace>/pages/<slug>/facts.json (starter) and gap-candidates.json. Every fact quote is
@@ -37,7 +44,9 @@ import urllib.error
 import urllib.request
 from datetime import date, datetime, timezone
 from decimal import Decimal
+from html import unescape
 from pathlib import Path
+from urllib.parse import urlsplit
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
@@ -76,7 +85,13 @@ def read_json(path, what):
 
 
 # ── 1. resolve ────────────────────────────────────────────────────────────────────────────
+class ApiUnavailable(Exception):
+    """The models API could not be used (fetch failed, not JSON, changed shape): fall back to no-API mode."""
+
+
 def load_models(site, api_json):
+    """The model list. A --api-json file that is unusable is a usage error (exit 1); a live API that is
+    unusable raises ApiUnavailable (the caller falls back to the no-API path)."""
     if api_json:
         raw = read_json(api_json, "--api-json")
     else:
@@ -85,10 +100,13 @@ def load_models(site, api_json):
             with urllib.request.urlopen(req, timeout=30) as r:
                 raw = json.loads(r.read().decode("utf-8"))
         except (urllib.error.URLError, TimeoutError, OSError, ValueError) as e:
-            die(1, f"could not fetch {site['models_api']}: {getattr(e, 'reason', e)}")
+            raise ApiUnavailable(f"could not fetch {site['models_api']}: {getattr(e, 'reason', e)}")
     data = raw.get("data") if isinstance(raw, dict) else None
     if not isinstance(data, list) or not data or not all(isinstance(m, dict) and "id" in m for m in data):
-        die(1, "the models API did not return {data:[{id,...}]}: its shape changed? (stop and tell the site owner)")
+        msg = "the models API did not return {data:[{id,...}]}: its shape changed?"
+        if api_json:
+            die(1, msg + " (stop and tell the site owner)")
+        raise ApiUnavailable(msg)
     return data
 
 
@@ -127,6 +145,74 @@ def resolve(models, query, site):
         print("[new_page] partial matches (re-run with the full id):", file=sys.stderr)
         for h in near:
             print(f"    {h['id']}    {h.get('display_name')}", file=sys.stderr)
+    sys.exit(2)
+
+
+def sitemap_model_ids(xml):
+    """developer/slug ids of the model pages listed in the sitemap: exactly two path segments, /provider/ skipped."""
+    ids = []
+    for loc in re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", xml):
+        parts = [p for p in urlsplit(unescape(loc)).path.split("/") if p]
+        if len(parts) == 2 and parts[0] != "provider":
+            ids.append("/".join(parts))
+    return list(dict.fromkeys(ids))
+
+
+def site_hosts(site):
+    hosts = {"zenmux.ai", "www.zenmux.ai"}
+    for u in (site.get("base_url"), site.get("page_url_template", "").replace("{id}", "x")):
+        h = urlsplit(u or "").netloc.lower()
+        if h:
+            hosts.add(h)
+    return hosts
+
+
+def resolve_noapi(query, site, ws):
+    """Query -> (model id, how) without the models API. URL / id are used as given; a name is matched
+    against the sitemap's model URLs by slug (and by developer+slug), case/space/punctuation-insensitive."""
+    q = query.strip()
+    u = urlsplit(q)
+    if u.scheme in ("http", "https"):
+        if u.netloc.lower() not in site_hosts(site):
+            die(2, f"'{query}' is not a {site['base_url']} URL")
+        parts = [p for p in u.path.split("/") if p]
+        if len(parts) != 2 or parts[0] == "provider":
+            die(2, f"'{query}' is not a model page URL (expected {site['page_url_template'].format(id='<developer>/<model>')})")
+        return "/".join(parts), "URL"
+    if re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.:-]+", q):
+        if q.split("/", 1)[0] == "provider":
+            die(2, f"'{query}' is a provider page, not a model")
+        return q, "id"
+    sm_url = site.get("sitemap")
+    if not sm_url:
+        die(1, "no 'sitemap' in the site config: cannot resolve a model name without the models API")
+    sources = Path(ws) / "sources"
+    sources.mkdir(parents=True, exist_ok=True)
+    ok, msg = run_snapshot(sm_url, sources, "data")
+    if not ok:
+        die(1, f"could not snapshot the sitemap {sm_url} (needed to resolve a name without the API):\n{msg}")
+    e = index_entry(sources, sm_url, "data")
+    if not e or not e.get("html"):
+        die(1, f"snapshot.py reported success but {sources / 'index.json'} has no html entry for {sm_url}")
+    ids = sitemap_model_ids((sources / e["html"]).read_bytes().decode("utf-8", errors="replace"))
+    if not ids:
+        die(1, f"the sitemap {sm_url} lists no model pages (<loc> with developer/model paths): its shape changed? (tell the site owner)")
+    qk = key(q)
+    for how, test in (("id", lambda i: key(i) == qk), ("slug", lambda i: key(i.split("/", 1)[1]) == qk)):
+        hits = [i for i in ids if qk and test(i)]
+        if len(hits) == 1:
+            return hits[0], f"sitemap {how}"
+        if len(hits) > 1:
+            print(f"[new_page] '{query}' is ambiguous (matches the {how} of {len(hits)} sitemap model URLs). Pass the full id:", file=sys.stderr)
+            for h in hits:
+                print(f"    {h}", file=sys.stderr)
+            sys.exit(2)
+    near = [i for i in ids if qk and qk in key(i)][:12]
+    print(f"[new_page] no model URL in the sitemap matches '{query}' (snapshot: {sources / e['html']}).", file=sys.stderr)
+    if near:
+        print("[new_page] partial matches (re-run with the full id):", file=sys.stderr)
+        for h in near:
+            print(f"    {h}", file=sys.stderr)
     sys.exit(2)
 
 
@@ -211,6 +297,7 @@ def comma(n):
 class Builder:
     def __init__(self, hay, date_s):
         self.hay, self.date, self.facts, self.cands, self._ids = hay, date_s, [], [], set()
+        self.skipped = []   # API-derived facts / checks not done (no-API mode)
 
     def has(self, url, quote):
         return norm_ws(quote) in norm_ws(self.hay[url])
@@ -325,7 +412,7 @@ def build(rec, etype, summ, api_text, page_url, api_url, hay, date_s, discount_v
 
     # endpoints and per-provider facts
     endpoints = []
-    api_prices = (rec.get("pricings") or {})
+    api_prices = ((rec or {}).get("pricings") or {})
     for p in provs:
         s = p["slug"]
         ep = {"id": s, "provider": p["name"], "served_version": "Not verified", "status": p["status"]}
@@ -404,20 +491,30 @@ def build(rec, etype, summ, api_text, page_url, api_url, hay, date_s, discount_v
                    "was not found next to the list rate in the page text (the table may not show those items); no discounted-price fact written for them",
                    "not_in_html")
 
-    # public API record
+    # public API record (skipped, and listed in the summary, in no-API mode)
+    have_api = rec is not None
+    rec, api_text = rec or {}, api_text or ""
+    if not have_api:
+        B.skipped = ["API max_tokens fact (spec.maxout.api; per-provider max output still comes from the page data)",
+                     "API context_length fact (spec.context.api)",
+                     "API vs page context_length cross-check",
+                     "API vs page publish_time cross-check",
+                     "API vs page price cross-check (fee items present on one side only, values)"]
     aq = lambda k: next((ln.strip().rstrip(",") for ln in api_text.splitlines() if ln.lstrip().startswith(f'"{k}":')), None)  # noqa: E731
-    if rec.get("max_tokens"):
+    if not have_api:
+        pass
+    elif rec.get("max_tokens"):
         B.fact("spec.maxout.api", "spec", None, "Max output (ZenMux public API max_tokens)", fmt_count(rec["max_tokens"]), api_url, aq("max_tokens"),
                value=rec["max_tokens"], unit="tokens", aliases=[comma(rec["max_tokens"]), str(rec["max_tokens"])])
     else:
         B.cand("max_tokens", None, "absent" if "max_tokens" not in rec else "0", [(api_url, aq("id"))],
                "the public API record has no max_tokens (informational; the provider rows may still give max_completion_tokens)", "missing")
-    if rec.get("context_length"):
+    if have_api and rec.get("context_length"):
         B.fact("spec.context.api", "spec", None, "Context length (ZenMux public API)", fmt_count(rec["context_length"]), api_url, aq("context_length"),
                value=rec["context_length"], unit="tokens", aliases=[comma(rec["context_length"]), str(rec["context_length"])])
     # cross-source checks -> candidates (never auto-gaps)
     pctx = {p["context_length"] for p in provs if p.get("context_length")}
-    if rec.get("context_length") and pctx and rec["context_length"] not in pctx:
+    if have_api and rec.get("context_length") and pctx and rec["context_length"] not in pctx:
         B.cand("context_length", None, f"API {rec['context_length']} vs providers {sorted(pctx)}",
                [(api_url, aq("context_length")), (PD, mq(r'"context_length":\d+'))],
                "the public API context_length equals no provider's context_length", "contradiction")
@@ -426,7 +523,7 @@ def build(rec, etype, summ, api_text, page_url, api_url, hay, date_s, discount_v
                [(PD, mq(r'"context_length":\d+'))] + [(PD, re.search(r'"context_length":\d+', p["fragment"]).group(0)) for p in provs[:1] if re.search(r'"context_length":\d+', p["fragment"])],
                "the model-level context_length equals no provider's context_length; M1 must not show one number as if it held for all providers",
                "contradiction")
-    if rec.get("publish_time") and model.get("publish_time") and rec["publish_time"] != model["publish_time"]:
+    if have_api and rec.get("publish_time") and model.get("publish_time") and rec["publish_time"] != model["publish_time"]:
         B.cand("publish_time", None, f"API {rec['publish_time']} vs page {model['publish_time']}",
                [(api_url, aq("publish_time")), (PD, mq(r'"publish_time":"[^"]*"'))], "publish_time differs between the API and the page data", "contradiction")
     page_list = {}
@@ -443,14 +540,14 @@ def build(rec, etype, summ, api_text, page_url, api_url, hay, date_s, discount_v
     for p in provs:
         for it in p["fee_items"]:
             first_quote.setdefault(it["code"], it["records"][0]["quote"])
-    for c in sorted(set(page_list) - set(api_vals)):
+    for c in sorted(set(page_list) - set(api_vals)) if have_api else []:
         if pricing_line:
             B.cand(f"fee item {c}", None, "on the page, not in the public API", [(PD, first_quote[c]), (api_url, pricing_line)],
                    f"fee item '{c}' is billed per the page data but the public API pricings has no such key (API incomplete?)", "suspected_error")
-    for c in sorted(set(api_vals) - set(page_list)):
+    for c in sorted(set(api_vals) - set(page_list)) if have_api else []:
         B.cand(f"fee item {c}", None, "in the public API, not on the page", [(api_url, pricing_line)] if pricing_line else [(api_url, aq("id"))],
                f"public API prices '{c}' but the page data has no such fee item", "suspected_error")
-    for c in sorted(set(api_vals) & set(page_list)):
+    for c in sorted(set(api_vals) & set(page_list)) if have_api else []:
         allowed = page_list[c] | page_disc[c]
         if api_vals[c] and not api_vals[c] <= allowed:
             B.cand(f"fee item {c}", None, f"API {sorted(map(str, api_vals[c]))} vs page list {sorted(map(str, page_list[c]))} / discounted {sorted(map(str, page_disc[c]))}",
@@ -478,6 +575,9 @@ def main():
     ap.add_argument("--max-age-days", type=int, default=14, help="re-snapshot shared docs older than this")
     ap.add_argument("--force", action="store_true", help="overwrite an existing facts.json")
     ap.add_argument("--api-json", help="use this saved /api/v1/models response instead of fetching it")
+    ap.add_argument("--no-api", action="store_true",
+                    help="do not use the models API: resolve by URL / id / sitemap and read the type and facts from the "
+                         "page data (also the automatic fallback when the API cannot be fetched)")
     ap.add_argument("--skip-docs", action="store_true", help="do not (re-)snapshot the shared docs")
     ap.add_argument("--site-config", default=str(HERE.parent / "zenmux-site.json"))
     args = ap.parse_args()
@@ -489,18 +589,36 @@ def main():
     if Path(args.site_config).is_file():
         site.update(read_json(args.site_config, "site config"))
 
-    models = load_models(site, args.api_json)
-    rec, how = resolve(models, args.model, site)
-    etype, outs = entity_type(rec, site)
-    mid = rec["id"]
-    slug = mid.split("/", 1)[-1]
+    if args.no_api and args.api_json:
+        die(1, "--no-api and --api-json contradict each other")
     ws = Path(args.workspace)
+    models = None
+    if not args.no_api:
+        try:
+            models = load_models(site, args.api_json)
+        except ApiUnavailable as e:
+            print(f"[new_page] NOTICE the models API is unavailable ({e}). Continuing WITHOUT it: resolving via sitemap + page data "
+                  "(no API). Facts and cross-checks that need the API record are skipped (listed in the summary).",
+                  file=sys.stderr, flush=True)
+    rec = None
+    if models is not None:
+        rec, how = resolve(models, args.model, site)
+        etype, outs = entity_type(rec, site)
+        mid = rec["id"]
+        via = "models API"
+    else:
+        mid, how = resolve_noapi(args.model, site, ws)
+        via = "sitemap + page data (no API)"
+    slug = mid.split("/", 1)[-1]
     facts_path = ws / "pages" / slug / "facts.json"
     if facts_path.exists() and not args.force:
         die(4, f"{facts_path} already exists; refusing to overwrite (use --force). Nothing was changed.")
     page_url = site["page_url_template"].format(id=mid)
-    api_url = f"{site['models_api']}?id={mid}"
-    log(f"resolved '{args.model}' -> {mid} ({rec.get('display_name')}) by {how}; output {outs} -> page type {etype}")
+    api_url = f"{site['models_api']}?id={mid}" if rec else None
+    if rec:
+        log(f"resolved '{args.model}' -> {mid} ({rec.get('display_name')}) by {how}; output {outs} -> page type {etype}")
+    else:
+        log(f"resolved '{args.model}' -> {mid} by {how} (no models API)")
 
     sources = ws / "sources"
     sources.mkdir(parents=True, exist_ok=True)
@@ -519,19 +637,24 @@ def main():
     except zenmux_data.PageShapeError as e:
         die(5, f"PAGE SHAPE NOT RECOGNISED for {page_url}: {e}\n[new_page] The page snapshot was saved; nothing else was written. "
                "ZenMux may have changed the page: report it, do not hand-patch numbers.")
+    if rec is None:
+        etype, outs = entity_type({"output_modalities": summ["model"]["output_modalities"]}, site)
+        log(f"page data output_modalities {outs} -> page type {etype}")
     with tempfile.TemporaryDirectory() as td:
         f1 = Path(td) / "data.txt"
         f1.write_text(data_text, encoding="utf-8")
         ok, msg = run_snapshot(page_url, sources, "data", f1)
         if not ok:
             die(1, f"could not save the data snapshot:\n{msg}")
-        api_text = api_record_text(rec)
-        f2 = Path(td) / "api.txt"
-        f2.write_text(api_text, encoding="utf-8")
-        ok, msg = run_snapshot(api_url, sources, "data", f2)
-        if not ok:
-            die(1, f"could not save the API-record snapshot:\n{msg}")
-    refreshed += [page_url + " (data)", api_url + " (data)"]
+        api_text = None
+        if rec:
+            api_text = api_record_text(rec)
+            f2 = Path(td) / "api.txt"
+            f2.write_text(api_text, encoding="utf-8")
+            ok, msg = run_snapshot(api_url, sources, "data", f2)
+            if not ok:
+                die(1, f"could not save the API-record snapshot:\n{msg}")
+    refreshed += [page_url + " (data)"] + ([api_url + " (data)"] if rec else [])
 
     if not args.skip_docs:
         docs = list(dict.fromkeys(site.get("shared_docs", []) + site.get("type_docs", {}).get(etype, [])))
@@ -544,10 +667,12 @@ def main():
 
     # texts to quote from
     ptxt = (sources / pe["txt"]).read_text(encoding="utf-8")
-    ae = index_entry(sources, api_url, "data")
-    if not ae:
-        die(1, f"snapshot.py reported success but {sources / 'index.json'} has no entry for {api_url}")
-    hay = {page_url: data_text + "\n" + ptxt, api_url: (sources / ae["txt"]).read_text(encoding="utf-8"), "__visible__": ptxt}
+    hay = {page_url: data_text + "\n" + ptxt, "__visible__": ptxt}
+    if rec:
+        ae = index_entry(sources, api_url, "data")
+        if not ae:
+            die(1, f"snapshot.py reported success but {sources / 'index.json'} has no entry for {api_url}")
+        hay[api_url] = (sources / ae["txt"]).read_text(encoding="utf-8")
     vis_ok = {}
     pdisc = str(summ["model"].get("pricing_discount") or "1")
     if Decimal(pdisc) != 1:
@@ -558,9 +683,9 @@ def main():
     except AssertionError as e:
         die(1, f"internal check failed (no files written): {e}")
 
-    entity = strip_dev(rec.get("display_name") or summ["model"]["name"])
+    entity = strip_dev((rec or {}).get("display_name") or summ["model"]["name"])
     names = [entity]
-    for n in [summ["model"]["name"], rec.get("display_name"), slug, mid] + list(summ["model"].get("aliases") or []) + [p["name"] for p in summ["providers"] if p.get("name")]:
+    for n in [summ["model"]["name"], (rec or {}).get("display_name"), slug, mid] + list(summ["model"].get("aliases") or []) + [p["name"] for p in summ["providers"] if p.get("name")]:
         if n and n not in names:
             names.append(n)
     out = {"entity": entity, "entity_type": etype, "checked_date": date_s, "names": names,
@@ -575,11 +700,16 @@ def main():
     for f in B.facts:
         cats[f["category"]] = cats.get(f["category"], 0) + 1
     print()
+    print(f"resolved via: {via}")
     print(f"entity        {entity}  ({mid})")
-    print(f"type          {etype}   (API output_modalities {outs})")
+    print(f"type          {etype}   ({'API' if rec else 'page data'} output_modalities {outs})")
     print("providers     " + ", ".join(f"{e['id']} [{e['status']}]" for e in endpoints))
     print(f"facts written {len(B.facts)}  " + " ".join(f"{k}={v}" for k, v in sorted(cats.items())) + f"   -> {facts_path}")
     print(f"gap candidates {len(B.cands)}  -> {pdir / 'gap-candidates.json'}  (review; gaps[] left empty)")
+    if B.skipped:
+        print(f"skipped (no API record)  {len(B.skipped)} API-derived checks not done:")
+        for k in B.skipped:
+            print(f"  - {k}")
     print(f"snapshots     {len(refreshed)} refreshed" + (f", {len(failed)} FAILED" if failed else ""))
     for f in failed:
         print(f"  WARNING doc snapshot failed: {f}")

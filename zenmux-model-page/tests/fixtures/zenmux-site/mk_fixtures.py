@@ -55,6 +55,21 @@ model = {"name": "Acme: Clip 2", "slug": "acme/clip-2", "description": "A made-u
 page(model, [prov("Acme Video", "acme-video", 20000, 0, "1", "$30", "videos")], {"30": json.dumps(vid, ensure_ascii=False, separators=(",", ":"))},
      "<main><h1>Acme: Clip 2</h1><div>Acme Video</div></main>", OUT + "/www/acme/clip-2")
 
+# 2b. transcription model (no page template): only the page data tells the type in --no-api mode
+lis = [item("audio_in", "音频输入费用", [(0.006, [CU("seconds")])])]
+model_l = {"name": "Acme: Listen 1", "slug": "acme/listen-1", "description": "A made-up transcription model.", "context_length": 0, "publish_time": "2026-08-08",
+         "author": "acme", "authorName": "Acme", "input_modalities": "audio", "output_modalities": "transcription", "visible": 1, "frontend_config": "",
+         "aliases": [], "faqs": [], "pricing_discount": "1"}
+page(model_l, [prov("Acme Audio", "acme-audio", 0, 0, "1", "$31", "audio")], {"31": json.dumps(lis, ensure_ascii=False, separators=(",", ":"))},
+     "<main><h1>Acme: Listen 1</h1><div>Acme Audio</div></main>", OUT + "/www/acme/listen-1")
+
+# 2c. sitemap like https://zenmux.ai/sitemap-models.xml: model pages (two path segments), /provider/ pages and a list page
+locs = ["models", "acme/tiered-text", "acme/clip-2", "acme/listen-1", "acme/twin", "other/twin", "acme/pic-1", "acme/clip-2.5", "provider/acme", "provider/other"]
+open(OUT + "/www/sitemap-models.xml", "w", encoding="utf-8").write(
+    '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    + "".join("  <url>\n    <loc>https://zenmux.ai/%s</loc>\n    <lastmod>2026-10-27</lastmod>\n    <priority>0.8</priority>\n  </url>\n" % l for l in locs)
+    + "</urlset>\n")
+
 # 3. broken: no flight data at all / providers marker missing
 open(OUT + "/www/acme/no-flight", "w", encoding="utf-8").write("<html><body><h1>Just a page</h1></body></html>")
 page(model, [], {}, "<main>x</main>", OUT + "/www/acme/tmp")
@@ -77,4 +92,6 @@ api = {"object": "list", "data": [
     m("acme/pic-1", "Acme: Pic 1", ["text", "image"]),
 ]}
 json.dump(api, open(OUT + "/models-api.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+os.makedirs(OUT + "/www/api/v1", exist_ok=True)   # the same list, served as the live API (extensionless file)
+json.dump(api, open(OUT + "/www/api/v1/models", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print("ok")

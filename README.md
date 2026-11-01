@@ -50,7 +50,7 @@ skill 本体是 `zenmux-model-page/` 这个文件夹（里面有 `SKILL.md`）�
 
 所有页面共用一个工作目录（默认 `./zenmux-pages/`），ZenMux 的公共文档只抓一次，14 天内复用，过期自动重新抓取。
 
-**注意：**「不要调用 API」这类要求只针对生成类调用（需要 `$ZENMUX_API_KEY`、会产生费用的请求）。公开的模型列表 `https://zenmux.ai/api/v1/models` 不需要 key，是普通网页抓取，skill 每次都要用它。
+**注意：**写页面不需要 API key。起步脚本默认会读取不需要 key 的公开模型列表 `https://zenmux.ai/api/v1/models` 做交叉核对；如果要求「不调用任何 API」，或该列表无法访问，脚本会改用 sitemap 和模型页自身数据（`--no-api`），结果一致，只是少几项交叉核对。
 
 ## 它是怎么工作的
 
