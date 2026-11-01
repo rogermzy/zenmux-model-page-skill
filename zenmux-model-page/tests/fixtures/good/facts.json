@@ -1,0 +1,137 @@
+{
+ "entity": "Acme Model 7.5",
+ "entity_type": "text",
+ "checked_date": "2026-01-15",
+ "names": [
+  "Acme Model 7.5",
+  "Acme X1"
+ ],
+ "endpoints": [
+  {
+   "id": "acme",
+   "provider": "Acme Cloud",
+   "served_version": "Not verified",
+   "status": "active"
+  },
+  {
+   "id": "other",
+   "provider": "Other Cloud",
+   "served_version": "Not verified",
+   "status": "active"
+  }
+ ],
+ "facts": [
+  {
+   "id": "price.acme.input",
+   "category": "price",
+   "endpoint": "acme",
+   "label": "Input price",
+   "value": 1.11,
+   "unit": "USD / 1M tokens",
+   "display": "$1.11",
+   "condition": "standard",
+   "source_url": "https://example.test/acme/acme-model-7-5",
+   "quote": "Input $1.11",
+   "checked_at": "2026-01-15",
+   "verdict": "VERIFIED"
+  },
+  {
+   "id": "price.acme.output",
+   "category": "price",
+   "endpoint": "acme",
+   "label": "Output price",
+   "value": 2.22,
+   "unit": "USD / 1M tokens",
+   "display": "$2.22",
+   "condition": "standard",
+   "source_url": "https://example.test/acme/acme-model-7-5",
+   "quote": "Output $2.22",
+   "checked_at": "2026-01-15",
+   "verdict": "VERIFIED"
+  },
+  {
+   "id": "price.other.input",
+   "category": "price",
+   "endpoint": "other",
+   "label": "Input price",
+   "value": 3.33,
+   "unit": "USD / 1M tokens",
+   "display": "$3.33",
+   "condition": "standard",
+   "source_url": "https://example.test/acme/acme-model-7-5",
+   "quote": "Other Cloud input $3.33",
+   "checked_at": "2026-01-15",
+   "verdict": "VERIFIED"
+  },
+  {
+   "id": "spec.context",
+   "category": "spec",
+   "endpoint": null,
+   "label": "Context window",
+   "value": 999000,
+   "unit": "tokens",
+   "display": "999K",
+   "aliases": [
+    "999,000"
+   ],
+   "source_url": "https://example.test/acme/acme-model-7-5",
+   "quote": "Context window 999K tokens",
+   "checked_at": "2026-01-15",
+   "verdict": "VERIFIED"
+  },
+  {
+   "id": "cap.streaming",
+   "category": "capability",
+   "endpoint": null,
+   "label": "Streaming",
+   "value": "supported",
+   "display": "Supported",
+   "source_url": "https://example.test/acme/acme-model-7-5",
+   "quote": "Streaming Supported",
+   "checked_at": "2026-01-15",
+   "verdict": "VERIFIED"
+  },
+  {
+   "id": "cap.vision",
+   "category": "capability",
+   "endpoint": null,
+   "label": "Vision",
+   "value": "unsupported",
+   "display": "Not supported",
+   "source_url": "https://example.test/acme/acme-model-7-5",
+   "quote": "Vision Not supported",
+   "checked_at": "2026-01-15",
+   "verdict": "UNCHECKED"
+  }
+ ],
+ "gaps": [
+  {
+   "id": "other-output",
+   "key": "acme.other-output",
+   "kind": "missing",
+   "owner": "client",
+   "summary": "Other Cloud's output price is not on the pricing page",
+   "client_url": "https://example.test/acme/acme-model-7-5",
+   "location": "pricing table",
+   "evidence": [],
+   "searched": [
+    "https://example.test/acme/acme-model-7-5"
+   ],
+   "request": "Add Other Cloud's output price to the pricing table.",
+   "priority": "high",
+   "status": "open"
+  },
+  {
+   "id": "perf-none",
+   "kind": "missing",
+   "owner": "external",
+   "summary": "No performance samples published",
+   "evidence": [],
+   "searched": [
+    "https://example.test/acme/acme-model-7-5"
+   ],
+   "priority": "low",
+   "status": "open"
+  }
+ ]
+}

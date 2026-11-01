@@ -1,0 +1,1524 @@
+{
+  "entity": "GPT Image 2",
+  "entity_type": "image",
+  "checked_date": "2026-10-29",
+  "names": [
+    "GPT Image 2",
+    "GPT-Image-2",
+    "gpt-image-2",
+    "gpt-image-2-2026-04-21",
+    "GPT Image 1.5",
+    "GPT-Image-1.5",
+    "gpt-image-1.5",
+    "Qwen Image 2.0",
+    "qwen-image-2.0",
+    "Gemini 3 Pro Image Preview",
+    "gemini-3-pro-image-preview",
+    "GPT Image 2.5",
+    "Google Gemini",
+    "Vertex AI"
+  ],
+  "endpoints": [
+    {
+      "id": "openai",
+      "provider": "OpenAI",
+      "served_version": "Not verified",
+      "status": "active"
+    },
+    {
+      "id": "azure",
+      "provider": "Azure",
+      "served_version": "Not verified",
+      "status": "active"
+    }
+  ],
+  "facts": [
+    {
+      "id": "price.openai.image_input",
+      "category": "price",
+      "endpoint": "openai",
+      "label": "Image input tokens",
+      "display": "$8",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"feeItemCode\":\"image_input\",\"feeItemName\":\"图像输入费用(image_input)\",\"selectedConstraint\":[\"chargeUnit\"],\"feeRecords\":[{\"feeRate\":8,",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens (chargeUnit millionTokens)"
+    },
+    {
+      "id": "price.openai.image_input_cache",
+      "category": "price",
+      "endpoint": "openai",
+      "label": "Cached image input tokens (cache read)",
+      "display": "$2",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"feeItemCode\":\"image_input_cache\",\"feeItemName\":\"图像缓存读取操作费用(image_input_cache)\",\"selectedConstraint\":[\"chargeUnit\"],\"feeRecords\":[{\"feeRate\":2,",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens (chargeUnit millionTokens)"
+    },
+    {
+      "id": "price.openai.image_output",
+      "category": "price",
+      "endpoint": "openai",
+      "label": "Image output tokens",
+      "display": "$30",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"feeItemCode\":\"image_output\",\"feeItemName\":\"图像输出费用(image_output)\",\"selectedConstraint\":[\"chargeUnit\"],\"feeRecords\":[{\"feeRate\":30,",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens (chargeUnit millionTokens)"
+    },
+    {
+      "id": "price.openai.prompt",
+      "category": "price",
+      "endpoint": "openai",
+      "label": "Text prompt tokens (fee item 'prompt')",
+      "display": "$5",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"feeItemCode\":\"prompt\",\"feeItemName\":\"输入提示词的处理费用(prompt)\",\"selectedConstraint\":[\"chargeUnit\"],\"feeRecords\":[{\"feeRate\":5,",
+      "checked_at": "2026-10-29",
+      "verdict": "NUANCED",
+      "condition": "per 1M tokens (chargeUnit millionTokens)",
+      "note": "Snapshot and live re-fetch (2026-10-29) of zenmux.ai/openai/gpt-image-2 agree: fee record feeRate 5, chargeUnit millionTokens, provider openai. Also matches the provider table (Input $8 / Output $30 / Read:2 per M tokens). Rate is right and per 1M tokens, but ZenMux's own fee item is only 'prompt' = 'Cost for processing input prompts' (pricing docs); it never says 'text'. The page label 'Text prompt' is an inference (consistent with OpenAI's guide: $5/M text input for GPT Image 2.5). Suggest wording the label as inferred, or tie it to OpenAI's rate."
+    },
+    {
+      "id": "price.openai.input_cache_read",
+      "category": "price",
+      "endpoint": "openai",
+      "label": "Cached text input tokens (fee item 'input_cache_read')",
+      "display": "$1.25",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"feeItemCode\":\"input_cache_read\",\"feeItemName\":\"缓存读取操作费用(input_cache_read)\",\"selectedConstraint\":[\"chargeUnit\"],\"feeRecords\":[{\"feeRate\":1.25,",
+      "checked_at": "2026-10-29",
+      "verdict": "NUANCED",
+      "condition": "per 1M tokens (chargeUnit millionTokens)",
+      "note": "Snapshot and live re-fetch (2026-10-29) of zenmux.ai/openai/gpt-image-2 agree: fee record feeRate 1.25, chargeUnit millionTokens, provider openai. Also matches the provider table (Input $8 / Output $30 / Read:2 per M tokens). Rate right, per 1M tokens. ZenMux docs define input_cache_read only as 'Cost for cache read operations'; page label 'Cached text input' is inferred from OpenAI's guide ($1.25/M cached text input for GPT Image 2.5), not stated by ZenMux."
+    },
+    {
+      "id": "price.azure.image_input",
+      "category": "price",
+      "endpoint": "azure",
+      "label": "Image input tokens",
+      "display": "$8",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"feeItemCode\":\"image_input\",\"feeItemName\":\"图像输入费用(image_input)\",\"selectedConstraint\":[\"chargeUnit\"],\"feeRecords\":[{\"feeRate\":8,",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens (chargeUnit millionTokens)"
+    },
+    {
+      "id": "price.azure.image_input_cache",
+      "category": "price",
+      "endpoint": "azure",
+      "label": "Cached image input tokens (cache read)",
+      "display": "$2",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"feeItemCode\":\"image_input_cache\",\"feeItemName\":\"图像缓存读取操作费用(image_input_cache)\",\"selectedConstraint\":[\"chargeUnit\"],\"feeRecords\":[{\"feeRate\":2,",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens (chargeUnit millionTokens)"
+    },
+    {
+      "id": "price.azure.image_output",
+      "category": "price",
+      "endpoint": "azure",
+      "label": "Image output tokens",
+      "display": "$30",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"feeItemCode\":\"image_output\",\"feeItemName\":\"图像输出费用(image_output)\",\"selectedConstraint\":[\"chargeUnit\"],\"feeRecords\":[{\"feeRate\":30,",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens (chargeUnit millionTokens)"
+    },
+    {
+      "id": "price.azure.prompt",
+      "category": "price",
+      "endpoint": "azure",
+      "label": "Text prompt tokens (fee item 'prompt')",
+      "display": "$5",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"feeItemCode\":\"prompt\",\"feeItemName\":\"输入提示词的处理费用(prompt)\",\"selectedConstraint\":[\"chargeUnit\"],\"feeRecords\":[{\"feeRate\":5,",
+      "checked_at": "2026-10-29",
+      "verdict": "NUANCED",
+      "condition": "per 1M tokens (chargeUnit millionTokens)",
+      "note": "Snapshot and live re-fetch (2026-10-29) of zenmux.ai/openai/gpt-image-2 agree: fee record feeRate 5, chargeUnit millionTokens, provider azure. Also matches the provider table (Input $8 / Output $30 / Read:2 per M tokens). Rate is right and per 1M tokens, but ZenMux's own fee item is only 'prompt' = 'Cost for processing input prompts' (pricing docs); it never says 'text'. The page label 'Text prompt' is an inference (consistent with OpenAI's guide: $5/M text input for GPT Image 2.5). Suggest wording the label as inferred, or tie it to OpenAI's rate."
+    },
+    {
+      "id": "price.azure.input_cache_read",
+      "category": "price",
+      "endpoint": "azure",
+      "label": "Cached text input tokens (fee item 'input_cache_read')",
+      "display": "$1.25",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"feeItemCode\":\"input_cache_read\",\"feeItemName\":\"缓存读取操作费用(input_cache_read)\",\"selectedConstraint\":[\"chargeUnit\"],\"feeRecords\":[{\"feeRate\":1.25,",
+      "checked_at": "2026-10-29",
+      "verdict": "NUANCED",
+      "condition": "per 1M tokens (chargeUnit millionTokens)",
+      "note": "Snapshot and live re-fetch (2026-10-29) of zenmux.ai/openai/gpt-image-2 agree: fee record feeRate 1.25, chargeUnit millionTokens, provider azure. Also matches the provider table (Input $8 / Output $30 / Read:2 per M tokens). Rate right, per 1M tokens. ZenMux docs define input_cache_read only as 'Cost for cache read operations'; page label 'Cached text input' is inferred from OpenAI's guide ($1.25/M cached text input for GPT Image 2.5), not stated by ZenMux."
+    },
+    {
+      "id": "price.table.openai",
+      "category": "price",
+      "endpoint": "openai",
+      "label": "Provider table row (Input / Output / Cache read)",
+      "display": "$8",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "-$8/ M tokens$30/ M tokensRead:2/ M tokensWrite:-/ M tokens10K--",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "aliases": [
+        "$30",
+        "$2"
+      ],
+      "condition": "per 1M tokens; Cache write shown as '-'"
+    },
+    {
+      "id": "price.table.azure",
+      "category": "price",
+      "endpoint": "azure",
+      "label": "Provider table row (Input / Output / Cache read)",
+      "display": "$8",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "-$8/ M tokens$30/ M tokensRead:2/ M tokensWrite:-/ M tokens10K99.5s72.9tps",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "aliases": [
+        "$30",
+        "$2"
+      ],
+      "condition": "per 1M tokens; Cache write shown as '-'"
+    },
+    {
+      "id": "spec.context.openai",
+      "category": "spec",
+      "endpoint": "openai",
+      "label": "Context (ZenMux provider table)",
+      "display": "10K",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "-$8/ M tokens$30/ M tokensRead:2/ M tokensWrite:-/ M tokens10K--",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "aliases": [
+        "10,000"
+      ],
+      "condition": "tokens; ZenMux provider table"
+    },
+    {
+      "id": "spec.context.azure",
+      "category": "spec",
+      "endpoint": "azure",
+      "label": "Context (ZenMux provider table)",
+      "display": "10K",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "-$8/ M tokens$30/ M tokensRead:2/ M tokensWrite:-/ M tokens10K99.5s72.9tps",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "aliases": [
+        "10,000"
+      ],
+      "condition": "tokens; ZenMux provider table"
+    },
+    {
+      "id": "spec.maxout.azure",
+      "category": "spec",
+      "endpoint": "azure",
+      "label": "Max output (ZenMux data)",
+      "display": "10,000",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"supports_streaming\":true,\"context_length\":10000,\"max_completion_tokens\":10000",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "aliases": [
+        "10000"
+      ],
+      "condition": "max_completion_tokens"
+    },
+    {
+      "id": "spec.maxout.openai",
+      "category": "spec",
+      "endpoint": "openai",
+      "label": "Max output (ZenMux data)",
+      "display": "Not published",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"supports_streaming\":true,\"context_length\":10000,\"max_completion_tokens\":0",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "ZenMux data carries 0, shown as Not published"
+    },
+    {
+      "id": "spec.in",
+      "category": "spec",
+      "endpoint": null,
+      "label": "Input modalities",
+      "display": "text, image",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"input_modalities\":\"text,image\"",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "spec.out",
+      "category": "spec",
+      "endpoint": null,
+      "label": "Output modalities",
+      "display": "image",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"output_modalities\":\"image\"",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "date.publish",
+      "category": "date",
+      "endpoint": null,
+      "label": "Publish time (ZenMux)",
+      "display": "2026-04-22",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "Publish time:2026-04-22",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "desc.zenmux",
+      "category": "spec",
+      "endpoint": null,
+      "label": "ZenMux description",
+      "display": "OpenAI's next-generation image generation model",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "GPT Image 2 — OpenAI's next-generation image generation model.",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "desc.openai",
+      "category": "spec",
+      "endpoint": null,
+      "label": "OpenAI description",
+      "display": "state-of-the-art image generation model",
+      "source_url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+      "quote": "GPT Image 2 is our state-of-the-art image generation model for fast, high-quality image generation and editing.",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "version.alias.zenmux",
+      "category": "version",
+      "endpoint": null,
+      "label": "Aliases listed by ZenMux",
+      "display": "gpt-image-2-2026-04-21",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"aliases\":[\"gpt-image-2\",\"gpt-image-2-2026-04-21\"]",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "version.snapshot.openai",
+      "category": "version",
+      "endpoint": null,
+      "label": "Snapshot listed by OpenAI",
+      "display": "gpt-image-2-2026-04-21",
+      "source_url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+      "quote": "Below is a list of all available snapshots and aliases for GPT-Image-2. gpt-image-2 gpt-image-2-2026-04-21",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "size.zenmux.1024",
+      "category": "limit",
+      "endpoint": null,
+      "label": "ZenMux size examples (OpenAI Images protocol)",
+      "display": "1024x1024",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "quote": "Image size, such as 1024x1024, 1536x1024, 1024x1536, or other sizes supported by the model",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "size.zenmux.1536x1024",
+      "category": "limit",
+      "endpoint": null,
+      "label": "ZenMux size example",
+      "display": "1536x1024",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "quote": "Image size, such as 1024x1024, 1536x1024, 1024x1536, or other sizes supported by the model",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "size.zenmux.1024x1536",
+      "category": "limit",
+      "endpoint": null,
+      "label": "ZenMux size example",
+      "display": "1024x1536",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "quote": "Image size, such as 1024x1024, 1536x1024, 1024x1536, or other sizes supported by the model",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "size.zenmux.passthrough",
+      "category": "limit",
+      "endpoint": null,
+      "label": "ZenMux size handling (Gemini protocol doc)",
+      "display": "passthrough",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/image-generation.html",
+      "quote": "imageSize and quality are passthrough parameters — ZenMux forwards them as-is to the underlying OpenAI-compatible image generation API without validation or transformation.",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "size.openai.maxedge",
+      "category": "limit",
+      "endpoint": null,
+      "label": "OpenAI gpt-image-2 max edge",
+      "display": "3840 px",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Maximum edge length must be less than or equal to 3840px",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "aliases": [
+        "3840px",
+        "3840"
+      ]
+    },
+    {
+      "id": "size.openai.multiple",
+      "category": "limit",
+      "endpoint": null,
+      "label": "OpenAI gpt-image-2 edge multiple",
+      "display": "16 px",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Both edges must be multiples of 16px",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "aliases": [
+        "16px",
+        "16"
+      ]
+    },
+    {
+      "id": "size.openai.ratio",
+      "category": "limit",
+      "endpoint": null,
+      "label": "OpenAI gpt-image-2 aspect ratio",
+      "display": "3:1",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Long edge to short edge ratio must not exceed 3:1",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "size.openai.minpx",
+      "category": "limit",
+      "endpoint": null,
+      "label": "OpenAI gpt-image-2 minimum pixels",
+      "display": "655,360",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Total pixels must be at least 655,360 and no more than 8,294,400",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "size.openai.maxpx",
+      "category": "limit",
+      "endpoint": null,
+      "label": "OpenAI gpt-image-2 maximum pixels",
+      "display": "8,294,400",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Total pixels must be at least 655,360 and no more than 8,294,400",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "size.openai.2k",
+      "category": "limit",
+      "endpoint": null,
+      "label": "OpenAI popular size (2K square)",
+      "display": "2048x2048",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "2048x2048 (2K square)",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "aliases": [
+        "2K"
+      ]
+    },
+    {
+      "id": "size.openai.4k",
+      "category": "limit",
+      "endpoint": null,
+      "label": "OpenAI popular size (4K landscape)",
+      "display": "3840x2160",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "3840x2160 (4K landscape)",
+      "checked_at": "2026-10-29",
+      "verdict": "NUANCED",
+      "aliases": [
+        "4K"
+      ],
+      "note": "Listed as popular size in OpenAI Earlier section. ZenMux's Gemini guide adds 'Sizes above 2560x1440 are experimental and may produce inconsistent results' and 'larger sizes are more expensive'; page omits that caveat."
+    },
+    {
+      "id": "size.openai.auto",
+      "category": "limit",
+      "endpoint": null,
+      "label": "OpenAI size default",
+      "display": "auto",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "auto (default)",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "quality.zenmux",
+      "category": "limit",
+      "endpoint": null,
+      "label": "ZenMux quality values",
+      "display": "low, medium, high, auto",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "quote": "Output quality, such as low, medium, high, auto",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "quality.openai",
+      "category": "limit",
+      "endpoint": null,
+      "label": "OpenAI gpt-image-2 quality options",
+      "display": "low, medium, high",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Quality options low medium high auto (default)",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "format.zenmux",
+      "category": "limit",
+      "endpoint": null,
+      "label": "Output formats",
+      "display": "png, jpeg, webp",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "quote": "Output format, such as png, jpeg, webp",
+      "checked_at": "2026-10-29",
+      "verdict": "NUANCED",
+      "note": "ZenMux says 'such as png, jpeg, webp' (illustrative); page says 'Output formats are png, jpeg and webp' as if exhaustive."
+    },
+    {
+      "id": "compression.zenmux",
+      "category": "limit",
+      "endpoint": null,
+      "label": "Compression range (jpeg/webp)",
+      "display": "0 to 100",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "quote": "JPEG / WebP compression quality, from 0 to 100",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "aliases": [
+        "0",
+        "100"
+      ]
+    },
+    {
+      "id": "n.gemini",
+      "category": "limit",
+      "endpoint": null,
+      "label": "Images per request, Google Gemini (Vertex) protocol",
+      "display": "1-10",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/image-generation.html",
+      "quote": "Number of images to generate (1-10)",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "aliases": [
+        "1",
+        "10"
+      ],
+      "condition": "Google Gemini protocol generate_images; the OpenAI Images guide gives no maximum for n"
+    },
+    {
+      "id": "edit.size",
+      "category": "limit",
+      "endpoint": null,
+      "label": "OpenAI edit input size limit",
+      "display": "50MB",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "The image to edit and mask must be of the same format and size (less than 50MB in size).",
+      "checked_at": "2026-10-29",
+      "verdict": "NUANCED",
+      "aliases": [
+        "50"
+      ],
+      "condition": "image to edit and mask; OpenAI guide",
+      "note": "The 50MB text sits in the OpenAI guide Mask requirements section, which is part of the 2.5-oriented body (the Earlier-models section starts later) and is not tied to gpt-image-2. It also says \"same format and size (less than 50MB in size)\". Whether ZenMux enforces the same cap is not documented."
+    },
+    {
+      "id": "latency.openai.guide",
+      "category": "limit",
+      "endpoint": null,
+      "label": "OpenAI note on complex-prompt latency",
+      "display": "2 minutes",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Latency: Complex prompts may take up to 2 minutes to process.",
+      "checked_at": "2026-10-29",
+      "verdict": "NUANCED",
+      "aliases": [
+        "2"
+      ],
+      "condition": "OpenAI guide, GPT Image models generally; not a ZenMux measurement",
+      "note": "'Complex prompts may take up to 2 minutes' is in the 2.5-era Limitations list; not scoped to gpt-image-2. Page states it under gpt-image-2 completion time."
+    },
+    {
+      "id": "partial.zero",
+      "category": "limit",
+      "endpoint": null,
+      "label": "partial_images value for final image only",
+      "display": "0",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "quote": "partial_images: 0: return only the final image.",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "partial.range",
+      "category": "limit",
+      "endpoint": null,
+      "label": "partial_images values for partial images",
+      "display": "1 to 3",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "quote": "partial_images: 1 to 3: return partial generated images",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "aliases": [
+        "1",
+        "3"
+      ]
+    },
+    {
+      "id": "cap.image_in",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Image input",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"input_modalities\":\"text,image\"",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.image_out",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Image output",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"output_modalities\":\"image\"",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.images_protocol.openai",
+      "category": "capability",
+      "endpoint": "openai",
+      "label": "OpenAI Images protocol (generations)",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"pricing_variable\":\"$2f\",\"suitable_api\":\"images,imagen\",\"api_protocols\":{\"images\":{\"supported_parameters\":[\"prompt\",\"background\",\"n\",\"moderation\",\"output_compression\",\"output_format\",\"partial_images\",\"quality\",\"response_format\",\"size\",\"stream\"]",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.stream.openai",
+      "category": "capability",
+      "endpoint": "openai",
+      "label": "Streaming (stream, partial_images) on the Images protocol",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"pricing_variable\":\"$2f\",\"suitable_api\":\"images,imagen\",\"api_protocols\":{\"images\":{\"supported_parameters\":[\"prompt\",\"background\",\"n\",\"moderation\",\"output_compression\",\"output_format\",\"partial_images\",\"quality\",\"response_format\",\"size\",\"stream\"]",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.images_protocol.azure",
+      "category": "capability",
+      "endpoint": "azure",
+      "label": "OpenAI Images protocol (generations)",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"pricing_variable\":\"$30\",\"suitable_api\":\"images,imagen\",\"api_protocols\":{\"images\":{\"supported_parameters\":[\"prompt\",\"background\",\"n\",\"moderation\",\"output_compression\",\"output_format\",\"partial_images\",\"quality\",\"response_format\",\"size\",\"stream\"]",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.stream.azure",
+      "category": "capability",
+      "endpoint": "azure",
+      "label": "Streaming (stream, partial_images) on the Images protocol",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"pricing_variable\":\"$30\",\"suitable_api\":\"images,imagen\",\"api_protocols\":{\"images\":{\"supported_parameters\":[\"prompt\",\"background\",\"n\",\"moderation\",\"output_compression\",\"output_format\",\"partial_images\",\"quality\",\"response_format\",\"size\",\"stream\"]",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.edit",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Reference-image generation and edits (images.edit), OpenAI Images protocol",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "quote": "Use images.edit to generate new images from one or more reference images, or combine it with a mask for local edits.",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.mask",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Mask edits (OpenAI Images protocol)",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "quote": "Editing local regions of an image with a mask.",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.gemini",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Google Gemini (Vertex) protocol, generate_images",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/image-generation.html",
+      "quote": "For non-Google models such as openai/gpt-image-1.5, openai/gpt-image-2, and qwen/qwen-image-2.0, use the generate_images and edit_image APIs.",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.ref.gemini.openai",
+      "category": "capability",
+      "endpoint": "openai",
+      "label": "Reference images on Gemini protocol (referenceImages)",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"imagen\":{\"supported_parameters\":[\"imageSize\",\"outputCompressionQuality\",\"outputMimeType\",\"referenceImages\",\"quality\"]",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.ref.gemini.azure",
+      "category": "capability",
+      "endpoint": "azure",
+      "label": "Reference images on Gemini protocol (referenceImages)",
+      "display": "Not verified",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"imagen\":{\"supported_parameters\":[\"sampleCount\",\"outputOptions\"]",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.ref.gemini",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Reference images on Gemini protocol",
+      "display": "Varies by provider",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"imagen\":{\"supported_parameters\":[\"imageSize\",\"outputCompressionQuality\",\"outputMimeType\",\"referenceImages\",\"quality\"]",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.background",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Transparent background (background parameter)",
+      "display": "Not verified",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "quote": "Background setting, such as transparent, opaque, auto; exact support depends on the model",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.reasoning",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Reasoning",
+      "display": "Not supported",
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "\"images\":{\"supported_parameters\":[\"prompt\",\"background\",\"n\",\"moderation\",\"output_compression\",\"output_format\",\"partial_images\",\"quality\",\"response_format\",\"size\",\"stream\"],\"supports_reasoning\":0}",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.functions",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Function calling (OpenAI model page)",
+      "display": "Not supported",
+      "source_url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+      "quote": "Function calling Not supported",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.structured",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Structured outputs (OpenAI model page)",
+      "display": "Not supported",
+      "source_url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+      "quote": "Structured outputs Not supported",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.stream.openai_page",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Streaming (OpenAI model page feature list)",
+      "display": "Not supported",
+      "source_url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+      "quote": "Streaming Not supported",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.background.gemini",
+      "category": "capability",
+      "endpoint": null,
+      "label": "background parameter on Gemini protocol (ZenMux mapping table)",
+      "display": "Not supported",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/image-generation.html",
+      "quote": "background—stringBackground transparency setting❌",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "limit.text",
+      "category": "limit",
+      "endpoint": null,
+      "label": "OpenAI note: text rendering",
+      "display": "text placement",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Text Rendering: Although significantly improved, the model can still struggle with precise text placement and clarity.",
+      "checked_at": "2026-10-29",
+      "verdict": "NUANCED",
+      "note": "Quote sits in OpenAI guide 'Limitations' under the GPT Image 2.5 (Sunburst/Flare) section, not the 'Earlier GPT Image models' section that covers gpt-image-2. It says 'the model' generically; applying it to gpt-image-2 is inference."
+    },
+    {
+      "id": "limit.layout",
+      "category": "limit",
+      "endpoint": null,
+      "label": "OpenAI note: composition control",
+      "display": "composition control",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Composition Control: Despite improved instruction following, the model may have difficulty placing elements precisely in structured or layout-sensitive compositions.",
+      "checked_at": "2026-10-29",
+      "verdict": "NUANCED",
+      "note": "Same as limit.text: Limitations list is in the 2.5 section, not scoped to gpt-image-2."
+    },
+    {
+      "id": "guide.earlier",
+      "category": "limit",
+      "endpoint": null,
+      "label": "Where OpenAI documents gpt-image-2 sizes",
+      "display": "Earlier GPT Image models",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "The details below apply to earlier models, not Sunburst or Flare.",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "guide.currentmodels",
+      "category": "limit",
+      "endpoint": null,
+      "label": "Models OpenAI's guide is written around",
+      "display": "GPT Image 2.5",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Both GPT Image 2.5 models use the same token rates",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "use.basket",
+      "category": "usecase",
+      "endpoint": null,
+      "label": "ZenMux example: several reference images to one image",
+      "display": "gift basket",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "quote": "Create a lovely gift basket with these four items in it",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "use.mask",
+      "category": "usecase",
+      "endpoint": null,
+      "label": "ZenMux example: mask edit",
+      "display": "mask edit",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "quote": "A sunlit indoor lounge area with a pool containing a flamingo",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "use.stream",
+      "category": "usecase",
+      "endpoint": null,
+      "label": "ZenMux: streaming for a more real-time experience",
+      "display": "partial images",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "quote": "Receiving partial images through streaming events for a more real-time generation experience.",
+      "checked_at": "2026-10-29",
+      "verdict": "NUANCED",
+      "note": "ZenMux guide supports it, but OpenAI's model page lists Streaming as Not supported; the 'Good fits' bullet is unqualified (conflict is noted only in the capability table)."
+    },
+    {
+      "id": "route.default",
+      "category": "routing",
+      "endpoint": null,
+      "label": "Default routing",
+      "display": "Performance first",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/provider-routing.html",
+      "quote": "Performance first: Sort by first token latency from low to high",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "route.suffix",
+      "category": "routing",
+      "endpoint": null,
+      "label": "Provider suffix syntax",
+      "display": "model_slug:provider_slug",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/provider-routing.html",
+      "quote": "model_slug:provider_slug",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "alt.15.input",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "GPT Image 1.5 image input (ZenMux)",
+      "display": "$8",
+      "source_url": "https://zenmux.ai/openai/gpt-image-1.5",
+      "quote": "-$8/ M tokens$32/ M tokensRead:2/ M tokens",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "aliases": [
+        "$2"
+      ],
+      "condition": "per 1M tokens; both providers"
+    },
+    {
+      "id": "alt.15.output",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "GPT Image 1.5 image output (ZenMux)",
+      "display": "$32",
+      "source_url": "https://zenmux.ai/openai/gpt-image-1.5",
+      "quote": "-$8/ M tokens$32/ M tokensRead:2/ M tokens",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; both providers"
+    },
+    {
+      "id": "alt.15.ctx",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "GPT Image 1.5 context (ZenMux)",
+      "display": "10K",
+      "source_url": "https://zenmux.ai/openai/gpt-image-1.5",
+      "quote": "Write:-/ M tokens10K--",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "est.2.1024.low",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "OpenAI guide per-image estimate, GPT Image 2, 1024x1024, low",
+      "display": "$0.006",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Additional sizes availableLow$0.006$0.005$0.005",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "OpenAI's published estimate at OpenAI's own token rates; text and image input tokens not included; not a ZenMux price"
+    },
+    {
+      "id": "est.2.1024.medium",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "OpenAI guide per-image estimate, GPT Image 2, 1024x1024, medium",
+      "display": "$0.053",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Medium$0.053$0.041$0.041",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "OpenAI's published estimate at OpenAI's own token rates; text and image input tokens not included; not a ZenMux price"
+    },
+    {
+      "id": "est.2.1024.high",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "OpenAI guide per-image estimate, GPT Image 2, 1024x1024, high",
+      "display": "$0.211",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "High$0.211$0.165$0.165",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "OpenAI's published estimate at OpenAI's own token rates; text and image input tokens not included; not a ZenMux price"
+    },
+    {
+      "id": "est.2.1536.low",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "OpenAI guide per-image estimate, GPT Image 2, 1536x1024, low",
+      "display": "$0.005",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Additional sizes availableLow$0.006$0.005$0.005",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "OpenAI's published estimate at OpenAI's own token rates; text and image input tokens not included; not a ZenMux price"
+    },
+    {
+      "id": "est.2.1536.medium",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "OpenAI guide per-image estimate, GPT Image 2, 1536x1024, medium",
+      "display": "$0.041",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Medium$0.053$0.041$0.041",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "OpenAI's published estimate at OpenAI's own token rates; text and image input tokens not included; not a ZenMux price"
+    },
+    {
+      "id": "est.2.1536.high",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "OpenAI guide per-image estimate, GPT Image 2, 1536x1024, high",
+      "display": "$0.165",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "High$0.211$0.165$0.165",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "OpenAI's published estimate at OpenAI's own token rates; text and image input tokens not included; not a ZenMux price"
+    },
+    {
+      "id": "est.1.5.1024.low",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "OpenAI guide per-image estimate, GPT Image 1.5, 1024x1024, low",
+      "display": "$0.009",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Low$0.009$0.013$0.013",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "OpenAI's published estimate at OpenAI's own token rates; text and image input tokens not included; not a ZenMux price"
+    },
+    {
+      "id": "est.1.5.1024.medium",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "OpenAI guide per-image estimate, GPT Image 1.5, 1024x1024, medium",
+      "display": "$0.034",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Medium$0.034$0.05$0.05",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "OpenAI's published estimate at OpenAI's own token rates; text and image input tokens not included; not a ZenMux price"
+    },
+    {
+      "id": "est.1.5.1024.high",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "OpenAI guide per-image estimate, GPT Image 1.5, 1024x1024, high",
+      "display": "$0.133",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "High$0.133$0.2$0.2",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "OpenAI's published estimate at OpenAI's own token rates; text and image input tokens not included; not a ZenMux price"
+    },
+    {
+      "id": "est.1.5.1536.low",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "OpenAI guide per-image estimate, GPT Image 1.5, 1536x1024, low",
+      "display": "$0.013",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Low$0.009$0.013$0.013",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "OpenAI's published estimate at OpenAI's own token rates; text and image input tokens not included; not a ZenMux price"
+    },
+    {
+      "id": "est.1.5.1536.medium",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "OpenAI guide per-image estimate, GPT Image 1.5, 1536x1024, medium",
+      "display": "$0.05",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "Medium$0.034$0.05$0.05",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "OpenAI's published estimate at OpenAI's own token rates; text and image input tokens not included; not a ZenMux price"
+    },
+    {
+      "id": "est.1.5.1536.high",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "OpenAI guide per-image estimate, GPT Image 1.5, 1536x1024, high",
+      "display": "$0.2",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "High$0.133$0.2$0.2",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "condition": "OpenAI's published estimate at OpenAI's own token rates; text and image input tokens not included; not a ZenMux price"
+    },
+    {
+      "id": "perf.azure.latency",
+      "category": "performance",
+      "endpoint": "azure",
+      "label": "Azure 'Latency' cell in ZenMux's provider table (metric not stated: first-token or whole-response time)",
+      "display": "99.5 s",
+      "aliases": [
+        "99.5s"
+      ],
+      "source_url": "https://zenmux.ai/openai/gpt-image-2",
+      "quote": "-$8/ M tokens$30/ M tokensRead:2/ M tokensWrite:-/ M tokens10K99.5s72.9tps",
+      "condition": "most recent of 24 hourly points in ZenMux's page data (99528 ms at 2026102908); OpenAI provider has no data",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "note": "Added after fact-check (specs checker raised the 99.5s cell). Value is the visible table cell and the last non-null hourly point (99528 ms) in ZenMux's page data; ZenMux doesn't state which latency metric it is, and the page says so."
+    },
+    {
+      "id": "size.zenmux.experimental",
+      "category": "spec",
+      "endpoint": null,
+      "label": "ZenMux: sizes above 2560x1440 are experimental; larger sizes cost more",
+      "display": "2560x1440",
+      "aliases": [
+        "2560",
+        "1440"
+      ],
+      "source_url": "https://zenmux.ai/docs/guide/advanced/image-generation.html",
+      "quote": "Different sizes affect generation time and token cost — larger sizes are more expensive. Sizes above 2560x1440 are experimental and may produce inconsistent results.",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "note": "Added after fact-check (claims checker); quote verbatim in ZenMux's Gemini-protocol guide snapshot."
+    },
+    {
+      "id": "size.zenmux.custom_only",
+      "category": "spec",
+      "endpoint": null,
+      "label": "ZenMux: custom sizes only for openai/gpt-image-2",
+      "display": "custom sizes only for openai/gpt-image-2",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/image-generation.html",
+      "quote": "Custom sizes (only openai/gpt-image-2): any custom size is supported, subject to the following constraints:",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "note": "Added after fact-check (claims checker); quote verbatim in ZenMux's Gemini-protocol guide snapshot."
+    },
+    {
+      "id": "price.openai.cache_scope",
+      "category": "price",
+      "endpoint": null,
+      "label": "OpenAI: cached input pricing does not apply to direct Images API requests",
+      "display": "cached input pricing: Responses API image tool only",
+      "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "quote": "For GPT Image 2 and GPT Image 2.5, cached input pricing applies only to the image generation tool in the Responses API. It doesn’t apply to direct Images API requests, including /v1/images/edits.",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "note": "Added after fact-check (claims checker); quote verbatim in OpenAI's image generation guide snapshot."
+    }
+  ],
+  "gaps": [
+    {
+      "id": "revision",
+      "key": "zenmux.revision.gpt-image-2",
+      "kind": "missing",
+      "owner": "client",
+      "summary": "ZenMux does not say which GPT Image 2 revision each provider (OpenAI, Azure) serves.",
+      "client_url": "https://zenmux.ai/openai/gpt-image-2",
+      "location": "Providers table on the model page",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/openai/gpt-image-2",
+          "quote": "\"aliases\":[\"gpt-image-2\",\"gpt-image-2-2026-04-21\"]"
+        },
+        {
+          "source_url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+          "quote": "gpt-image-2-2026-04-21"
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/docs/about/models-and-providers.html",
+        "https://zenmux.ai/docs/guide/quickstart.html"
+      ],
+      "request": "In the Providers table, add a \"Served version\" column (for example gpt-image-2-2026-04-21) for each provider row, and say whether ZenMux pins a snapshot or follows the alias.",
+      "question": "Which GPT Image 2 revision does each provider (OpenAI, Azure) serve, and can it differ between requests?",
+      "priority": "medium",
+      "status": "open"
+    },
+    {
+      "id": "model-id",
+      "key": "zenmux.model-id.gpt-image-2",
+      "kind": "contradiction",
+      "owner": "client",
+      "summary": "The model page shows the ID openai/gpt-image-2 but ZenMux's Images guide examples use the alias gpt-image-2.",
+      "client_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "location": "Generation and edit code examples, \"model\" field",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/openai/gpt-image-2",
+          "quote": "openai/gpt-image-2"
+        },
+        {
+          "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+          "quote": "model: \"gpt-image-2\","
+        }
+      ],
+      "request": "Use one model ID consistently in the Images guide examples and on the model page, and state whether the alias gpt-image-2 and the full ID openai/gpt-image-2 are both accepted on /images/generations and /images/edits.",
+      "question": "Do both openai/gpt-image-2 and gpt-image-2 work on /images/generations, and which should be shown as the canonical ID?",
+      "priority": "high",
+      "status": "open"
+    },
+    {
+      "id": "streaming",
+      "key": "zenmux.streaming.gpt-image-2",
+      "kind": "upstream_conflict",
+      "owner": "client",
+      "summary": "ZenMux lists streaming for GPT Image 2 but OpenAI's model page says streaming is not supported.",
+      "client_url": "https://zenmux.ai/openai/gpt-image-2",
+      "location": "Providers table / supported parameters (stream, partial_images) and the Images guide \"Streaming Generation\" section",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+          "quote": "The OpenAI Images protocol supports returning SSE events with stream: true."
+        },
+        {
+          "source_url": "https://zenmux.ai/openai/gpt-image-2",
+          "quote": "\"supports_streaming\":true"
+        },
+        {
+          "source_url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+          "quote": "Streaming Not supported"
+        }
+      ],
+      "request": "Test streaming and partial_images on openai/gpt-image-2 through ZenMux. If it works, add a note that this differs from OpenAI's model page; if not, remove stream and partial_images from this model's supported parameters and the Images guide.",
+      "question": "Does stream: true with partial_images work for openai/gpt-image-2 on both providers through ZenMux?",
+      "priority": "medium",
+      "status": "open"
+    },
+    {
+      "id": "cache-read-images-api",
+      "key": "zenmux.cache-read-images-api.gpt-image-2",
+      "kind": "upstream_conflict",
+      "owner": "client",
+      "summary": "ZenMux lists cached-input rates for GPT Image 2 but OpenAI says cached pricing applies only to the Responses API image tool, not direct Images API calls.",
+      "client_url": "https://zenmux.ai/openai/gpt-image-2",
+      "location": "Providers table \"Cache read\" column and fee items image_input_cache / input_cache_read",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/openai/gpt-image-2",
+          "quote": "Read:2/ M tokens"
+        },
+        {
+          "source_url": "https://developers.openai.com/api/docs/guides/image-generation",
+          "quote": "For GPT Image 2 and GPT Image 2.5, cached input pricing applies only to the image generation tool in the Responses API. It doesn’t apply to direct Images API requests, including /v1/images/edits."
+        }
+      ],
+      "request": "State on the model page which endpoints the cache-read rates apply to, and hide the cache-read rate for /images/generations and /images/edits if it does not apply there.",
+      "question": "Do your cache-read rates (image_input_cache, input_cache_read) apply to Images API calls?",
+      "priority": "medium",
+      "status": "open"
+    },
+    {
+      "id": "cache-write",
+      "key": "zenmux.cache-write-price",
+      "kind": "missing",
+      "owner": "client",
+      "summary": "ZenMux shows no cache write price for GPT Image 2 on either provider.",
+      "client_url": "https://zenmux.ai/openai/gpt-image-2",
+      "location": "Providers table \"Cache read\" cell, Write value",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/openai/gpt-image-2",
+          "quote": "Write:-/ M tokens"
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/docs/about/pricing-and-cost.html"
+      ],
+      "request": "Replace the \"-\" Write value with a price, or with a plain statement such as \"No cache write fee\", for each provider.",
+      "priority": "low",
+      "status": "open"
+    },
+    {
+      "id": "azure-latency",
+      "key": "zenmux.azure-latency-metric",
+      "kind": "suspected_error",
+      "owner": "client",
+      "summary": "The Azure row shows \"Latency 99.5s\" for an image model with no statement of what it measures.",
+      "client_url": "https://zenmux.ai/openai/gpt-image-2",
+      "location": "Providers table, Latency column (Azure row)",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/openai/gpt-image-2",
+          "quote": "10K99.5s72.9tps"
+        },
+        {
+          "source_url": "https://zenmux.ai/openai/gpt-image-2",
+          "quote": "P50 time to first token (TTFT) on live AI Gateway traffic, in milliseconds."
+        }
+      ],
+      "request": "Add a label or tooltip to the Latency column saying what it measures (first token or full response) and its time window, and confirm the 99.5s value for an image model is correct.",
+      "question": "What does the Latency cell measure, and is 99.5s for Azure correct?",
+      "priority": "medium",
+      "status": "open"
+    },
+    {
+      "id": "perf-charts-not-in-html",
+      "key": "zenmux.perf-uptime-not-in-html",
+      "kind": "not_in_html",
+      "owner": "client",
+      "summary": "Uptime, throughput and latency for this model are only drawn by JavaScript, so no values appear in the page source.",
+      "client_url": "https://zenmux.ai/openai/gpt-image-2",
+      "location": "Uptime, Throughput and Latency chart sections",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/openai/gpt-image-2",
+          "quote": "Direct request success rate on AI Gateway and per-provider."
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/docs/about/models-and-providers.html"
+      ],
+      "request": "Render a text summary (for example latest uptime % and P50 values per provider) in the server-delivered HTML next to each chart.",
+      "priority": "low",
+      "status": "open"
+    },
+    {
+      "id": "benchmarks-no-scores",
+      "key": "zenmux.benchmarks-no-scores",
+      "kind": "not_in_html",
+      "owner": "client",
+      "summary": "The Benchmarks section shows no scores in the page source, so no version-matched benchmark can be cited.",
+      "client_url": "https://zenmux.ai/openai/gpt-image-2",
+      "location": "Benchmarks section (Artificial Analysis charts)",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/openai/gpt-image-2",
+          "quote": "Metrics sourced fromArtificial Analysis"
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/docs/about/models-and-providers.html"
+      ],
+      "request": "Output the benchmark scores (with the model version they belong to) as text in the page HTML, or state that none exist for GPT Image 2.",
+      "question": "Is there a benchmark source matched to the revision you serve?",
+      "priority": "low",
+      "status": "open"
+    },
+    {
+      "id": "max-n",
+      "key": "zenmux.image-limits.gpt-image-2",
+      "kind": "missing",
+      "owner": "client",
+      "summary": "The OpenAI Images guide lists the n parameter but not its maximum for GPT Image 2.",
+      "client_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "location": "Output parameters table",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/docs/guide/advanced/image-generation.html",
+          "quote": "Number of images to generate (1-10)"
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+        "https://zenmux.ai/docs/about/models-and-providers.html"
+      ],
+      "request": "State the maximum n per request on /images/generations for openai/gpt-image-2, and say whether it matches the 1-10 range given for the Gemini protocol.",
+      "question": "What is the maximum n per request on the Images protocol?",
+      "priority": "low",
+      "status": "open"
+    },
+    {
+      "id": "max-reference-images",
+      "key": "zenmux.image-limits.gpt-image-2",
+      "kind": "missing",
+      "owner": "client",
+      "summary": "ZenMux does not state how many reference images an edit request can take.",
+      "client_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "location": "Reference-image edit section",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+          "quote": "Use images.edit to generate new images from one or more reference images, or combine it with a mask for local edits."
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/openai/gpt-image-2",
+        "https://zenmux.ai/docs/guide/advanced/image-generation.html",
+        "https://zenmux.ai/docs/about/models-and-providers.html"
+      ],
+      "request": "State the maximum number of reference images (and the maximum file size) for /images/edits with openai/gpt-image-2.",
+      "question": "What is the maximum number of reference images per edit request?",
+      "priority": "low",
+      "status": "open"
+    },
+    {
+      "id": "transparent-background",
+      "key": "zenmux.image-limits.gpt-image-2",
+      "kind": "missing",
+      "owner": "client",
+      "summary": "ZenMux says transparent-background support depends on the model but does not say whether GPT Image 2 supports it.",
+      "client_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+      "location": "Output parameters table, background row",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+          "quote": "backgroundBackground setting, such as transparent, opaque, auto; exact support depends on the model"
+        },
+        {
+          "source_url": "https://zenmux.ai/docs/guide/advanced/image-generation.html",
+          "quote": "background—stringBackground transparency setting❌"
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/openai/gpt-image-2",
+        "https://zenmux.ai/docs/about/models-and-providers.html"
+      ],
+      "request": "State whether background: \"transparent\" works for openai/gpt-image-2 on the Images protocol (and that it is unsupported on the Gemini protocol).",
+      "question": "Is a transparent background supported for GPT Image 2?",
+      "priority": "low",
+      "status": "open"
+    },
+    {
+      "id": "provider-pin-image",
+      "key": "zenmux.image-limits.gpt-image-2",
+      "kind": "missing",
+      "owner": "client",
+      "summary": "ZenMux documents provider pinning (model:provider) only for chat models, not for the image endpoints.",
+      "client_url": "https://zenmux.ai/docs/guide/advanced/provider-routing.html",
+      "location": "Syntax / Examples section",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/docs/guide/advanced/provider-routing.html",
+          "quote": "model_slug:provider_slug"
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html",
+        "https://zenmux.ai/docs/guide/advanced/image-generation.html",
+        "https://zenmux.ai/openai/gpt-image-2"
+      ],
+      "request": "State whether the model_slug:provider_slug suffix works on /images/generations and /images/edits, with an image-model example.",
+      "question": "Does a :provider suffix pin the provider on the image endpoints?",
+      "priority": "low",
+      "status": "open"
+    },
+    {
+      "id": "azure-gemini-ref-images",
+      "key": "zenmux.image-limits.gpt-image-2",
+      "kind": "missing",
+      "owner": "client",
+      "summary": "Azure's parameter list omits referenceImages on the Gemini protocol, so Azure support is unknown.",
+      "client_url": "https://zenmux.ai/openai/gpt-image-2",
+      "location": "Providers table / supported parameters for the imagen protocol (Azure)",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/openai/gpt-image-2",
+          "quote": "\"suitable_api\":\"images,imagen\""
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/docs/guide/advanced/image-generation.html",
+        "https://zenmux.ai/docs/about/models-and-providers.html"
+      ],
+      "request": "State whether Azure supports referenceImages on the Gemini (imagen) protocol for this model, and list it in the Azure parameters if so.",
+      "question": "Does Azure accept referenceImages on the Gemini protocol?",
+      "priority": "low",
+      "status": "open"
+    },
+    {
+      "id": "max-output-openai",
+      "key": "zenmux.max-output-openai.gpt-image-2",
+      "kind": "missing",
+      "owner": "client",
+      "summary": "The OpenAI row shows no max output value (Azure shows 10,000).",
+      "client_url": "https://zenmux.ai/openai/gpt-image-2",
+      "location": "Providers table, Max output for the OpenAI row",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/openai/gpt-image-2",
+          "quote": "\"max_completion_tokens\":0"
+        },
+        {
+          "source_url": "https://zenmux.ai/openai/gpt-image-2",
+          "quote": "\"max_completion_tokens\":10000"
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/docs/about/models-and-providers.html"
+      ],
+      "request": "Show a real max output for the OpenAI provider, or state that it is not applicable for this image model.",
+      "question": "Is max output 0 for the OpenAI provider a placeholder?",
+      "priority": "low",
+      "status": "open"
+    },
+    {
+      "id": "per-image-price",
+      "key": "zenmux.per-image-price",
+      "kind": "missing",
+      "owner": "client",
+      "summary": "ZenMux publishes only per-token rates for GPT Image 2, not a price per generated image.",
+      "client_url": "https://zenmux.ai/openai/gpt-image-2",
+      "location": "Pricing section of the model page",
+      "searched": [
+        "https://zenmux.ai/openai/gpt-image-2",
+        "https://zenmux.ai/docs/about/pricing-and-cost.html",
+        "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html"
+      ],
+      "request": "Add an approximate price per image by size and quality (for example 1024x1024 low/medium/high), clearly marked as an estimate.",
+      "priority": "low",
+      "status": "open"
+    },
+    {
+      "id": "gpt15-size-range",
+      "key": "zenmux.image-limits.gpt-image-1.5",
+      "kind": "missing",
+      "owner": "client",
+      "summary": "ZenMux lists custom sizes for GPT Image 2 only and does not give a size range for GPT Image 1.5.",
+      "client_url": "https://zenmux.ai/docs/guide/advanced/image-generation.html",
+      "location": "Custom sizes section",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/docs/guide/advanced/image-generation.html",
+          "quote": "Custom sizes (only openai/gpt-image-2): any custom size is supported, subject to the following constraints:"
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/openai/gpt-image-1.5",
+        "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html"
+      ],
+      "request": "List the supported sizes for openai/gpt-image-1.5 beside the GPT Image 2 custom-size section.",
+      "priority": "low",
+      "status": "open"
+    },
+    {
+      "id": "quality-comparison",
+      "key": "zenmux.quality-comparison.gpt-image",
+      "kind": "missing",
+      "owner": "external",
+      "summary": "Nobody publishes a quality comparison between GPT Image 2 and GPT Image 1.5; FYI only.",
+      "searched": [
+        "https://zenmux.ai/openai/gpt-image-2",
+        "https://zenmux.ai/openai/gpt-image-1.5",
+        "https://developers.openai.com/api/docs/guides/image-generation"
+      ],
+      "priority": "low",
+      "status": "open"
+    }
+  ]
+}

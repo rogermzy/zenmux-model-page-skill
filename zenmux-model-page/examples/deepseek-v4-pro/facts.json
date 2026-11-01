@@ -1,0 +1,1217 @@
+{
+  "entity": "DeepSeek V4 Pro",
+  "entity_type": "text",
+  "checked_date": "2026-10-28",
+  "names": [
+    "DeepSeek V4 Pro",
+    "DeepSeek V4.1 Flash",
+    "DeepSeek-V4-Pro-0813",
+    "DeepSeek-V4.1-Flash-1017",
+    "DeepSeek V3.2",
+    "DeepSeek V4 Flash",
+    "V4 Pro",
+    "V4.1 Flash"
+  ],
+  "endpoints": [
+    {
+      "id": "deepseek",
+      "provider": "DeepSeek",
+      "served_version": "DeepSeek-V4-Pro-0813",
+      "status": "active"
+    },
+    {
+      "id": "alibaba",
+      "provider": "Alibaba Cloud",
+      "served_version": "Not verified",
+      "status": "active"
+    },
+    {
+      "id": "baidu",
+      "provider": "Baidu",
+      "served_version": "Not verified",
+      "status": "active"
+    },
+    {
+      "id": "tencent-cloud",
+      "provider": "TencentCloud",
+      "served_version": "Not verified",
+      "status": "active"
+    },
+    {
+      "id": "streamlake",
+      "provider": "Streamlake",
+      "served_version": "Not verified",
+      "status": "active"
+    },
+    {
+      "id": "siliconflow",
+      "provider": "SiliconFlow",
+      "served_version": "Not verified",
+      "status": "active"
+    }
+  ],
+  "facts": [
+    {
+      "id": "price.deepseek.input.0.66",
+      "category": "price",
+      "endpoint": "deepseek",
+      "label": "Input price",
+      "display": "$0.66",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$0.66-1.32/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.deepseek.input.1.32",
+      "category": "price",
+      "endpoint": "deepseek",
+      "label": "Input price",
+      "display": "$1.32",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$0.66-1.32/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.deepseek.output.1.98",
+      "category": "price",
+      "endpoint": "deepseek",
+      "label": "Output price",
+      "display": "$1.98",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$1.98-3.96/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.deepseek.output.3.96",
+      "category": "price",
+      "endpoint": "deepseek",
+      "label": "Output price",
+      "display": "$3.96",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$1.98-3.96/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.deepseek.cache.0.022",
+      "category": "price",
+      "endpoint": "deepseek",
+      "label": "Cache read price",
+      "display": "$0.022",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "Read:0.022-0.044/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "price.deepseek.cache.0.044",
+      "category": "price",
+      "endpoint": "deepseek",
+      "label": "Cache read price",
+      "display": "$0.044",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "Read:0.022-0.044/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "perf.deepseek.latency",
+      "category": "performance",
+      "endpoint": "deepseek",
+      "label": "Latest-hour P50 time to first token (provider table)",
+      "display": "1.04 s",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "77.7%$0.66-1.32/ M tokens$1.98-3.96/ M tokensRead:0.022-0.044/ M tokensWrite:-/ M tokens1M1.04s70.2tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "latest hourly value, captured 2026-10-28; changes hourly"
+    },
+    {
+      "id": "perf.deepseek.throughput",
+      "category": "performance",
+      "endpoint": "deepseek",
+      "label": "Latest-hour P50 throughput (provider table)",
+      "display": "70.2 tok/s",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "77.7%$0.66-1.32/ M tokens$1.98-3.96/ M tokensRead:0.022-0.044/ M tokensWrite:-/ M tokens1M1.04s70.2tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "latest hourly value, captured 2026-10-28; changes hourly"
+    },
+    {
+      "id": "price.alibaba.input.0.636",
+      "category": "price",
+      "endpoint": "alibaba",
+      "label": "Input price",
+      "display": "$0.636",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$0.636-1.272/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.alibaba.input.1.272",
+      "category": "price",
+      "endpoint": "alibaba",
+      "label": "Input price",
+      "display": "$1.272",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$0.636-1.272/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.alibaba.output.1.908",
+      "category": "price",
+      "endpoint": "alibaba",
+      "label": "Output price",
+      "display": "$1.908",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$1.908-3.816/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.alibaba.output.3.816",
+      "category": "price",
+      "endpoint": "alibaba",
+      "label": "Output price",
+      "display": "$3.816",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$1.908-3.816/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.alibaba.cache.0.064",
+      "category": "price",
+      "endpoint": "alibaba",
+      "label": "Cache read price",
+      "display": "$0.064",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "Read:0.064-0.127/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "price.alibaba.cache.0.127",
+      "category": "price",
+      "endpoint": "alibaba",
+      "label": "Cache read price",
+      "display": "$0.127",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "Read:0.064-0.127/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "perf.alibaba.latency",
+      "category": "performance",
+      "endpoint": "alibaba",
+      "label": "Latest-hour P50 time to first token (provider table)",
+      "display": "4.16 s",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "21.9%$0.636-1.272/ M tokens$1.908-3.816/ M tokensRead:0.064-0.127/ M tokensWrite:-/ M tokens1M4.16s33.1tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "latest hourly value, captured 2026-10-28; changes hourly"
+    },
+    {
+      "id": "perf.alibaba.throughput",
+      "category": "performance",
+      "endpoint": "alibaba",
+      "label": "Latest-hour P50 throughput (provider table)",
+      "display": "33.1 tok/s",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "21.9%$0.636-1.272/ M tokens$1.908-3.816/ M tokensRead:0.064-0.127/ M tokensWrite:-/ M tokens1M4.16s33.1tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "latest hourly value, captured 2026-10-28; changes hourly"
+    },
+    {
+      "id": "price.baidu.input.0.66",
+      "category": "price",
+      "endpoint": "baidu",
+      "label": "Input price",
+      "display": "$0.66",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$0.66-1.32/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.baidu.input.1.32",
+      "category": "price",
+      "endpoint": "baidu",
+      "label": "Input price",
+      "display": "$1.32",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$0.66-1.32/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.baidu.output.1.98",
+      "category": "price",
+      "endpoint": "baidu",
+      "label": "Output price",
+      "display": "$1.98",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$1.98-3.96/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.baidu.output.3.96",
+      "category": "price",
+      "endpoint": "baidu",
+      "label": "Output price",
+      "display": "$3.96",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$1.98-3.96/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.baidu.cache.0.022",
+      "category": "price",
+      "endpoint": "baidu",
+      "label": "Cache read price",
+      "display": "$0.022",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "Read:0.022-0.044/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "price.baidu.cache.0.044",
+      "category": "price",
+      "endpoint": "baidu",
+      "label": "Cache read price",
+      "display": "$0.044",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "Read:0.022-0.044/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "perf.baidu.latency",
+      "category": "performance",
+      "endpoint": "baidu",
+      "label": "Latest-hour P50 time to first token (provider table)",
+      "display": "2.27 s",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "86.8%$0.66-1.32/ M tokens$1.98-3.96/ M tokensRead:0.022-0.044/ M tokensWrite:-/ M tokens1M2.27s46.1tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "latest hourly value, captured 2026-10-28; changes hourly"
+    },
+    {
+      "id": "perf.baidu.throughput",
+      "category": "performance",
+      "endpoint": "baidu",
+      "label": "Latest-hour P50 throughput (provider table)",
+      "display": "46.1 tok/s",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "86.8%$0.66-1.32/ M tokens$1.98-3.96/ M tokensRead:0.022-0.044/ M tokensWrite:-/ M tokens1M2.27s46.1tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "latest hourly value, captured 2026-10-28; changes hourly"
+    },
+    {
+      "id": "price.tencent-cloud.input.0.66",
+      "category": "price",
+      "endpoint": "tencent-cloud",
+      "label": "Input price",
+      "display": "$0.66",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$0.66-1.32/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.tencent-cloud.input.1.32",
+      "category": "price",
+      "endpoint": "tencent-cloud",
+      "label": "Input price",
+      "display": "$1.32",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$0.66-1.32/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.tencent-cloud.output.1.98",
+      "category": "price",
+      "endpoint": "tencent-cloud",
+      "label": "Output price",
+      "display": "$1.98",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$1.98-3.96/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.tencent-cloud.output.3.96",
+      "category": "price",
+      "endpoint": "tencent-cloud",
+      "label": "Output price",
+      "display": "$3.96",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$1.98-3.96/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens; two price tiers"
+    },
+    {
+      "id": "price.tencent-cloud.cache.0.022",
+      "category": "price",
+      "endpoint": "tencent-cloud",
+      "label": "Cache read price",
+      "display": "$0.022",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "Read:0.022-0.044/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "price.tencent-cloud.cache.0.044",
+      "category": "price",
+      "endpoint": "tencent-cloud",
+      "label": "Cache read price",
+      "display": "$0.044",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "Read:0.022-0.044/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "perf.tencent-cloud.latency",
+      "category": "performance",
+      "endpoint": "tencent-cloud",
+      "label": "Latest-hour P50 time to first token (provider table)",
+      "display": "4.14 s",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "93.2%$0.66-1.32/ M tokens$1.98-3.96/ M tokensRead:0.022-0.044/ M tokensWrite:-/ M tokens1M4.14s52.9tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "latest hourly value, captured 2026-10-28; changes hourly"
+    },
+    {
+      "id": "perf.tencent-cloud.throughput",
+      "category": "performance",
+      "endpoint": "tencent-cloud",
+      "label": "Latest-hour P50 throughput (provider table)",
+      "display": "52.9 tok/s",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "93.2%$0.66-1.32/ M tokens$1.98-3.96/ M tokensRead:0.022-0.044/ M tokensWrite:-/ M tokens1M4.14s52.9tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "latest hourly value, captured 2026-10-28; changes hourly"
+    },
+    {
+      "id": "price.streamlake.input.1.32",
+      "category": "price",
+      "endpoint": "streamlake",
+      "label": "Input price",
+      "display": "$1.32",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$1.32/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens"
+    },
+    {
+      "id": "price.streamlake.output.3.96",
+      "category": "price",
+      "endpoint": "streamlake",
+      "label": "Output price",
+      "display": "$3.96",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$3.96/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens"
+    },
+    {
+      "id": "price.streamlake.cache.0.044",
+      "category": "price",
+      "endpoint": "streamlake",
+      "label": "Cache read price",
+      "display": "$0.044",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "Read:0.044/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "perf.streamlake.latency",
+      "category": "performance",
+      "endpoint": "streamlake",
+      "label": "Latest-hour P50 time to first token (provider table)",
+      "display": "2.85 s",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "89.0%$1.32/ M tokens$3.96/ M tokensRead:0.044/ M tokensWrite:-/ M tokens1M2.85s37.5tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "latest hourly value, captured 2026-10-28; changes hourly"
+    },
+    {
+      "id": "perf.streamlake.throughput",
+      "category": "performance",
+      "endpoint": "streamlake",
+      "label": "Latest-hour P50 throughput (provider table)",
+      "display": "37.5 tok/s",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "89.0%$1.32/ M tokens$3.96/ M tokensRead:0.044/ M tokensWrite:-/ M tokens1M2.85s37.5tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "latest hourly value, captured 2026-10-28; changes hourly"
+    },
+    {
+      "id": "price.siliconflow.input.0.33",
+      "category": "price",
+      "endpoint": "siliconflow",
+      "label": "Input price",
+      "display": "$0.33",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$1.32$0.33/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens"
+    },
+    {
+      "id": "price.siliconflow.input.list",
+      "category": "price",
+      "endpoint": "siliconflow",
+      "label": "Input list price",
+      "display": "$1.32",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$1.32$0.33/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "list price before discount"
+    },
+    {
+      "id": "price.siliconflow.output.0.99",
+      "category": "price",
+      "endpoint": "siliconflow",
+      "label": "Output price",
+      "display": "$0.99",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$3.96$0.99/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "per 1M tokens"
+    },
+    {
+      "id": "price.siliconflow.output.list",
+      "category": "price",
+      "endpoint": "siliconflow",
+      "label": "Output list price",
+      "display": "$3.96",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "$3.96$0.99/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "list price before discount"
+    },
+    {
+      "id": "price.siliconflow.cache.list",
+      "category": "price",
+      "endpoint": "siliconflow",
+      "label": "Cache read list price",
+      "display": "$0.44",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "Read:0.440.11/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "price.siliconflow.cache.0.11",
+      "category": "price",
+      "endpoint": "siliconflow",
+      "label": "Cache read price",
+      "display": "$0.11",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "Read:0.440.11/ M tokens",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "perf.siliconflow.latency",
+      "category": "performance",
+      "endpoint": "siliconflow",
+      "label": "Latest-hour P50 time to first token (provider table)",
+      "display": "2.13 s",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "47.8%$1.32$0.33/ M tokens$3.96$0.99/ M tokensRead:0.440.11/ M tokensWrite:-/ M tokens1M2.13s28.2tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "latest hourly value, captured 2026-10-28; changes hourly"
+    },
+    {
+      "id": "perf.siliconflow.throughput",
+      "category": "performance",
+      "endpoint": "siliconflow",
+      "label": "Latest-hour P50 throughput (provider table)",
+      "display": "28.2 tok/s",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "47.8%$1.32$0.33/ M tokens$3.96$0.99/ M tokensRead:0.440.11/ M tokensWrite:-/ M tokens1M2.13s28.2tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "condition": "latest hourly value, captured 2026-10-28; changes hourly"
+    },
+    {
+      "id": "discount.siliconflow",
+      "category": "price",
+      "endpoint": "siliconflow",
+      "label": "SiliconFlow discount",
+      "display": "75% OFF",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "Active75% OFF",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "aliases": [
+        "75%"
+      ],
+      "condition": "end date Not published"
+    },
+    {
+      "id": "spec.context",
+      "category": "spec",
+      "endpoint": null,
+      "label": "Context window",
+      "display": "1M",
+      "source_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "quote": "CONTEXT LENGTH1M",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "spec.context.zenmux",
+      "category": "spec",
+      "endpoint": null,
+      "label": "Context window (ZenMux, all endpoints)",
+      "display": "1M",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "\"ctx\": 1000000",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "spec.maxout",
+      "category": "spec",
+      "endpoint": null,
+      "label": "Max output",
+      "display": "384K",
+      "source_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "quote": "MAX OUTPUTMAXIMUM: 384K",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "spec.maxout.zenmux",
+      "category": "spec",
+      "endpoint": null,
+      "label": "Max output (ZenMux, all endpoints)",
+      "display": "384K",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "\"maxout\": 384000",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED",
+      "aliases": [
+        "384,000"
+      ]
+    },
+    {
+      "id": "spec.params",
+      "category": "spec",
+      "endpoint": null,
+      "label": "Total parameters",
+      "display": "1.6 trillion",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "It features 1.6 trillion total parameters, with 49 billion activated per token",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "spec.active",
+      "category": "spec",
+      "endpoint": null,
+      "label": "Activated parameters per token",
+      "display": "49 billion",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "It features 1.6 trillion total parameters, with 49 billion activated per token",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "date.preview",
+      "category": "date",
+      "endpoint": null,
+      "label": "Preview release",
+      "display": "2026-04-24",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "released in preview on April 24, 2026",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "version.deepseek",
+      "category": "version",
+      "endpoint": "deepseek",
+      "label": "Model version served by DeepSeek's own API (DeepSeek docs); ZenMux titles the model 0813",
+      "display": "DeepSeek-V4-Pro-0813",
+      "source_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "quote": "MODEL VERSIONDeepSeek-V4.1-Flash-1017DeepSeek-V4-Pro-0813",
+      "checked_at": "2026-10-28",
+      "verdict": "NUANCED",
+      "note": "Inference: DeepSeek docs describe api.deepseek.com; ZenMux does not state what its deepseek provider serves, but titles the model 0813."
+    },
+    {
+      "id": "schedule.peak.01:00",
+      "category": "schedule",
+      "endpoint": "deepseek",
+      "label": "DeepSeek peak window boundary (UTC)",
+      "display": "01:00",
+      "source_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "quote": "Peak hours are 01:00 - 04:00 and 06:00 - 10:00 UTC, Monday through Friday, excluding Chinese public holidays.",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "schedule.peak.04:00",
+      "category": "schedule",
+      "endpoint": "deepseek",
+      "label": "DeepSeek peak window boundary (UTC)",
+      "display": "04:00",
+      "source_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "quote": "Peak hours are 01:00 - 04:00 and 06:00 - 10:00 UTC, Monday through Friday, excluding Chinese public holidays.",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "schedule.peak.06:00",
+      "category": "schedule",
+      "endpoint": "deepseek",
+      "label": "DeepSeek peak window boundary (UTC)",
+      "display": "06:00",
+      "source_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "quote": "Peak hours are 01:00 - 04:00 and 06:00 - 10:00 UTC, Monday through Friday, excluding Chinese public holidays.",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "schedule.peak.10:00",
+      "category": "schedule",
+      "endpoint": "deepseek",
+      "label": "DeepSeek peak window boundary (UTC)",
+      "display": "10:00",
+      "source_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "quote": "Peak hours are 01:00 - 04:00 and 06:00 - 10:00 UTC, Monday through Friday, excluding Chinese public holidays.",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "schedule.offpeak.ratio",
+      "category": "schedule",
+      "endpoint": "deepseek",
+      "label": "Off-peak vs peak",
+      "display": "half",
+      "source_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "quote": "(2) Off-peak rates are half of the peak rates.",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "perf.window",
+      "category": "performance",
+      "endpoint": null,
+      "label": "Chart window (hourly P50 series)",
+      "display": "24 hours",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "Latency 24hours P50 time to first token (TTFT) on live AI Gateway traffic, in milliseconds.",
+      "checked_at": "2026-10-28",
+      "verdict": "NUANCED",
+      "aliases": [
+        "24hours"
+      ],
+      "condition": "ZenMux chart window label: 24hours",
+      "note": "Window of the hourly chart series, not of the table cells."
+    },
+    {
+      "id": "cap.streaming",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Streaming",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "\"stream\": true",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.tools",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Tool calling",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "\"tools\", \"tool_choice\", \"parallel_tool_calls\"",
+      "checked_at": "2026-10-28",
+      "verdict": "NUANCED",
+      "note": "tools on all 18 provider x protocol lists; tool_choice/parallel_tool_calls not on every Responses/Messages list."
+    },
+    {
+      "id": "cap.json",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Structured output (response_format)",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "\"response_format\"",
+      "checked_at": "2026-10-28",
+      "verdict": "NUANCED",
+      "note": "response_format on Chat Completions for all six providers; Responses 5/6, Messages 4/6."
+    },
+    {
+      "id": "cap.reasoning",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Reasoning (thinking mode)",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "\"supports_reasoning\": {\"chat.completions\": 1, \"responses\": 1, \"messages\": 1}",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.protocols",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Chat Completions, Responses and Anthropic Messages",
+      "display": "Supported",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "\"apis\": \"chat.completions,responses,messages\"",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.vision",
+      "category": "capability",
+      "endpoint": null,
+      "label": "Image input",
+      "display": "Not supported",
+      "source_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "quote": "Vision✓Not supported",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "cap.reasoning_effort",
+      "category": "capability",
+      "endpoint": null,
+      "label": "reasoning_effort parameter",
+      "display": "Varies by provider",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "quote": "\"thinking\", \"reasoning_effort\"",
+      "checked_at": "2026-10-28",
+      "verdict": "NUANCED",
+      "note": "Listed on Chat Completions for deepseek, streamlake, baidu, siliconflow, tencent-cloud; not alibaba."
+    },
+    {
+      "id": "route.default",
+      "category": "routing",
+      "endpoint": null,
+      "label": "Default routing",
+      "display": "Performance first",
+      "source_url": "https://zenmux.ai/docs/guide/advanced/provider-routing.html",
+      "quote": "Performance first: Sort by first token latency from low to high",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "alt.flash.input.0.075",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "V4.1 Flash input price on ZenMux (DeepSeek endpoint, discounted)",
+      "display": "$0.075",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4.1-flash",
+      "quote": "98.7%$0.15-0.3$0.075-0.15/ M tokens$0.6-1.2$0.3-0.6/ M tokensRead:0.003-0.0060.0015-0.003/ M tokensWrite:-/ M tokens1M1.21s108tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "alt.flash.input.0.15",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "V4.1 Flash input price on ZenMux (DeepSeek endpoint, discounted)",
+      "display": "$0.15",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4.1-flash",
+      "quote": "98.7%$0.15-0.3$0.075-0.15/ M tokens$0.6-1.2$0.3-0.6/ M tokensRead:0.003-0.0060.0015-0.003/ M tokensWrite:-/ M tokens1M1.21s108tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "alt.flash.output.0.3",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "V4.1 Flash output price on ZenMux (DeepSeek endpoint, discounted)",
+      "display": "$0.3",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4.1-flash",
+      "quote": "98.7%$0.15-0.3$0.075-0.15/ M tokens$0.6-1.2$0.3-0.6/ M tokensRead:0.003-0.0060.0015-0.003/ M tokensWrite:-/ M tokens1M1.21s108tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "alt.flash.output.0.6",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "V4.1 Flash output price on ZenMux (DeepSeek endpoint, discounted)",
+      "display": "$0.6",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4.1-flash",
+      "quote": "98.7%$0.15-0.3$0.075-0.15/ M tokens$0.6-1.2$0.3-0.6/ M tokensRead:0.003-0.0060.0015-0.003/ M tokensWrite:-/ M tokens1M1.21s108tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "alt.flash.input.list.0.15",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "V4.1 Flash input list price on ZenMux (DeepSeek endpoint)",
+      "display": "$0.15",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4.1-flash",
+      "quote": "98.7%$0.15-0.3$0.075-0.15/ M tokens$0.6-1.2$0.3-0.6/ M tokensRead:0.003-0.0060.0015-0.003/ M tokensWrite:-/ M tokens1M1.21s108tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "alt.flash.input.list.0.3",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "V4.1 Flash input list price on ZenMux (DeepSeek endpoint)",
+      "display": "$0.3",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4.1-flash",
+      "quote": "98.7%$0.15-0.3$0.075-0.15/ M tokens$0.6-1.2$0.3-0.6/ M tokensRead:0.003-0.0060.0015-0.003/ M tokensWrite:-/ M tokens1M1.21s108tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "alt.flash.output.list.0.6",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "V4.1 Flash output list price on ZenMux (DeepSeek endpoint)",
+      "display": "$0.6",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4.1-flash",
+      "quote": "98.7%$0.15-0.3$0.075-0.15/ M tokens$0.6-1.2$0.3-0.6/ M tokensRead:0.003-0.0060.0015-0.003/ M tokensWrite:-/ M tokens1M1.21s108tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "alt.flash.output.list.1.2",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "V4.1 Flash output list price on ZenMux (DeepSeek endpoint)",
+      "display": "$1.2",
+      "source_url": "https://zenmux.ai/deepseek/deepseek-v4.1-flash",
+      "quote": "98.7%$0.15-0.3$0.075-0.15/ M tokens$0.6-1.2$0.3-0.6/ M tokensRead:0.003-0.0060.0015-0.003/ M tokensWrite:-/ M tokens1M1.21s108tps",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "alt.flash.vision",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "V4.1 Flash image input",
+      "display": "Supported",
+      "source_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "quote": "Vision✓Not supported",
+      "checked_at": "2026-10-28",
+      "verdict": "VERIFIED"
+    },
+    {
+      "id": "alt.deepseek.phaseout",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "DeepSeek phasing out V4-Pro on its own API",
+      "display": "phasing out V4-Pro",
+      "source_url": "https://api-docs.deepseek.com/news/news260910/",
+      "quote": "We're phasing out V4-Pro.",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "note": "Copied from the DeepSeek V4.1 Flash ledger (same snapshot; VERIFIED in that page's fact-check, 2026-10-29). Scoped to DeepSeek's own API."
+    },
+    {
+      "id": "alt.deepseek.route",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "DeepSeek routes deepseek-v4-pro requests to V4.1-Flash",
+      "display": "route to V4.1-Flash",
+      "source_url": "https://api-docs.deepseek.com/news/news260910/",
+      "quote": "all deepseek-v4-pro requests will route to V4.1-Flash at V4.1-Flash rates",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "note": "Copied from the DeepSeek V4.1 Flash ledger (same snapshot; VERIFIED in that page's fact-check, 2026-10-29). Scoped to DeepSeek's own API."
+    },
+    {
+      "id": "alt.deepseek.route_start",
+      "category": "alternative",
+      "endpoint": null,
+      "label": "Start and end of DeepSeek's deepseek-v4-pro → V4.1-Flash routing (DeepSeek's own API)",
+      "display": "04:00 UTC on Sept 14, 2026",
+      "aliases": [
+        "04:00",
+        "14",
+        "2026"
+      ],
+      "source_url": "https://api-docs.deepseek.com/news/news260910/",
+      "quote": "Starting at 04:00 UTC on Sept 14, 2026, all deepseek-v4-pro requests will route to V4.1-Flash at V4.1-Flash rates. This will continue until V4.1-Pro launches.",
+      "checked_at": "2026-10-29",
+      "verdict": "VERIFIED",
+      "note": "Copied from the DeepSeek V4.1 Flash ledger (same snapshot; VERIFIED in that page's fact-check, 2026-10-29). Scoped to DeepSeek's own API."
+    }
+  ],
+  "gaps": [
+    {
+      "id": "revision",
+      "key": "zenmux.revision.deepseek-v4-pro",
+      "kind": "contradiction",
+      "owner": "client",
+      "summary": "ZenMux's model description says some providers serve the 0731 and 0424 revisions, while its page title and DeepSeek's docs say 0813, so we cannot say which revision each provider serves.",
+      "priority": "high",
+      "status": "open",
+      "client_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "location": "Model description paragraph at the top of the page, versus the page title / model name heading",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+          "quote": "In addition to DeepSeek, TencentCloud and AlibabaCloud now also offer the official 0731 version, while other providers are still using the old 0424 version."
+        },
+        {
+          "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+          "quote": "DeepSeek: DeepSeek V4 Pro 0813Active75% OFF"
+        },
+        {
+          "source_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+          "quote": "MODEL VERSIONDeepSeek-V4.1-Flash-1017DeepSeek-V4-Pro-0813"
+        }
+      ],
+      "request": "Make the model title and the description paragraph name the same revision, and add a 'Served version' to each provider row in the provider table.",
+      "question": "Which revision (0424, 0731 or 0813) does each of the six providers serve today?"
+    },
+    {
+      "id": "time-schedule",
+      "key": "zenmux.time-of-day-schedule",
+      "kind": "missing",
+      "owner": "client",
+      "summary": "ZenMux shows two prices for some providers but does not say at what clock times, in which time zone, or on which holidays each price applies.",
+      "priority": "medium",
+      "status": "open",
+      "client_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "location": "Providers table, Input / Output / Cache read cells for DeepSeek, Tencent Cloud, Baidu and Alibaba Cloud (shown as a low-high range)",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+          "quote": "Baidu baidu 86.8%$0.66-1.32/ M tokens$1.98-3.96/ M tokensRead:0.022-0.044/ M tokensWrite:-/ M tokens"
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/docs/about/pricing-and-cost.html",
+        "https://zenmux.ai/docs/guide/advanced/provider-routing.html",
+        "https://zenmux.ai/docs/about/models-and-providers.html"
+      ],
+      "request": "Add the time zone and clock times of each two-rate schedule to the provider pricing details, and state how public holidays are billed.",
+      "question": "What are the peak and off-peak hours and time zone for each provider, and do Chinese public holidays bill at the off-peak rate?"
+    },
+    {
+      "id": "promo-siliconflow",
+      "key": "zenmux.promo-end.siliconflow-v4pro",
+      "kind": "missing",
+      "owner": "client",
+      "summary": "The 75% OFF promotion on SiliconFlow has no end date, so readers cannot tell when the lower price stops.",
+      "priority": "medium",
+      "status": "open",
+      "client_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "location": "75% OFF badge in the page heading and the SiliconFlow row of the providers table",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+          "quote": "SiliconFlow siliconflow 47.8%$1.32$0.33/ M tokens$3.96$0.99/ M tokens"
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/docs/about/pricing-and-cost.html",
+        "https://zenmux.ai/docs/guide/advanced/provider-routing.html"
+      ],
+      "request": "Show the end date (or 'no end date announced') next to the 75% OFF badge and in the SiliconFlow provider row.",
+      "question": "When does SiliconFlow's 75% OFF promotion for DeepSeek V4 Pro end?"
+    },
+    {
+      "id": "promo-flash",
+      "key": "zenmux.promo-end.deepseek-v4.1-flash",
+      "kind": "missing",
+      "owner": "client",
+      "summary": "The 50% OFF promotion on DeepSeek V4.1 Flash has no end date, so the comparison price on this page may change without notice.",
+      "priority": "medium",
+      "status": "open",
+      "client_url": "https://zenmux.ai/deepseek/deepseek-v4.1-flash",
+      "location": "50% OFF badge in the page heading and the provider table prices",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/deepseek/deepseek-v4.1-flash",
+          "quote": "DeepSeek: DeepSeek V4.1 Flash 1017Active50% OFF"
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/docs/about/pricing-and-cost.html",
+        "https://zenmux.ai/deepseek/deepseek-v4.1-flash"
+      ],
+      "request": "Show the end date (or 'no end date announced') next to the 50% OFF badge on the DeepSeek V4.1 Flash page.",
+      "question": "When does the DeepSeek V4.1 Flash 50% OFF promotion end?"
+    },
+    {
+      "id": "sf-cache-read",
+      "key": "zenmux.siliconflow-cache-read-price",
+      "kind": "suspected_error",
+      "owner": "client",
+      "summary": "SiliconFlow's list cache read price looks ten times higher than the other providers' and may be a typing error.",
+      "priority": "medium",
+      "status": "open",
+      "client_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "location": "Providers table, SiliconFlow row, Cache read column",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+          "quote": "SiliconFlow siliconflow 47.8%$1.32$0.33/ M tokens$3.96$0.99/ M tokensRead:0.440.11/ M tokens"
+        },
+        {
+          "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+          "quote": "Streamlake streamlake 89.0%$1.32/ M tokens$3.96/ M tokensRead:0.044/ M tokens"
+        }
+      ],
+      "request": "Check the SiliconFlow cache read list price ($0.44) against SiliconFlow's own price list and correct it if it is wrong.",
+      "question": "Is $0.44 per million tokens the correct SiliconFlow list cache read price?"
+    },
+    {
+      "id": "perf-uptime",
+      "key": "zenmux.perf-uptime-not-in-html",
+      "kind": "not_in_html",
+      "owner": "client",
+      "summary": "Uptime and 24-hour performance charts are drawn by JavaScript, so their values are not in the page source that search engines read first.",
+      "priority": "medium",
+      "status": "open",
+      "client_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "location": "Uptime, Throughput and Latency chart sections (24 hours / 1 week toggle)",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+          "quote": "Uptime 24hours Direct request success rate on AI Gateway and per-provider."
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/docs/about/models-and-providers.html",
+        "https://zenmux.ai/deepseek/deepseek-v4-pro"
+      ],
+      "request": "Render the uptime percentage and the 24-hour latency and throughput figures as text in the server-rendered HTML, with the time window stated."
+    },
+    {
+      "id": "benchmarks",
+      "key": "zenmux.benchmarks-no-scores",
+      "kind": "not_in_html",
+      "owner": "client",
+      "summary": "The benchmark section links to Artificial Analysis charts but no scores appear in the page source.",
+      "priority": "low",
+      "status": "open",
+      "client_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "location": "Benchmarks section (Artificial Analysis Intelligence Index charts)",
+      "evidence": [
+        {
+          "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+          "quote": "Metrics sourced fromArtificial Analysis"
+        }
+      ],
+      "searched": [
+        "https://zenmux.ai/docs/about/models-and-providers.html",
+        "https://zenmux.ai/docs/about/pricing-and-cost.html"
+      ],
+      "request": "Add the benchmark names, scores and measured model version as text in the server-rendered HTML next to the Artificial Analysis charts."
+    },
+    {
+      "id": "phaseout",
+      "key": "deepseek.v4pro-phaseout",
+      "kind": "upstream_conflict",
+      "owner": "client",
+      "summary": "DeepSeek says it is phasing out V4 Pro and routing its requests to V4.1 Flash, yet ZenMux still lists V4 Pro at its own rates.",
+      "priority": "high",
+      "status": "open",
+      "client_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "location": "DeepSeek provider row of the providers table and the model description",
+      "evidence": [
+        {
+          "source_url": "https://api-docs.deepseek.com/news/news260910/",
+          "quote": "Starting at 04:00 UTC on Sept 14, 2026, all deepseek-v4-pro requests will route to V4.1-Flash at V4.1-Flash rates."
+        },
+        {
+          "source_url": "https://api-docs.deepseek.com/news/news260910/",
+          "quote": "We're phasing out V4-Pro."
+        },
+        {
+          "source_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+          "quote": "DeepSeek deepseek 77.7%$0.66-1.32/ M tokens$1.98-3.96/ M tokensRead:0.022-0.044/ M tokensWrite:-/ M tokens1M1.04s70.2tps"
+        }
+      ],
+      "request": "State on the model page what the deepseek endpoint serves now, and add a deprecation notice if the V4 Pro endpoint is being retired or re-routed.",
+      "question": "Does the deepseek endpoint on ZenMux still serve V4 Pro, or does it now route to V4.1 Flash, and do the other providers still serve V4 Pro?"
+    },
+    {
+      "id": "quality",
+      "key": "external.quality-comparison",
+      "kind": "missing",
+      "owner": "external",
+      "summary": "No source we checked compares the quality of DeepSeek V4 Pro and V4.1 Flash on the same tasks.",
+      "priority": "low",
+      "status": "open",
+      "searched": [
+        "https://zenmux.ai/deepseek/deepseek-v4-pro",
+        "https://zenmux.ai/deepseek/deepseek-v4.1-flash",
+        "https://api-docs.deepseek.com/news/news260910/"
+      ]
+    },
+    {
+      "id": "cache-write",
+      "key": "zenmux.cache-write-price",
+      "kind": "missing",
+      "owner": "client",
+      "summary": "ZenMux shows no price for writing to the cache for any provider.",
+      "priority": "low",
+      "status": "open",
+      "client_url": "https://zenmux.ai/deepseek/deepseek-v4-pro",
+      "location": "Providers table, Cache read column (Write: shown as a dash)",
+      "searched": [
+        "https://zenmux.ai/docs/about/pricing-and-cost.html",
+        "https://zenmux.ai/docs/guide/advanced/prompt-cache.html",
+        "https://zenmux.ai/docs/about/models-and-providers.html"
+      ],
+      "request": "Show the cache write price for each provider, or state that cache writes are not charged."
+    }
+  ]
+}

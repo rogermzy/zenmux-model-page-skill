@@ -1,0 +1,171 @@
+{
+ "object": "list",
+ "data": [
+  {
+   "id": "acme/tiered-text",
+   "object": "model",
+   "display_name": "Acme: Tiered Text 1.0",
+   "created": 1,
+   "owned_by": "acme",
+   "input_modalities": [
+    "text"
+   ],
+   "output_modalities": [
+    "text"
+   ],
+   "capabilities": {
+    "reasoning": false
+   },
+   "context_length": 1000000,
+   "publish_time": "2026-10-01",
+   "pricings": {
+    "prompt": [
+     {
+      "value": 0.1,
+      "unit": "perMTokens",
+      "currency": "USD"
+     },
+     {
+      "value": 0.2,
+      "unit": "perMTokens",
+      "currency": "USD"
+     }
+    ]
+   }
+  },
+  {
+   "id": "acme/clip-2",
+   "object": "model",
+   "display_name": "Acme: Clip 2",
+   "created": 1,
+   "owned_by": "acme",
+   "input_modalities": [
+    "text"
+   ],
+   "output_modalities": [
+    "video"
+   ],
+   "capabilities": {
+    "reasoning": false
+   },
+   "context_length": 100000,
+   "publish_time": "2026-10-01",
+   "pricings": {
+    "video": [
+     {
+      "value": 0.084,
+      "unit": "perSecond",
+      "currency": "USD"
+     }
+    ]
+   }
+  },
+  {
+   "id": "acme/listen-1",
+   "object": "model",
+   "display_name": "Acme: Listen 1",
+   "created": 1,
+   "owned_by": "acme",
+   "input_modalities": [
+    "text"
+   ],
+   "output_modalities": [
+    "transcription"
+   ],
+   "capabilities": {
+    "reasoning": false
+   },
+   "context_length": 1000000,
+   "publish_time": "2026-10-01"
+  },
+  {
+   "id": "acme/embed-1",
+   "object": "model",
+   "display_name": "Acme: Embed 1",
+   "created": 1,
+   "owned_by": "acme",
+   "input_modalities": [
+    "text"
+   ],
+   "output_modalities": [
+    "embeddings"
+   ],
+   "capabilities": {
+    "reasoning": false
+   },
+   "context_length": 1000000,
+   "publish_time": "2026-10-01"
+  },
+  {
+   "id": "acme/mystery",
+   "object": "model",
+   "display_name": "Acme: Mystery",
+   "created": 1,
+   "owned_by": "acme",
+   "input_modalities": [
+    "text"
+   ],
+   "output_modalities": [],
+   "capabilities": {
+    "reasoning": false
+   },
+   "context_length": 1000000,
+   "publish_time": "2026-10-01"
+  },
+  {
+   "id": "acme/twin",
+   "object": "model",
+   "display_name": "Acme: Twin",
+   "created": 1,
+   "owned_by": "acme",
+   "input_modalities": [
+    "text"
+   ],
+   "output_modalities": [
+    "text"
+   ],
+   "capabilities": {
+    "reasoning": false
+   },
+   "context_length": 1000000,
+   "publish_time": "2026-10-01"
+  },
+  {
+   "id": "other/twin",
+   "object": "model",
+   "display_name": "Other: Twin",
+   "created": 1,
+   "owned_by": "other",
+   "input_modalities": [
+    "text"
+   ],
+   "output_modalities": [
+    "text"
+   ],
+   "capabilities": {
+    "reasoning": false
+   },
+   "context_length": 1000000,
+   "publish_time": "2026-10-01"
+  },
+  {
+   "id": "acme/pic-1",
+   "object": "model",
+   "display_name": "Acme: Pic 1",
+   "created": 1,
+   "owned_by": "acme",
+   "input_modalities": [
+    "text"
+   ],
+   "output_modalities": [
+    "text",
+    "image"
+   ],
+   "capabilities": {
+    "reasoning": false
+   },
+   "context_length": 1000000,
+   "publish_time": "2026-10-01"
+  }
+ ]
+}

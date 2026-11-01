@@ -1,0 +1,49 @@
+{
+  "_comment": "ZenMux-specific constants read by scripts/new_page.py. Edit here, not in the script. Doc URLs were taken from the three earlier hand-built runs and the sitemap https://zenmux.ai/sitemap-docs.xml; there is no dedicated speech/TTS guide page, only the API reference pages listed under 'audio'.",
+  "base_url": "https://zenmux.ai",
+  "models_api": "https://zenmux.ai/api/v1/models",
+  "sitemap": "https://zenmux.ai/sitemap-models.xml",
+  "page_url_template": "https://zenmux.ai/{id}",
+  "output_modality_to_entity_type": {
+    "text": "text",
+    "image": "image",
+    "video": "video",
+    "speech": "audio"
+  },
+  "entity_type_priority": ["video", "image", "audio", "text"],
+  "shared_docs": [
+    "https://zenmux.ai/docs",
+    "https://docs.zenmux.ai/",
+    "https://zenmux.ai/docs/guide/quickstart.html",
+    "https://zenmux.ai/docs/guide/advanced/provider-routing.html",
+    "https://zenmux.ai/docs/about/pricing-and-cost.html",
+    "https://zenmux.ai/docs/about/models-and-providers.html",
+    "https://zenmux.ai/docs/guide/advanced/prompt-cache.html",
+    "https://zenmux.ai/docs/guide/advanced/reasoning.html",
+    "https://zenmux.ai/docs/guide/advanced/tool-calls.html",
+    "https://zenmux.ai/docs/guide/advanced/structured-output.html",
+    "https://zenmux.ai/docs/guide/advanced/model-alias.html",
+    "https://zenmux.ai/docs/guide/advanced/image-generation.html",
+    "https://zenmux.ai/docs/guide/advanced/openai-image-generation.html"
+  ],
+  "type_docs": {
+    "text": [
+      "https://zenmux.ai/docs/api/openai/create-chat-completion.html",
+      "https://zenmux.ai/docs/guide/advanced/multimodal.html"
+    ],
+    "image": [
+      "https://zenmux.ai/docs/api/openai/generate-an-image.html",
+      "https://zenmux.ai/docs/api/openai/create-image-edit.html",
+      "https://zenmux.ai/docs/api/vertexai/generate-images.html"
+    ],
+    "video": [
+      "https://zenmux.ai/docs/guide/advanced/video-generation.html",
+      "https://zenmux.ai/docs/api/zenmux/generate-videos-native.html",
+      "https://zenmux.ai/docs/api/vertexai/generate-videos.html"
+    ],
+    "audio": [
+      "https://zenmux.ai/docs/api/openai/create-audio-speech.html",
+      "https://zenmux.ai/docs/api/vertexai/generate-content.html"
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+Acme Model 7.5 fake pricing page
+Input $1.11   Output $2.22
+Other Cloud input $3.33
+Context window 999K tokens
+Streaming Supported
+Vision Not supported
+TTFT 12 ms
