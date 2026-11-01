@@ -7,6 +7,7 @@ comes from a quoted, saved source. The skill produces, per model:
 - `page.md`: the page content, module by module, with module markers for the build;
 - `facts.json`: the fact ledger behind every number, plus the gaps found;
 - `fact-check-report.md`: what was verified, reworded or left for a person;
+- `review.json`: the writing review against Wendy Writes' semantic rules;
 - `site-fix-requests.md` (shared across pages): what the ZenMux site itself should publish or
   correct, with quotes.
 
@@ -66,5 +67,7 @@ cd zenmux-model-page && bash tests/run_tests.sh && bash tests/test_new_page.sh
 
 ## Credits
 
-The checks reuse the Wendy Writes engine's style linter (`scripts/lint/`, vendored) and its
-fact-check protocol (`references/fact-check.md`, adapted).
+From the Wendy Writes engine, adapted for model pages: the writing constitution (sentence rules in
+`references/page-format.md`), the style linter (`scripts/lint/`, vendored; its blockers fail the
+check), the writing review (`references/review.md`, from Wendy's judge) and the fact-check
+protocol (`references/fact-check.md`).

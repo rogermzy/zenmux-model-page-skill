@@ -1,0 +1,3 @@
+{"reviewed_at": "2026-11-01T10:00:00Z", "reviewer": "test-reviewer", "page_sha256": "@SHA@",
+ "violations": [{"rule": "R4", "severity": "warning", "location": "M2",
+   "evidence": "A sentence the page never contained.", "fix_instruction": "Check."}]}

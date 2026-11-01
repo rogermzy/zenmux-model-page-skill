@@ -1,0 +1,2 @@
+{"reviewed_at": "2026-11-01T10:00:00Z", "reviewer": "test-reviewer", "page_sha256": "@SHA@",
+ "violations": [{"rule": "R1", "severity": "critical", "location": "M2", "evidence": "x", "fix_instruction": "y"}]}

@@ -1,0 +1,3 @@
+{"reviewed_at": "2026-11-01T10:00:00Z", "reviewer": "test-reviewer", "page_sha256": "@SHA@",
+ "violations": [{"rule": "R1", "severity": "blocker", "location": "M2 para#1",
+   "evidence": "Acme Cloud is the cheapest listed endpoint.", "fix_instruction": "Name the price basis."}]}

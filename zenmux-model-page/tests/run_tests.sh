@@ -50,7 +50,16 @@ PY
 }
 newpage() { mkdir -p "$W/$1"; cp "$FX/good/page.md" "$FX/good/facts.json" "$W/$1/"; }
 newplan() { cp "$FX/plan.md" "$W/$1.md"; }
-page() { "$PY" "$S/check_page.py" "$W/$1/page.md" --plan "${2:-$FX/plan.md}" "${@:3}"; }
+page() { "$PY" "$S/check_page.py" "$W/$1/page.md" --plan "${2:-$FX/plan.md}" --no-lint "${@:3}"; }   # lint is on by default: the contract tests opt out
+pagel() { "$PY" "$S/check_page.py" "$W/$1/page.md" --plan "${2:-$FX/plan.md}" "${@:3}"; }          # lint on (default)
+# mkreview DIR FIXTURE  -> $W/DIR/review.json with the current page.md hash substituted
+mkreview() { "$PY" - "$W/$1" "$FX/review/$2.json" <<'PYR'
+import hashlib, sys
+d, f = sys.argv[1:3]
+sha = hashlib.sha256(open(d + "/page.md", "rb").read()).hexdigest()
+open(d + "/review.json", "w", encoding="utf-8").write(open(f, encoding="utf-8").read().replace("@SHA@", sha))
+PYR
+}
 plan() { "$PY" "$S/check_plan.py" "$W/$1.md" "${@:2}"; }
 
 echo "== --help =="
@@ -140,7 +149,10 @@ expect "page: open placeholders warn" 0 WARN_OPEN_PLACEHOLDERS page t27
 newpage t28; mut $W/t28/page.md 'on Acme Cloud, with' 'on Acme Cloud in 2025, with'; expect "page: bare year is an untraced number" 1 UNTRACED_NUMBER page t28
 newpage t29; mut $W/t29/page.md 'with a 999K context' 'with a 999K context (updated 2026-01-15)'; expect "page: checked_date allowed" 0 '!UNTRACED_NUMBER' page t29
 newpage t30; mut $W/t30/page.md 'with a 999K context' 'with a `128K` context and a link [docs](https://x.test/v2/2025/)'; expect "page: numbers in inline code / link URLs ignored" 0 '!UNTRACED_NUMBER' page t30
-expect "page: --lint runs the bundled linter (no WARN_LINT_FAILED)" 0 '!WARN_LINT_FAILED' page g "$FX/plan.md" --lint
+expect "page: lint runs by default (no WARN_LINT_FAILED)" 0 '!WARN_LINT_FAILED' pagel g "$FX/plan.md"
+expect "page: --lint still accepted (no-op)" 0 '!WARN_LINT_FAILED' pagel g "$FX/plan.md" --lint
+expect "page: --no-lint skips lint (no lint: findings)" 0 '!lint:' page g "$FX/plan.md"
+expect "page: lint is entity-aware (C1 opening-entity warning fires on the good page)" 0 'lint:C1' pagel g "$FX/plan.md"
 "$PY" - "$S" "$FX" <<'PY2' && ok "page: --lint produces lint: findings on cliche-heavy prose" || bad "page: --lint findings" "see above"
 import sys; sys.path.insert(0, sys.argv[1]); import check_page as c
 w = []
@@ -148,7 +160,7 @@ c.run_lint("It's important to note that, in today's fast-paced world, we delve i
 assert "WARN_LINT_FAILED" not in w, w
 assert any(x.startswith("lint:") for x in w), w
 PY2
-expect "page: --lint never errors" 0 '!ERROR' page g "$FX/plan.md" --lint
+expect "page: lint warnings never error" 0 '!ERROR' pagel g "$FX/plan.md"
 "$PY" - "$S" <<'PY' && ok "page: lint_prose drops markers, code fences, CTA rows; keeps prose" || bad "page: lint_prose" "see above"
 import sys; sys.path.insert(0, sys.argv[1]); import check_page as c
 out = c.lint_prose("<!-- module: M1 shown -->\nReal prose here.\n```bash\ncurl x \\\n  -d y\n```\n"
@@ -196,6 +208,54 @@ newpage f1; mut $W/f1/page.md 'fictional text model; this page' 'fictional text 
 newpage f2; mut $W/f2/page.md '| AcmeHub' '| AcmeHub 2025'; expect "page: untraced number in title" 1 UNTRACED_NUMBER page f2
 newpage f3; mut $W/f3/page.md 'fictional text model; this page' 'fictional text model from $1.11; this page'; expect "page: traced number in meta_description passes" 0 '!UNTRACED_NUMBER' page f3
 newpage f4; mut $W/f4/page.md 'fictional text model; this page' 'fictional text model, always $0; this page'; expect "page: \$0 in meta_description" 1 ZERO_OR_FULL page f4
+
+echo "== check_page: lint blockers, entity_aliases =="
+mkdir -p $W/c1; cp $FX/lint-c1/page.md $FX/good/facts.json $W/c1/
+expect "page: pronoun-start paragraph -> lint:C1 blocker is an ERROR" 1 'ERROR lint:C1' pagel c1
+expect "page: ...--no-lint ignores it" 0 '!lint:C1' page c1
+newpage al1; mut $W/al1/page.md 'entity_type: text' $'entity_type: text\nentity_aliases: [Model 7.5, Acme-7.5]'
+expect "page: entity_aliases inline list accepted" 0 '!FRONT_MATTER_INVALID' pagel al1
+newpage al2; mut $W/al2/page.md 'entity_type: text' $'entity_type: text\nentity_aliases: Model 7.5, "Acme-7.5"'
+expect "page: entity_aliases comma string accepted" 0 '!FRONT_MATTER_INVALID' pagel al2
+newpage al3; mut $W/al3/page.md 'entity_type: text' $'entity_type: text\nentity_aliases: [Model 7.5, A7]'
+expect "page: 2-char alias rejected" 1 FRONT_MATTER_INVALID pagel al3
+"$PY" - "$S" <<'PY' && ok "page: lint config = entity+aliases, central_entity, H1 as primary_keyword" || bad "page: lint_config" "see above"
+import sys; sys.path.insert(0, sys.argv[1]); import check_page as c
+cfg = c.lint_config("<!-- module: M1 shown -->\n```\n# not me\n```\n# Acme Model 7.5 API\n\ntext\n", "Acme Model 7.5", ["Acme-7.5"], "en")
+assert cfg == {"language": "en", "entities": ["Acme Model 7.5", "Acme-7.5"],
+               "term_lists": {"central_entity": "Acme Model 7.5", "primary_keyword": "Acme Model 7.5 API"}}, cfg
+assert c.parse_aliases("[V4 Pro, 'DeepSeek-V4-Pro']") == ["V4 Pro", "DeepSeek-V4-Pro"] and c.parse_aliases("") == []
+PY
+
+echo "== check_page: review.json merge =="
+newpage rv0
+expect "review: missing -> REVIEW_MISSING warning only" 0 REVIEW_MISSING page rv0
+newpage rv1; mkreview rv1 warning; mut $W/rv1/page.md 'Other Cloud' 'Other Cloud X'
+expect "review: stale hash -> REVIEW_STALE error" 1 REVIEW_STALE page rv1
+newpage rv2; mkreview rv2 blocker
+expect "review: blocker -> ERROR review:R1, FAIL" 1 'ERROR review:R1' page rv2
+newpage rv3; mkreview rv3 waived
+expect "review: waived blocker -> PASS" 0 PASS page rv3
+expect "review: ...and not an error" 0 '!ERROR' page rv3
+expect "review: ...summary counts 1 waived" 0 '1 waived' page rv3
+newpage rv4; mkreview rv4 warning
+expect "review: warning (whitespace-normalised evidence) -> PASS with warning" 0 'WARN  review:R2' page rv4
+expect "review: ...info is dropped" 0 '!review:R3' page rv4
+expect "review: ...evidence found" 0 '!REVIEW_EVIDENCE_NOT_FOUND' page rv4
+newpage rv5; mkreview rv5 badevidence
+expect "review: evidence not on page -> warning, violation still counted" 0 REVIEW_EVIDENCE_NOT_FOUND page rv5
+expect "review: ...still counted" 0 '1 warning(s), 0 waived' page rv5
+newpage rv6; mkreview rv6 badseverity
+expect "review: bad severity -> REVIEW_INVALID" 1 REVIEW_INVALID page rv6
+newpage rv7; echo '{not json' > $W/rv7/review.json
+expect "review: invalid JSON -> REVIEW_INVALID" 1 REVIEW_INVALID page rv7
+newpage rv8; echo '{"violations": []}' > $W/rv8/review.json
+expect "review: missing keys -> REVIEW_INVALID" 1 REVIEW_INVALID page rv8
+newpage rv9; mkreview rv9 blocker; mv $W/rv9/review.json $W/rv9/other.json
+expect "review: --review explicit path" 1 'ERROR review:R1' page rv9 "$FX/plan.md" --review $W/rv9/other.json
+newpage rv10; mkreview rv10 waived
+page rv10 "$FX/plan.md" --json $W/rv10.json >/dev/null 2>&1
+"$PY" -c "import json;r=json.load(open('$W/rv10.json'))['review'];assert r=={'present':True,'reviewer':'test-reviewer','blockers':0,'warnings':0,'waived':1,'stale':False},r" && ok "review: --json report block" || bad "review: --json block" "bad json"
 
 echo "== gaps =="
 newpage g0; expect "gaps: good page logs its gaps" 0 '!UNLOGGED_GAP' page g0

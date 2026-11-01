@@ -6,7 +6,8 @@ check_page.py — contract gate for a Mode B page.md against its approved plan +
 Usage:
     python3 check_page.py pages/<e>/page.md --plan plan.md
     python3 check_page.py pages/<e>/page.md --plan plan.md --facts pages/<e>/facts.json \
-        [--sources sources/index.json] [--allow-draft-plan] [--lint] [--json page.check.json]
+        [--sources sources/index.json] [--allow-draft-plan] [--no-lint] [--review review.json] \
+        [--json page.check.json]
 
 Enforces (references/page-format.md, facts-ledger.md, template-spec.md): front matter, title/H1
 patterns, one marker per spec module in order, required/conditional/hidden rules, h2 patterns,
@@ -14,13 +15,21 @@ facts.json validity, gap logging (every Not verified / Not published / No data l
 <!-- gap: id --> marker that resolves to facts.json gaps[]), number provenance (every number token must be a fact's `display` or alias,
 verbatim), fact source/quote traceability against snapshots (--sources; default
 <plan dir>/sources/index.json), M1 price endpoint, status tables, derived_from, secrets, links, open placeholders.
---lint folds findings from the bundled style linter (lint/lint.py) in as warnings only (advisory). Only prose is
-linted (no module markers, code blocks or link-only CTA lines); A4/E7 are skipped for page copy.
+The bundled Wendy linter (lint/lint.py) runs by default (--no-lint skips it; --lint is accepted as a no-op). It gets
+a config built from the front matter (entities = entity + optional `entity_aliases`, central_entity, primary_keyword =
+the H1, language), so the entity-aware rules (C1, F1, G1) run. Lint blockers are ERRORS `lint:<rule>`, warnings stay
+warnings, info is dropped. Only prose is linted (no module markers, code blocks or link-only CTA lines); A4/E7 are
+skipped for page copy.
+--review merges an AI reviewer's findings (default: review.json next to page.md; schema in check_page.review_block):
+missing -> WARN REVIEW_MISSING; invalid -> ERROR REVIEW_INVALID; page changed since the review -> ERROR REVIEW_STALE;
+blocker -> ERROR review:<rule>; warning -> warning; a violation with a non-empty `waived_by` (a person's decision) is
+only counted. The checker never waives anything itself.
 
 Exit code: 0 = no ERROR, 1 = at least one ERROR, 2 = usage / file not found.  Stdlib only.
 """
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -189,7 +198,7 @@ def validate_gaps(gaps, E):
     return ids
 
 
-def check(page_path: Path, plan_path: Path, facts_arg, allow_draft, do_lint, sources_arg=None):
+def check(page_path: Path, plan_path: Path, facts_arg, allow_draft, do_lint, sources_arg=None, review_arg=None):
     errors, warnings = [], []
 
     def E(code, msg, line=None):
@@ -234,6 +243,11 @@ def check(page_path: Path, plan_path: Path, facts_arg, allow_draft, do_lint, sou
             E("PAGE_MISSING_KEY", f"front matter key '{k}' missing or empty")
     entity = fm.get("entity", "")
     rep["entity"] = entity or None
+    aliases = parse_aliases(fm.get("entity_aliases", ""))
+    for a in aliases:
+        if len(a) < 3:
+            E("FRONT_MATTER_INVALID", f"entity_aliases: {a!r} is shorter than 3 characters (it would match almost anything)")
+    aliases = [a for a in aliases if len(a) >= 3]
     if fm.get("template_id") and fm["template_id"] != spec.get("template_id"):
         E("PAGE_TEMPLATE_MISMATCH", f"template_id '{fm['template_id']}' != spec '{spec.get('template_id')}'")
     variants = spec.get("entity_variants")
@@ -564,8 +578,11 @@ def check(page_path: Path, plan_path: Path, facts_arg, allow_draft, do_lint, sou
                 done.add(t)
                 E("DERIVED_FROM_VIOLATION", f"{mid} number {t!r} does not appear in {'/'.join(df)}", i + 1)
 
+    body = "\n".join(lines[body_start:])
     if do_lint:
-        run_lint("\n".join(lines[body_start:]), spec.get("page_language") or "en", W)
+        cfg = lint_config(body, entity, aliases, fm.get("language") or spec.get("page_language") or "en")
+        run_lint(body, cfg["language"], W, E, cfg)
+    review_block(page_path, text, review_arg, rep, E, W)
     return rep
 
 
@@ -638,34 +655,146 @@ def lint_prose(body):
     return "\n".join(l for l in body.split("\n") if not _CTA_ROW.match(l))
 
 
-def run_lint(body, lang, W):
-    """Lint the page prose (front matter stripped, see lint_prose) with the bundled lint/lint.py; findings
-    → warnings only, minus LINT_SKIP_RULES."""
+def parse_aliases(raw):
+    """`entity_aliases` front matter value → list of names. Accepts `[V4 Pro, DeepSeek-V4-Pro]` or `V4 Pro, DeepSeek-V4-Pro`
+    (the shared front-matter parser keeps the value as one string)."""
+    raw = str(raw or "").strip()
+    if raw.startswith("[") and raw.endswith("]"):
+        raw = raw[1:-1]
+    out = []
+    for a in raw.split(","):
+        a = a.strip()
+        if len(a) >= 2 and a[0] == a[-1] and a[0] in "\"'":
+            a = a[1:-1].strip()
+        if a and a not in out:
+            out.append(a)
+    return out
+
+
+def page_h1(body):
+    """Text of the first `# ` heading outside fenced code ('' if none)."""
+    fence = False
+    for l in body.split("\n"):
+        if re.match(r"^\s*(```|~~~)", l):
+            fence = not fence
+        elif not fence:
+            m = re.match(r"^#\s+(.+?)\s*#*\s*$", l)
+            if m:
+                return m.group(1).strip()
+    return ""
+
+
+def lint_config(body, entity, aliases, lang):
+    ents = [e for e in [entity] + list(aliases) if e]
+    return {"language": lang, "entities": ents,
+            "term_lists": {"central_entity": entity or "", "primary_keyword": page_h1(body) or entity or ""}}
+
+
+def run_lint(body, lang, W, E=None, cfg=None):
+    """Lint the page prose (front matter stripped, see lint_prose) with the bundled lint/lint.py and an entity-aware
+    config. Findings (minus LINT_SKIP_RULES): blocker → error `lint:<rule>` (warning when no E given), warning →
+    warning, info → dropped."""
     body = lint_prose(body)
     tmp = tempfile.NamedTemporaryFile(suffix=".json", delete=False)
     tmp.close()
-    md = tmp.name + ".md"
+    md, cfgp = tmp.name + ".md", tmp.name + ".cfg.json"
     try:
         Path(md).write_text(body, encoding="utf-8")
+        cmd = [sys.executable, str(LINT_SCRIPT), md, "--lang", lang, "--json", tmp.name]
+        if cfg:
+            Path(cfgp).write_text(json.dumps(cfg, ensure_ascii=False), encoding="utf-8")
+            cmd += ["--config", cfgp]
         env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1")  # linter prints non-ASCII; keep Windows consoles from choking
-        subprocess.run([sys.executable, str(LINT_SCRIPT), md,
-                        "--lang", lang, "--json", tmp.name],
-                       capture_output=True, text=True, encoding="utf-8", errors="replace",
-                       timeout=120, env=env)
+        subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=120, env=env)
         rpt = json.loads(Path(tmp.name).read_text(encoding="utf-8"))
         for sec in rpt.get("sections", []):
             for v in sec.get("violations", []):
-                if str(v.get("rule")) in LINT_SKIP_RULES:
+                rule, sev = str(v.get("rule")), v.get("severity")
+                if rule in LINT_SKIP_RULES or sev not in ("blocker", "warning"):
                     continue
-                W("lint:" + str(v.get("rule")), f"{v.get('severity')} @ {v.get('location')}: {str(v.get('evidence'))[:100]} — {v.get('fix_instruction', '')[:100]}")
+                msg = f"{sev} @ {v.get('location')}: {str(v.get('evidence'))[:100]} — {v.get('fix_instruction', '')[:100]}"
+                (E if sev == "blocker" and E else W)("lint:" + rule, msg)
     except Exception as e:
-        W("WARN_LINT_FAILED", f"--lint could not run ({type(e).__name__}: {str(e)[:100]}); continuing without it")
+        W("WARN_LINT_FAILED", f"lint could not run ({type(e).__name__}: {str(e)[:100]}); continuing without it")
     finally:
-        for f in (tmp.name, md):
+        for f in (tmp.name, md, cfgp):
             try:
                 os.unlink(f)
             except OSError:
                 pass
+
+
+REVIEW_SEVERITIES = ("blocker", "warning", "info")
+
+
+def _wsnorm(t):
+    return re.sub(r"\s+", " ", str(t)).strip()
+
+
+def review_block(page_path, page_text, review_arg, rep, E, W):
+    """Merge the AI reviewer's review.json. Schema: {"reviewed_at": ISO8601, "reviewer": model name, "page_sha256":
+    sha256 hex of page.md bytes at review time, "violations": [{"rule","severity","location","evidence",
+    "fix_instruction", optional "waived_by", "waiver_note"}]}. A violation with a non-empty `waived_by` is only
+    counted: a person waived it, the checker never decides."""
+    blk = {"present": False, "reviewer": None, "blockers": 0, "warnings": 0, "waived": 0, "stale": False}
+    rep["review"] = blk
+    rp = Path(review_arg) if review_arg else page_path.parent / "review.json"
+    if not rp.is_file():
+        W("REVIEW_MISSING", f"no review file ({rp}); run the AI review after this pass and save it there")
+        return
+    blk["present"] = True
+    try:
+        rv = json.loads(rp.read_text(encoding="utf-8"))
+        if not isinstance(rv, dict):
+            raise ValueError("top level must be an object")
+        for k, t in (("reviewed_at", str), ("reviewer", str), ("page_sha256", str), ("violations", list)):
+            if not isinstance(rv.get(k), t):
+                raise ValueError(f"'{k}' missing or not a {t.__name__}")
+        for i, v in enumerate(rv["violations"]):
+            if not isinstance(v, dict):
+                raise ValueError(f"violations[{i}] is not an object")
+            for k in ("rule", "severity", "location", "evidence", "fix_instruction"):
+                if not isinstance(v.get(k), str):
+                    raise ValueError(f"violations[{i}]: '{k}' missing or not a string")
+            if v["severity"] not in REVIEW_SEVERITIES:
+                raise ValueError(f"violations[{i}]: severity {v['severity']!r} not in {list(REVIEW_SEVERITIES)}")
+            if v.get("waived_by") is not None and not isinstance(v["waived_by"], str):
+                raise ValueError(f"violations[{i}]: 'waived_by' must be a string")
+    except (ValueError, OSError) as e:
+        E("REVIEW_INVALID", f"{rp.name}: {str(e)[:160]}")
+        return
+    blk["reviewer"] = rv["reviewer"]
+    if rv["page_sha256"].strip().lower() != hashlib.sha256(page_path.read_bytes()).hexdigest():
+        blk["stale"] = True
+        E("REVIEW_STALE", "page changed since the review; re-run the review (its findings are not applied)")
+        return
+    page_norm = _wsnorm(page_text)
+    for v in rv["violations"]:
+        sev = v["severity"]
+        if sev == "info":
+            continue
+        if (v.get("waived_by") or "").strip():
+            blk["waived"] += 1
+            continue
+        ev = _wsnorm(v["evidence"])
+        if not ev or ev not in page_norm:
+            W("REVIEW_EVIDENCE_NOT_FOUND", f"review:{v['rule']}: evidence {ev[:60]!r} is not in page.md (paraphrased or invented?)")
+        msg = f"{sev} @ {v['location']}: {ev[:100]} — {v['fix_instruction'][:100]}"
+        if sev == "blocker":
+            blk["blockers"] += 1
+            E("review:" + v["rule"], msg)
+        else:
+            blk["warnings"] += 1
+            W("review:" + v["rule"], msg)
+
+
+def _review_summary(r):
+    if not r:
+        return "n/a"
+    if not r["present"]:
+        return "missing"
+    return (f"{r['reviewer'] or '?'}{' STALE' if r['stale'] else ''} "
+            f"{r['blockers']} blocker(s), {r['warnings']} warning(s), {r['waived']} waived")
 
 
 def main():
@@ -675,7 +804,9 @@ def main():
     ap.add_argument("--facts", help="facts.json (default: front matter `facts`, relative to page.md)")
     ap.add_argument("--sources", help="sources/index.json from snapshot.py (default: <plan dir>/sources/index.json)")
     ap.add_argument("--allow-draft-plan", action="store_true", help="dry run against a draft plan (loud warning)")
-    ap.add_argument("--lint", action="store_true", help="also run the bundled style linter, scripts/lint/lint.py (advisory warnings only)")
+    ap.add_argument("--lint", action="store_true", help="no-op (lint is on by default; kept for backward compatibility)")
+    ap.add_argument("--no-lint", action="store_true", help="skip the bundled Wendy linter, scripts/lint/lint.py")
+    ap.add_argument("--review", help="AI reviewer's review.json (default: review.json next to page.md)")
     ap.add_argument("--json", help="write report JSON here")
     args = ap.parse_args()
     page, plan = Path(args.page), Path(args.plan)
@@ -683,7 +814,7 @@ def main():
         if not p.is_file():
             print(f"[check_page] ERROR {p} not found", file=sys.stderr)
             sys.exit(2)
-    rep = check(page, plan, args.facts, args.allow_draft_plan, args.lint, args.sources)
+    rep = check(page, plan, args.facts, args.allow_draft_plan, not args.no_lint, args.sources, args.review)
     for e in rep["errors"]:
         log(f"ERROR {e['code']}{' (line %d)' % e['line'] if e.get('line') else ''}: {e['msg']}")
     for w in rep["warnings"]:
@@ -692,7 +823,8 @@ def main():
     hidden = [m for m, s in rep["modules"].items() if s == "hidden"]
     log(f"{len(rep['errors'])} error(s), {len(rep['warnings'])} warning(s); shown: {' '.join(shown) or '-'}; "
         f"hidden: {' '.join(hidden) or '-'}; numbers checked: {rep['numbers_checked']}"
-        + (f"; gaps logged: {rep['gaps']['logged']}" if rep.get("gaps") else ""))
+        + (f"; gaps logged: {rep['gaps']['logged']}" if rep.get("gaps") else "")
+        + "; review: " + _review_summary(rep.get("review")))
     log("FAIL" if rep["errors"] else "PASS")
     if args.json:
         Path(args.json).write_text(json.dumps(rep, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
