@@ -72,6 +72,11 @@ First run only: `mkdir -p <workspace> && cp $SKILL_DIR/references/plan.md <works
 python3 $SKILL_DIR/scripts/new_page.py <workspace> "<model name, id or URL>"
 ```
 
+Always run this, even when told to make no API calls or when no API key is available. ZenMux's
+public models list (`https://zenmux.ai/api/v1/models`) is a keyless, read-only page fetch like
+any other source, not a model call. "No API calls" means no generation requests (calls that use
+`$ZENMUX_API_KEY` and cost money). Don't rebuild this step by hand.
+
 It resolves the model through ZenMux's public models API, picks the template variant from the
 model's output type, snapshots the model page, decodes the page's embedded data (per-provider
 prices, fee items, context, max output, aliases, status), re-fetches shared ZenMux docs older
@@ -113,6 +118,9 @@ Open `gap-candidates.json`. For each: decide whether it is a real gap (not publi
 contradiction, conflicts with developer docs, suspected error, JS-only) and record it in
 `gaps[]` with both quotes and where you looked. A value that is legitimately not applicable
 (e.g. no cache pricing for an image-only provider) is not a gap; note why and drop it.
+App routes such as `/platform/...` or `/settings/...` load in the browser after sign-in, so a
+plain fetch returning the homepage HTML is expected and is not a gap. Check them against
+ZenMux's docs instead.
 Compare ZenMux's values with the developer's as you go; every disagreement is a gap.
 
 ### 4. Decide which modules show
