@@ -100,7 +100,8 @@ skill 本体是 `zenmux-model-page/` 这个文件夹（里面有 `SKILL.md`）�
 - 在 Codex（OpenAI gpt-6.1-sol）里端到端跑了两个从未测试过的类型，检查全部 PASS，0 条被判错误：
   - doubao-seedance-2.5（视频）：40 条核实，11 条收窄措辞，记录 17 个问题。
   - gemini-3.8-flash-tts（语音）：37 条核实，7 条收窄措辞，记录 15 个问题。
-- 自动化测试：`cd zenmux-model-page && bash tests/run_tests.sh && bash tests/test_new_page.sh`（共 156 项，不需要联网）。
+- 加入 Wendy 写作规则后，在 Codex 里端到端跑了 claude-opus-5.5（文本）：检查 PASS，59 条事实全部核实，写作评审 0 个问题，每段都以模型名开头（之前的页面每页有 20–30 段不符合）。
+- 自动化测试：`cd zenmux-model-page && bash tests/run_tests.sh && bash tests/test_new_page.sh`（共 200 项，不需要联网）。
 
 ## 修改模板
 
