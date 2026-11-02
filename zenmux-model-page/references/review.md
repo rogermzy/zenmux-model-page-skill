@@ -13,6 +13,10 @@ sub-tasks, a separate pass after the page is finished, reading `page.md` cold. G
 only: the reviewer prompt below, the context block, and `page.md`. Not the facts, not your notes:
 the review judges the writing, the fact-check judges the facts.
 
+Running the reviewer from a shell with Codex CLI: `codex exec -s read-only --skip-git-repo-check
+-o out.txt "<prompt>" < /dev/null`. Without `< /dev/null`, `codex exec` waits for more input on
+stdin and never finishes when it runs in the background.
+
 ## Reviewer prompt
 
 Send this as the instruction (system prompt where your agent has one):

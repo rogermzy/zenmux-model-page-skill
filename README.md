@@ -50,6 +50,8 @@ skill 本体是 `zenmux-model-page/` 这个文件夹（里面有 `SKILL.md`）�
 
 所有页面共用一个工作目录（默认 `./zenmux-pages/`），ZenMux 的公共文档只抓一次，14 天内复用，过期自动重新抓取。
 
+**用 Codex CLI 做写作评审时**，命令末尾要加 `< /dev/null`（例如 `codex exec -s read-only --skip-git-repo-check -o out.txt "<prompt>" < /dev/null`）。不加的话，`codex exec` 会一直等待标准输入，在后台运行时永远不会结束。
+
 **注意：**写页面不需要 API key。起步脚本默认会读取不需要 key 的公开模型列表 `https://zenmux.ai/api/v1/models` 做交叉核对；如果要求「不调用任何 API」，或该列表无法访问，脚本会改用 sitemap 和模型页自身数据（`--no-api`），结果一致，只是少几项交叉核对。
 
 ## 它是怎么工作的
@@ -102,6 +104,7 @@ skill 本体是 `zenmux-model-page/` 这个文件夹（里面有 `SKILL.md`）�
   - doubao-seedance-2.5（视频）：40 条核实，11 条收窄措辞，记录 17 个问题。
   - gemini-3.8-flash-tts（语音）：37 条核实，7 条收窄措辞，记录 15 个问题。
 - 加入 Wendy 写作规则后，在 Codex 里端到端跑了 claude-opus-5.5（文本）：检查 PASS，59 条事实全部核实，写作评审 0 个问题，每段都以模型名开头（之前的页面每页有 20–30 段不符合）。
+- 写作评审（2026-11-01，评审模型 gpt-6.1-sol，经 Codex CLI）：3 个线上页面共发现 4 个阻断项（开头段落缺「本页回答什么」、模块首句没有直接回答、FAQ 是非题没有以 Yes 开头），各用 1–2 轮只改被标记的句子后全部消除，3 页检查均 PASS；剩余少量警告级问题留给人决定。`examples/` 里的两个示例页就是评审后的版本，附 `review.json`。
 - 自动化测试：`cd zenmux-model-page && bash tests/run_tests.sh && bash tests/test_new_page.sh`（共 203 项，不需要联网）。
 
 ## 修改模板

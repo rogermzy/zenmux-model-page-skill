@@ -50,6 +50,11 @@ and related entities (model ID, aliases and revision, developer, providers, bill
 context, capabilities, example languages). A title starts with `{Model} API` and ends with
 `| ZenMux`; any number in it must come from the fact ledger, like every number on the page.
 
+The writing review runs outside the writer's context, ideally on a different model family. With
+Codex CLI as the reviewer, end the command with `< /dev/null`
+(`codex exec -s read-only --skip-git-repo-check -o out.txt "<prompt>" < /dev/null`): without it,
+`codex exec` waits for stdin and never finishes in the background.
+
 ## What a person still decides
 
 - Whether to publish a page; the skill never marks one as ready while items are open.

@@ -13,7 +13,7 @@ facts: facts.json
 <!-- module: M1 shown -->
 # DeepSeek V4 Pro API
 
-DeepSeek V4 Pro is an open-weight Mixture-of-Experts text model with 1.6 trillion total parameters and 49 billion activated per token; ZenMux describes it as DeepSeek's flagship. On ZenMux you call it with one API key and choose between six providers.
+DeepSeek V4 Pro is an open-weight Mixture-of-Experts text model with 1.6 trillion total parameters and 49 billion activated per token; ZenMux describes it as DeepSeek's flagship. On ZenMux you call DeepSeek V4 Pro with one API key through six providers: DeepSeek, Tencent Cloud, Baidu, Alibaba Cloud, Streamlake and SiliconFlow. This page compares their prices and shows how to call the model through the API.
 
 | | |
 | :- | :- |
@@ -121,7 +121,7 @@ DeepSeek V4 Pro takes text and returns text. Tool calling and a thinking mode ar
 <!-- module: M5 shown -->
 ## DeepSeek V4 Pro Performance & Availability
 
-ZenMux's provider table shows the P50 time to first token and P50 throughput for the most recent hour of live gateway traffic. Its charts plot the hourly values over 24 hours or a week.
+DeepSeek V4 Pro's latest-hour P50 time to first token on ZenMux ranges from 1.04 s on DeepSeek to 4.16 s on Alibaba Cloud. Its P50 throughput ranges from 28.2 tok/s on SiliconFlow to 70.2 tok/s on DeepSeek. ZenMux's provider table shows these values for the most recent hour of live gateway traffic. Its charts plot the hourly values over 24 hours or a week.
 
 These figures date from 2026-10-28. They change every hour. Time to first token is not total response time.
 
@@ -134,7 +134,7 @@ These figures date from 2026-10-28. They change every hour. Time to first token 
 | Tencent Cloud | 4.14 s | 52.9 tok/s |
 | Alibaba Cloud | 4.16 s | 33.1 tok/s |
 
-The live ZenMux page charts uptime (request success rate). Its values were not in the page source we captured, so this page doesn't show them. <!-- gap: perf-uptime -->
+The live ZenMux page also charts DeepSeek V4 Pro's uptime (request success rate). Those values are absent from the saved snapshot of the page source, so this page doesn't show them. <!-- gap: perf-uptime -->
 
 <!-- module: M6 hidden: no version-matched benchmark source captured; ZenMux's Artificial Analysis charts did not expose scores in the page source; gap: benchmarks -->
 

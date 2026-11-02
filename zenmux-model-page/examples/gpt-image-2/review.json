@@ -1,0 +1,28 @@
+{
+  "reviewed_at": "2026-11-01T13:25:43Z",
+  "reviewer": "gpt-6.1-sol via Codex CLI 0.160.1 (fresh context; different model family from the writer, Claude)",
+  "page_sha256": "8d578d46c072fb2b57285b8ab28ad5896b7684fa7824c4c1215c005439d45163",
+  "violations": [
+    {
+      "rule": "C7",
+      "severity": "warning",
+      "location": "GPT Image 2 Capabilities & Use Cases sent#7",
+      "evidence": "gpt-image-2 accepts any size that meets four rules.",
+      "fix_instruction": "Combine the following three sentences into one sentence listing all four size constraints immediately after this sentence."
+    },
+    {
+      "rule": "A5",
+      "severity": "warning",
+      "location": "GPT Image 2 Capabilities & Use Cases sent#28",
+      "evidence": "ZenMux lists partial-image streaming for a more real-time generation experience.",
+      "fix_instruction": "Replace the unspecified comparison with the mechanism: partial-image streaming returns intermediate images before the final image."
+    },
+    {
+      "rule": "F6",
+      "severity": "warning",
+      "location": "Related Models & Guides sent#1",
+      "evidence": "[Qwen Image 2.0](/qwen/qwen-image-2.0)",
+      "fix_instruction": "Introduce Qwen Image 2.0 in plain text as another image model listed for generate_images before linking its name."
+    }
+  ]
+}
