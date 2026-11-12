@@ -1,4 +1,4 @@
-# Writing review (step 7)
+# Writing review (step 8)
 
 Adapted from the Wendy Writes judge (`judge.py`, 14 semantic rules). It covers the sentence
 rules a script can't check: answer-first, opening paragraph, staying on topic, evidence after

@@ -1,0 +1,67 @@
+{
+ "reviewed_at": "2026-11-12T10:00:00Z",
+ "reviewer": "test-acceptor",
+ "page_sha256": "@SHA@",
+ "entity_type": "text",
+ "example": "examples/deepseek-v4-pro",
+ "items": [
+  {
+   "id": "G1",
+   "result": "pass"
+  },
+  {
+   "id": "G2",
+   "result": "pass"
+  },
+  {
+   "id": "G3",
+   "result": "pass"
+  },
+  {
+   "id": "G4",
+   "result": "pass"
+  },
+  {
+   "id": "G5",
+   "result": "pass"
+  },
+  {
+   "id": "G6",
+   "result": "pass"
+  },
+  {
+   "id": "G7",
+   "result": "pass"
+  },
+  {
+   "id": "G8",
+   "result": "pass"
+  },
+  {
+   "id": "G9",
+   "result": "pass"
+  },
+  {
+   "id": "G10",
+   "result": "pass"
+  },
+  {
+   "id": "G11",
+   "result": "n/a",
+   "note": "Two providers are active."
+  },
+  {
+   "id": "G12",
+   "result": "needs_person",
+   "note": "No live call is recorded in the fact-check report."
+  },
+  {
+   "id": "TXT-1",
+   "result": "pass"
+  },
+  {
+   "id": "TXT-2",
+   "result": "pass"
+  }
+ ]
+}

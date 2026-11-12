@@ -8,6 +8,8 @@ comes from a quoted, saved source. The skill produces, per model:
 - `facts.json`: the fact ledger behind every number, plus the gaps found;
 - `fact-check-report.md`: what was verified, reworded or left for a person;
 - `review.json`: the writing review against Wendy Writes' semantic rules;
+- `acceptance.json`: the acceptance review, a fixed checklist per model type taken from the
+  template's Part 4 acceptance rules;
 - `site-fix-requests.md` (shared across pages): what the ZenMux site itself should publish or
   correct, with quotes.
 
@@ -55,6 +57,20 @@ Codex CLI as the reviewer, end the command with `< /dev/null`
 (`codex exec -s read-only --skip-git-repo-check -o out.txt "<prompt>" < /dev/null`): without it,
 `codex exec` waits for stdin and never finishes in the background.
 
+## Acceptance review
+
+After the writing review, a second reviewer outside the writer's context checks the finished
+page against the template's Part 4 acceptance rules, as a fixed checklist in
+`references/acceptance.md`: the model named the same way in title, H1 and opening; one default
+endpoint across M1, M2, M3, M4 and the FAQ; revisions; missing data; the page never
+contradicting itself; CTAs and code for the model type; links; model-specific content; coverage
+on par with the matching example page; the live call; and the type's own rules (for images:
+per-provider context, a billing-items table, capabilities by protocol, completion time). It
+saves `acceptance.json`. `check_page.py` fails the page on a failed blocker item or an
+unanswered item, and any edit to the page makes the review stale. Acceptance items only ZenMux's
+site can meet (server-rendered HTML, mobile layout, canonical and sitemap, links into the page,
+the GSC baseline) are listed in the report for ZenMux's developers.
+
 ## No disclaimers or production notes
 
 Pages state facts and stop. Vague disclaimers ("cannot be determined", "not yet verified",
@@ -69,8 +85,9 @@ writing review checks them as rule N1.
 
 - Whether to publish a page; the skill never marks one as ready while items are open.
 - Facts the fact-check left UNVERIFIABLE (shown on the page as `Not verified`).
-- For image and video models: one live API call that returns a real result, to confirm the
-  model ID used in the code sample (needs a ZenMux API key in `$ZENMUX_API_KEY`).
+- The live call (acceptance item G12): one call with the code sample that returns a real result
+  of the model's output type, to confirm the model ID (needs a ZenMux API key in
+  `$ZENMUX_API_KEY`). It matters most for image and video models.
 - Who acts on `site-fix-requests.md`.
 
 ## Changing the template

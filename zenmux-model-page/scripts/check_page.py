@@ -7,7 +7,7 @@ Usage:
     python3 check_page.py pages/<e>/page.md --plan plan.md
     python3 check_page.py pages/<e>/page.md --plan plan.md --facts pages/<e>/facts.json \
         [--sources sources/index.json] [--allow-draft-plan] [--no-lint] [--review review.json] \
-        [--json page.check.json]
+        [--acceptance acceptance.json] [--json page.check.json]
 
 Enforces (references/page-format.md, facts-ledger.md, template-spec.md): front matter, title/H1
 patterns, one marker per spec module in order, required/conditional/hidden rules, h2 patterns,
@@ -25,6 +25,11 @@ skipped for page copy.
 missing -> WARN REVIEW_MISSING; invalid -> ERROR REVIEW_INVALID; page changed since the review -> ERROR REVIEW_STALE;
 blocker -> ERROR review:<rule>; warning -> warning; a violation with a non-empty `waived_by` (a person's decision) is
 only counted. The checker never waives anything itself.
+--acceptance merges the acceptance reviewer's checklist (default: acceptance.json next to page.md; schema in
+check_page.acceptance_block, items in ACCEPT_ITEMS and references/acceptance.md): missing -> WARN ACCEPT_MISSING;
+invalid -> ERROR ACCEPT_INVALID; page changed -> ERROR ACCEPT_STALE; an item for the page's entity_type left
+unanswered -> ERROR ACCEPT_INCOMPLETE; failed blocker item -> ERROR accept:<id>; failed warning item -> warning;
+needs_person -> WARN ACCEPT_NEEDS_PERSON; waived -> only counted.
 
 Exit code: 0 = no ERROR, 1 = at least one ERROR, 2 = usage / file not found.  Stdlib only.
 """
@@ -199,7 +204,8 @@ def validate_gaps(gaps, E):
     return ids
 
 
-def check(page_path: Path, plan_path: Path, facts_arg, allow_draft, do_lint, sources_arg=None, review_arg=None):
+def check(page_path: Path, plan_path: Path, facts_arg, allow_draft, do_lint, sources_arg=None, review_arg=None,
+          acceptance_arg=None):
     errors, warnings = [], []
 
     def E(code, msg, line=None):
@@ -585,6 +591,7 @@ def check(page_path: Path, plan_path: Path, facts_arg, allow_draft, do_lint, sou
         cfg = lint_config(body, entity, aliases, fm.get("language") or spec.get("page_language") or "en")
         run_lint(body, cfg["language"], W, E, cfg)
     review_block(page_path, text, review_arg, rep, E, W)
+    acceptance_block(page_path, text, acceptance_arg, fm.get("entity_type"), rep, E, W)
     return rep
 
 
@@ -914,6 +921,136 @@ def _review_summary(r):
             f"{r['blockers']} blocker(s), {r['warnings']} warning(s), {r['waived']} waived")
 
 
+# Acceptance checklist (references/acceptance.md). Severity lives here, not in acceptance.json, so a reviewer
+# can't downgrade an item. "all" items apply to every entity_type; the others only to their type.
+ACCEPT_ITEMS = {
+    "G1": ("all", "blocker"),     # identity: H1 / title / meta / opening name the same model
+    "G2": ("all", "blocker"),     # one default endpoint: M1, M2, FAQ, M3, M4 agree
+    "G3": ("all", "blocker"),     # revisions not presented as one version for all providers
+    "G4": ("all", "blocker"),     # no filler for missing data; hidden beats empty
+    "G5": ("all", "blocker"),     # nothing on the page contradicts anything else on the page
+    "G6": ("all", "blocker"),     # CTAs by model type
+    "G7": ("all", "blocker"),     # M3 code fits the type, uses $ZENMUX_API_KEY, model ID matches
+    "G8": ("all", "warning"),     # real links, accurate anchors, related models by task
+    "G9": ("all", "warning"),     # every shown module answers its intent with model-specific content
+    "G10": ("all", "warning"),    # on par with the matching example (no ledger fact left unused)
+    "G11": ("all", "blocker"),    # no active endpoint -> Unavailable + alternatives
+    "G12": ("all", "blocker"),    # one real call returned a real response (usually needs_person)
+    "TXT-1": ("text", "blocker"),
+    "TXT-2": ("text", "blocker"),
+    "IMG-1": ("image", "blocker"),
+    "IMG-2": ("image", "blocker"),
+    "IMG-3": ("image", "blocker"),
+    "IMG-4": ("image", "blocker"),
+    "IMG-5": ("image", "blocker"),
+    "IMG-6": ("image", "warning"),
+    "VID-1": ("video", "blocker"),
+    "VID-2": ("video", "blocker"),
+    "VID-3": ("video", "blocker"),
+    "AUD-1": ("audio", "blocker"),
+    "AUD-2": ("audio", "blocker"),
+}
+ACCEPT_RESULTS = ("pass", "fail", "needs_person", "n/a")
+
+
+def accept_items_for(entity_type):
+    return [i for i, (t, _) in ACCEPT_ITEMS.items() if t in ("all", entity_type)]
+
+
+def acceptance_block(page_path, page_text, acc_arg, fm_type, rep, E, W):
+    """Merge the acceptance reviewer's acceptance.json. Schema: {"reviewed_at", "reviewer", "page_sha256",
+    "entity_type", "example", "items": [{"id", "result" (pass|fail|needs_person|n/a), "location", "evidence",
+    "fix_instruction", "note", optional "waived_by", "waiver_note"}]}. Every checklist item for the page's
+    entity_type must be answered once. fail -> ERROR accept:<id> (blocker items) or warning; needs_person ->
+    warning ACCEPT_NEEDS_PERSON (the report must list it); waived (a person's decision) -> only counted."""
+    blk = {"present": False, "reviewer": None, "blockers": 0, "warnings": 0, "needs_person": [], "waived": 0,
+           "stale": False}
+    rep["acceptance"] = blk
+    ap = Path(acc_arg) if acc_arg else page_path.parent / "acceptance.json"
+    if not ap.is_file():
+        W("ACCEPT_MISSING", f"no acceptance file ({ap}); run the acceptance review after the writing review")
+        return
+    blk["present"] = True
+    try:
+        av = json.loads(ap.read_text(encoding="utf-8"))
+        if not isinstance(av, dict):
+            raise ValueError("top level must be an object")
+        for k, t in (("reviewed_at", str), ("reviewer", str), ("page_sha256", str), ("entity_type", str),
+                     ("items", list)):
+            if not isinstance(av.get(k), t):
+                raise ValueError(f"'{k}' missing or not a {t.__name__}")
+        seen = set()
+        for i, it in enumerate(av["items"]):
+            if not isinstance(it, dict):
+                raise ValueError(f"items[{i}] is not an object")
+            for k in ("id", "result"):
+                if not isinstance(it.get(k), str):
+                    raise ValueError(f"items[{i}]: '{k}' missing or not a string")
+            if it["result"] not in ACCEPT_RESULTS:
+                raise ValueError(f"items[{i}] ({it['id']}): result {it['result']!r} not in {list(ACCEPT_RESULTS)}")
+            if it["id"] in seen:
+                raise ValueError(f"items[{i}]: {it['id']} answered twice")
+            seen.add(it["id"])
+            need = ("evidence", "fix_instruction") if it["result"] == "fail" else \
+                   ("note",) if it["result"] in ("needs_person", "n/a") else ()
+            for k in need:
+                if not (isinstance(it.get(k), str) and it[k].strip()):
+                    raise ValueError(f"items[{i}] ({it['id']}): result {it['result']} needs a non-empty '{k}'")
+            if it.get("waived_by") is not None and not isinstance(it["waived_by"], str):
+                raise ValueError(f"items[{i}]: 'waived_by' must be a string")
+    except (ValueError, OSError) as e:
+        E("ACCEPT_INVALID", f"{ap.name}: {str(e)[:160]}")
+        return
+    blk["reviewer"] = av["reviewer"]
+    etype = fm_type or av["entity_type"]
+    if fm_type and av["entity_type"] != fm_type:
+        E("ACCEPT_WRONG_TYPE", f"acceptance.json checked entity_type '{av['entity_type']}', page is '{fm_type}'")
+        return
+    if av["page_sha256"].strip().lower() != hashlib.sha256(page_path.read_bytes()).hexdigest():
+        blk["stale"] = True
+        E("ACCEPT_STALE", "page changed since the acceptance review; re-run it (its results are not applied)")
+        return
+    want = accept_items_for(etype)
+    got = {it["id"]: it for it in av["items"]}
+    missing = [i for i in want if i not in got]
+    if missing:
+        E("ACCEPT_INCOMPLETE", f"checklist items not answered for entity_type '{etype}': {', '.join(missing)}")
+    for i in got:
+        if i not in want:
+            W("ACCEPT_UNKNOWN_ITEM", f"{i} is not a checklist item for entity_type '{etype}' (ignored)")
+    page_norm = _wsnorm(page_text)
+    for i in want:
+        it = got.get(i)
+        if not it or it["result"] in ("pass", "n/a"):
+            continue
+        if (it.get("waived_by") or "").strip():
+            blk["waived"] += 1
+            continue
+        if it["result"] == "needs_person":
+            blk["needs_person"].append(i)
+            W("ACCEPT_NEEDS_PERSON", f"{i}: {_wsnorm(it['note'])[:160]}")
+            continue
+        ev = _wsnorm(it["evidence"])
+        if ev not in page_norm:
+            W("ACCEPT_EVIDENCE_NOT_FOUND", f"accept:{i}: evidence {ev[:60]!r} is not in page.md (paraphrased or invented?)")
+        msg = f"fail @ {it.get('location') or '?'}: {ev[:100]} — {_wsnorm(it['fix_instruction'])[:100]}"
+        if ACCEPT_ITEMS[i][1] == "blocker":
+            blk["blockers"] += 1
+            E("accept:" + i, msg)
+        else:
+            blk["warnings"] += 1
+            W("accept:" + i, msg)
+
+
+def _acceptance_summary(a):
+    if not a:
+        return "n/a"
+    if not a["present"]:
+        return "missing"
+    return (f"{a['reviewer'] or '?'}{' STALE' if a['stale'] else ''} {a['blockers']} failed blocker(s), "
+            f"{a['warnings']} failed warning(s), {len(a['needs_person'])} need a person, {a['waived']} waived")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Contract gate for a Mode B page.md")
     ap.add_argument("page")
@@ -924,6 +1061,7 @@ def main():
     ap.add_argument("--lint", action="store_true", help="no-op (lint is on by default; kept for backward compatibility)")
     ap.add_argument("--no-lint", action="store_true", help="skip the bundled Wendy linter, scripts/lint/lint.py")
     ap.add_argument("--review", help="AI reviewer's review.json (default: review.json next to page.md)")
+    ap.add_argument("--acceptance", help="acceptance reviewer's acceptance.json (default: acceptance.json next to page.md)")
     ap.add_argument("--json", help="write report JSON here")
     args = ap.parse_args()
     page, plan = Path(args.page), Path(args.plan)
@@ -931,7 +1069,8 @@ def main():
         if not p.is_file():
             print(f"[check_page] ERROR {p} not found", file=sys.stderr)
             sys.exit(2)
-    rep = check(page, plan, args.facts, args.allow_draft_plan, not args.no_lint, args.sources, args.review)
+    rep = check(page, plan, args.facts, args.allow_draft_plan, not args.no_lint, args.sources, args.review,
+                args.acceptance)
     for e in rep["errors"]:
         log(f"ERROR {e['code']}{' (line %d)' % e['line'] if e.get('line') else ''}: {e['msg']}")
     for w in rep["warnings"]:
@@ -941,7 +1080,8 @@ def main():
     log(f"{len(rep['errors'])} error(s), {len(rep['warnings'])} warning(s); shown: {' '.join(shown) or '-'}; "
         f"hidden: {' '.join(hidden) or '-'}; numbers checked: {rep['numbers_checked']}"
         + (f"; gaps logged: {rep['gaps']['logged']}" if rep.get("gaps") else "")
-        + "; review: " + _review_summary(rep.get("review")))
+        + "; review: " + _review_summary(rep.get("review"))
+        + "; acceptance: " + _acceptance_summary(rep.get("acceptance")))
     log("FAIL" if rep["errors"] else "PASS")
     if args.json:
         Path(args.json).write_text(json.dumps(rep, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

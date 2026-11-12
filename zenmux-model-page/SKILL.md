@@ -27,13 +27,14 @@ shell, outbound HTTPS, and ideally web search for finding developer docs. No oth
    and don't explain the disagreement on the page (rule 8).
 3. **Hidden beats empty.** Conditional modules show only when their `show_if` is met by facts in
    the ledger. Never show `$0`, `100%`, an empty chart or a generic leaderboard as filler.
-4. **Never skip the checks.** `check_page.py` must PASS (facts, structure, writing lint and
-   writing review) and the fact-check must be done before you call a page finished. A REFUTED
-   fact or an unwaived writing blocker still on the page blocks delivery.
+4. **Never skip the checks.** `check_page.py` must PASS (facts, structure, writing lint,
+   writing review and acceptance review) and the fact-check must be done before you call a page
+   finished. A REFUTED fact, an unwaived writing blocker or a failed acceptance blocker still on
+   the page blocks delivery.
 4a. **Rewrite only what was flagged.** When a check or the review flags sentences, rewrite those
    sentences and keep every other sentence as it is. At most 3 rewrite rounds per page; after
-   that, stop and report the remaining violations as needing a person. Never waive a violation
-   yourself.
+   that, stop and report the remaining violations as needing a person. The limit covers the
+   writing review and the acceptance review together. Never waive a violation yourself.
 5. **No secrets.** Code samples use `$ZENMUX_API_KEY`; never paste a real key into any file.
 6. **Every gap is logged.** Anything the site doesn't publish, says two ways, states differently
    from the developer's docs, shows as an outlier, or only renders with JavaScript goes into
@@ -69,7 +70,8 @@ shell, outbound HTTPS, and ideally web search for finding developer docs. No oth
 | `references/page-format.md` | Before writing `page.md` (front matter, module markers, page rules, and the 20 sentence rules: 19 from the Wendy Writes writing constitution plus rule 20, no disclaimers or production notes). |
 | `references/fact-check.md` | At the fact-check step. |
 | `references/review.md` | At the writing-review step (the reviewer prompt and `review.json`). |
-| `examples/deepseek-v4-pro/`, `examples/gpt-image-2/` | Finished pages (text, image) with their ledgers and reports. Match their quality, not their facts. |
+| `references/acceptance.md` | At the acceptance-review step (the plan's Part 4 acceptance rules as a checklist per model type, the reviewer prompt and `acceptance.json`). |
+| `examples/deepseek-v4-pro/`, `examples/gpt-image-2/` | Finished pages (text, image) with their ledgers, reports and reviews. Match their quality, not their facts: the acceptance review compares your page with the matching one (item G10). |
 
 ## Workspace
 
@@ -85,6 +87,7 @@ One folder holds all pages so ZenMux's shared docs are fetched once and reused:
     page.md                  ← the page
     page.check.json          check result
     review.json              writing review (reviewer's violations + page hash)
+    acceptance.json          acceptance review (checklist results + page hash)
     fact-check-report.md
   site-fix-requests.md       ← fixes for the ZenMux site (all pages, merged)
 ```
@@ -195,7 +198,7 @@ sentence as a plain attributed fact or deleting it, never by finding a synonym t
 pattern. `lint:<rule>` warnings (passive voice,
 generic verbs, uniform sentence length, long paragraphs, paragraphs not opening with the model
 name) are the same rules at lower severity: fix them unless the fix makes a sentence worse.
-`REVIEW_MISSING` is expected until step 8.
+`REVIEW_MISSING` is expected until step 8 and `ACCEPT_MISSING` until step 9.
 
 ### 7. Fact-check
 
@@ -211,11 +214,28 @@ review blockers (`review:<rule>`) fail the check: rewrite the flagged sentences,
 and review again, because any edit to `page.md` makes the review stale (`REVIEW_STALE`).
 Stop after 3 rewrite rounds (rule 4a).
 
-### 9. Final check
+### 9. Acceptance review
 
-Run step 6 one last time on the finished page. It must PASS with a current review.
+Follow `references/acceptance.md`: a reviewer outside your own context checks the finished page
+against the acceptance rules in `plan.md` Part 4 for its `entity_type`, as a fixed checklist:
+identity, one default endpoint across M1/M2/M3/M4/FAQ, revisions, missing data, the page never
+contradicting itself, CTAs and code by type, links, model-specific content, coverage on par with
+the matching example, the live call, and the type's own rules (e.g. image: per-provider context,
+billing-items table, capabilities by protocol, completion time). It gets `plan.md`, the page,
+`facts.json`, `fact-check-report.md` and the matching example; you save its output as
+`acceptance.json` and re-run step 6.
 
-### 10. Site fixes
+A failed blocker item (`accept:<id>`) fails the check. Rewrite the quoted part, then re-run step 6,
+the writing review (step 8) and this review: any edit makes both stale (`REVIEW_STALE`,
+`ACCEPT_STALE`). `needs_person` items (usually G12, the live call) don't fail the check, but they
+go into the report and the page isn't ready while they're open.
+
+### 10. Final check
+
+Run step 6 one last time on the finished page. It must PASS with a current review and a current
+acceptance review.
+
+### 11. Site fixes
 
 ```bash
 python3 $SKILL_DIR/scripts/site_fixes.py <workspace> --site zenmux.ai
@@ -225,24 +245,28 @@ Writes `site-fix-requests.md` (+ `.json`): one request per site-owned gap, merge
 pages in the workspace, with quotes, the requested change, any question to answer first, and
 which pages it unblocks. You write the list; a person decides who acts on it.
 
-### 11. Report
+### 12. Report
 
 For each page: its path; shown and hidden modules (with reasons); the fact-check totals;
 facts left UNVERIFIABLE; writing-review result (reviewer model, blockers fixed, warnings left,
-rewrite rounds used); gaps logged; and the path to `site-fix-requests.md`. Say plainly what
-still needs a person, for example a live API call to confirm an image or video model ID (the
-template's acceptance rule for those types). Don't call a page ready while any of that is open.
+rewrite rounds used); acceptance-review result (reviewer model, items failed and fixed, warning
+items left, `needs_person` items); gaps logged; and the path to `site-fix-requests.md`. Say
+plainly what still needs a person, for example the live API call (G12), and list the site
+acceptance items in `references/acceptance.md` (server-rendered HTML, mobile, canonical and
+sitemap, links into the page, GSC baseline) as owned by ZenMux's developers. Don't call a page
+ready while any of that is open.
 
 ## Refreshing an existing page
 
 Run `new_page.py` with `--force` only after moving the old `facts.json` aside, then compare old
 and new ledgers: changed prices, providers added or deactivated, new aliases. Update the page
-from the new ledger and re-run steps 6–10. Sources older than 14 days are re-fetched
+from the new ledger and re-run steps 6–11. Sources older than 14 days are re-fetched
 automatically; pass `--max-age-days 0` to force it.
 
 ## Running steps in parallel
 
 If your agent can run sub-tasks, three things benefit: several models at once (one sub-task per
 model, each given this file and the references; review each `page.check.json` yourself), the
-fact-check (see `references/fact-check.md`), and the writing review (`references/review.md`). If it can't, do everything in sequence; the
+fact-check (see `references/fact-check.md`), and the two reviews (`references/review.md`,
+`references/acceptance.md`; run them as separate sub-tasks, since they get different inputs). If it can't, do everything in sequence; the
 result is the same, only slower.

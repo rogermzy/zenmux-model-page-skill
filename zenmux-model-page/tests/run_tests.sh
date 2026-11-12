@@ -52,6 +52,14 @@ newpage() { mkdir -p "$W/$1"; cp "$FX/good/page.md" "$FX/good/facts.json" "$W/$1
 newplan() { cp "$FX/plan.md" "$W/$1.md"; }
 page() { "$PY" "$S/check_page.py" "$W/$1/page.md" --plan "${2:-$FX/plan.md}" --no-lint "${@:3}"; }   # lint is on by default: the contract tests opt out
 pagel() { "$PY" "$S/check_page.py" "$W/$1/page.md" --plan "${2:-$FX/plan.md}" "${@:3}"; }          # lint on (default)
+# mkaccept DIR FIXTURE  -> $W/DIR/acceptance.json with the current page.md hash substituted
+mkaccept() { "$PY" - "$W/$1" "$FX/acceptance/$2.json" <<'PYA'
+import hashlib, sys
+d, f = sys.argv[1:3]
+sha = hashlib.sha256(open(d + "/page.md", "rb").read()).hexdigest()
+open(d + "/acceptance.json", "w", encoding="utf-8").write(open(f, encoding="utf-8").read().replace("@SHA@", sha))
+PYA
+}
 # mkreview DIR FIXTURE  -> $W/DIR/review.json with the current page.md hash substituted
 mkreview() { "$PY" - "$W/$1" "$FX/review/$2.json" <<'PYR'
 import hashlib, sys
@@ -288,6 +296,52 @@ expect "review: --review explicit path" 1 'ERROR review:R1' page rv9 "$FX/plan.m
 newpage rv10; mkreview rv10 waived
 page rv10 "$FX/plan.md" --json $W/rv10.json >/dev/null 2>&1
 "$PY" -c "import json;r=json.load(open('$W/rv10.json'))['review'];assert r=={'present':True,'reviewer':'test-reviewer','blockers':0,'warnings':0,'waived':1,'stale':False},r" && ok "review: --json report block" || bad "review: --json block" "bad json"
+
+echo "== check_page: acceptance.json merge =="
+newpage ac0
+expect "accept: missing -> ACCEPT_MISSING warning only" 0 ACCEPT_MISSING page ac0
+newpage ac1; mkaccept ac1 pass
+expect "accept: all pass, live call needs a person -> PASS" 0 PASS page ac1
+expect "accept: ...needs_person is a warning" 0 'WARN  ACCEPT_NEEDS_PERSON' page ac1
+expect "accept: ...summary" 0 '0 failed blocker(s), 0 failed warning(s), 1 need a person, 0 waived' page ac1
+newpage ac2; mkaccept ac2 pass; mut $W/ac2/page.md 'Other Cloud' 'Other Cloud X'
+expect "accept: page edited after review -> ACCEPT_STALE" 1 ACCEPT_STALE page ac2
+newpage ac3; mkaccept ac3 pass
+jmut $W/ac3/acceptance.json 'it=[x for x in d["items"] if x["id"]=="G5"][0]; it.update(result="fail", location="M2", evidence="Acme Cloud is the cheapest listed endpoint.", fix_instruction="Match the table.")'
+expect "accept: failed blocker item -> ERROR accept:G5" 1 'ERROR accept:G5' page ac3
+expect "accept: ...evidence found" 1 '!ACCEPT_EVIDENCE_NOT_FOUND' page ac3
+newpage ac4; mkaccept ac4 pass
+jmut $W/ac4/acceptance.json 'it=[x for x in d["items"] if x["id"]=="G10"][0]; it.update(result="fail", location="M4", evidence="not on the page at all", fix_instruction="Add the fact.")'
+expect "accept: failed warning item -> warning, PASS" 0 'WARN  accept:G10' page ac4
+expect "accept: ...evidence not on page -> warning" 0 ACCEPT_EVIDENCE_NOT_FOUND page ac4
+newpage ac5; mkaccept ac5 pass
+jmut $W/ac5/acceptance.json 'it=[x for x in d["items"] if x["id"]=="G5"][0]; it.update(result="fail", location="M2", evidence="Acme Cloud is the cheapest listed endpoint.", fix_instruction="Match the table.", waived_by="Roger", waiver_note="Checked.")'
+expect "accept: waived failed blocker -> PASS" 0 '1 waived' page ac5
+newpage ac6; mkaccept ac6 pass; jmut $W/ac6/acceptance.json 'd["items"]=[x for x in d["items"] if x["id"]!="TXT-2"]'
+expect "accept: unanswered item -> ACCEPT_INCOMPLETE" 1 'ACCEPT_INCOMPLETE.*TXT-2' page ac6
+newpage ac7; mkaccept ac7 pass; jmut $W/ac7/acceptance.json 'd["items"][0]["result"]="ok"'
+expect "accept: bad result -> ACCEPT_INVALID" 1 ACCEPT_INVALID page ac7
+newpage ac8; mkaccept ac8 pass; jmut $W/ac8/acceptance.json 'd["items"][0].update(result="fail", evidence="x")'
+expect "accept: fail without fix_instruction -> ACCEPT_INVALID" 1 ACCEPT_INVALID page ac8
+newpage ac9; mkaccept ac9 pass; jmut $W/ac9/acceptance.json 'd["items"][-1]["result"]="n/a"'
+expect "accept: n/a without note -> ACCEPT_INVALID" 1 ACCEPT_INVALID page ac9
+newpage ac10; mkaccept ac10 pass; jmut $W/ac10/acceptance.json 'd["items"].append(dict(d["items"][0]))'
+expect "accept: item answered twice -> ACCEPT_INVALID" 1 ACCEPT_INVALID page ac10
+newpage ac11; mkaccept ac11 pass; jmut $W/ac11/acceptance.json 'd["entity_type"]="image"'
+expect "accept: checked as another entity_type -> ACCEPT_WRONG_TYPE" 1 ACCEPT_WRONG_TYPE page ac11
+newpage ac12; mkaccept ac12 pass; jmut $W/ac12/acceptance.json 'd["items"].append({"id": "IMG-1", "result": "pass"})'
+expect "accept: item for another type -> ACCEPT_UNKNOWN_ITEM warning" 0 ACCEPT_UNKNOWN_ITEM page ac12
+newpage ac13; mkaccept ac13 pass; mv $W/ac13/acceptance.json $W/ac13/other.json
+expect "accept: --acceptance explicit path" 0 'test-acceptor' page ac13 "$FX/plan.md" --acceptance $W/ac13/other.json
+newpage ac14; mkaccept ac14 pass
+page ac14 "$FX/plan.md" --json $W/ac14.json >/dev/null 2>&1
+"$PY" -c "import json;a=json.load(open('$W/ac14.json'))['acceptance'];assert a=={'present':True,'reviewer':'test-acceptor','blockers':0,'warnings':0,'needs_person':['G12'],'waived':0,'stale':False},a" && ok "accept: --json report block" || bad "accept: --json block" "bad json"
+"$PY" - "$S" "$HERE/../references/acceptance.md" <<'PYC' && ok "accept: every checklist id is documented in acceptance.md" || bad "accept: ids vs acceptance.md" "see above"
+import re, sys; sys.path.insert(0, sys.argv[1]); import check_page as c
+doc = open(sys.argv[2], encoding="utf-8").read()
+ids = set(re.findall(r"^\| `?([A-Z]+-?\d+)`? \| (blocker|warning) \|", doc, re.M))
+assert ids == {(i, sev) for i, (_, sev) in c.ACCEPT_ITEMS.items()}, ids ^ {(i, sev) for i, (_, sev) in c.ACCEPT_ITEMS.items()}
+PYC
 
 echo "== gaps =="
 newpage g0; expect "gaps: good page logs its gaps" 0 '!UNLOGGED_GAP' page g0
