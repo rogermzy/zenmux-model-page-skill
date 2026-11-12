@@ -1,28 +1,42 @@
 {
-  "reviewed_at": "2026-11-01T13:25:43Z",
-  "reviewer": "gpt-6.1-sol via Codex CLI 0.160.1 (fresh context; different model family from the writer, Claude)",
-  "page_sha256": "8d578d46c072fb2b57285b8ab28ad5896b7684fa7824c4c1215c005439d45163",
+  "reviewed_at": "2026-11-12T04:17:49Z",
+  "reviewer": "claude-opus-5-5",
+  "page_sha256": "0c9a80459abddd3587512e01e04766750e1aefb82fe9b5a1b0a69d98bc7597f9",
   "violations": [
     {
       "rule": "C7",
       "severity": "warning",
-      "location": "GPT Image 2 Capabilities & Use Cases sent#7",
-      "evidence": "gpt-image-2 accepts any size that meets four rules.",
-      "fix_instruction": "Combine the following three sentences into one sentence listing all four size constraints immediately after this sentence."
+      "location": "GPT Image 2 Capabilities & Use Cases sent#2",
+      "evidence": "ZenMux lists streaming parameters for both providers.",
+      "fix_instruction": "Name the parameters in the same sentence: \"ZenMux lists the streaming parameters `stream` and `partial_images` for both providers.\""
+    },
+    {
+      "rule": "C3",
+      "severity": "warning",
+      "location": "GPT Image 2 Capabilities & Use Cases sent#3",
+      "evidence": "Its Images guide documents reference-image and mask edits on this protocol.",
+      "fix_instruction": "Sentences 2-4 each open with a new source (streaming parameters, Images guide, OpenAI's model page) and \"this protocol\" has no antecedent. Name the protocol and tie it to the prior sentence, e.g. \"On the OpenAI Images protocol, ZenMux's Images guide documents reference-image and mask edits.\""
+    },
+    {
+      "rule": "D5",
+      "severity": "warning",
+      "location": "GPT Image 2 Capabilities & Use Cases sent#13",
+      "evidence": "Larger sizes cost more, and ZenMux marks sizes above 2560x1440 as experimental.",
+      "fix_instruction": "Follow \"Larger sizes cost more\" with the mechanism or a number (e.g. more image output tokens per image, with an example price at two sizes), or delete the clause; the page's own estimates show 1536x1024 cheaper than 1024x1024 for GPT Image 2."
     },
     {
       "rule": "A5",
       "severity": "warning",
-      "location": "GPT Image 2 Capabilities & Use Cases sent#28",
-      "evidence": "ZenMux lists partial-image streaming for a more real-time generation experience.",
-      "fix_instruction": "Replace the unspecified comparison with the mechanism: partial-image streaming returns intermediate images before the final image."
+      "location": "Compare GPT Image 2 Alternatives sent#6",
+      "evidence": "OpenAI's estimates are lower there.",
+      "fix_instruction": "Name both models and the criterion: \"At 1024x1024 in medium or high quality, OpenAI's per-image estimates for GPT Image 1.5 are lower than for GPT Image 2.\""
     },
     {
-      "rule": "F6",
+      "rule": "A5",
       "severity": "warning",
-      "location": "Related Models & Guides sent#1",
-      "evidence": "[Qwen Image 2.0](/qwen/qwen-image-2.0)",
-      "fix_instruction": "Introduce Qwen Image 2.0 in plain text as another image model listed for generate_images before linking its name."
+      "location": "Compare GPT Image 2 Alternatives sent#8",
+      "evidence": "Its estimates are lower in the other four combinations listed",
+      "fix_instruction": "Name both models: \"OpenAI's per-image estimates for GPT Image 2 are lower than for GPT Image 1.5 in the other four size and quality combinations listed.\""
     }
   ]
 }
