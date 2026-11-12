@@ -228,6 +228,29 @@ newpage al2; mut $W/al2/page.md 'entity_type: text' $'entity_type: text\nentity_
 expect "page: entity_aliases comma string accepted" 0 '!FRONT_MATTER_INVALID' pagel al2
 newpage al3; mut $W/al3/page.md 'entity_type: text' $'entity_type: text\nentity_aliases: [Model 7.5, A7]'
 expect "page: 2-char alias rejected" 1 FRONT_MATTER_INVALID pagel al3
+
+echo "== check_page: no disclaimers / third-party voice / production notes (rule 20) =="
+S1='Acme Model 7.5 is a fictional text model.'
+expect "page: labels in table cells pass (good page has no NOTE_)" 0 '!NOTE_' pagel g "$FX/plan.md"
+newpage n1; mut $W/n1/page.md "$S1" "$S1 The served revision cannot be determined."
+expect "page: 'cannot be determined' -> NOTE_DISCLAIMER" 1 'ERROR NOTE_DISCLAIMER' pagel n1
+expect "page: ...--no-lint skips NOTE_ checks" 0 '!NOTE_' page n1
+newpage n2; mut $W/n2/page.md "$S1" "$S1 Acme Cloud is not the same as Other Cloud."
+expect "page: 'not the same as' -> NOTE_DISCLAIMER" 1 'ERROR NOTE_DISCLAIMER' pagel n2
+newpage n3; mut $W/n3/page.md "$S1" "$S1 Acme Model 7.5 is widely regarded as reliable, according to users."
+expect "page: hearsay / reviewer voice -> NOTE_THIRD_PARTY" 1 'ERROR NOTE_THIRD_PARTY' pagel n3
+newpage n4; mut $W/n4/page.md "$S1" "$S1 建议这样表述：Acme Model 7.5 is a text model."
+expect "page: '建议这样表述' production note -> NOTE_EDITORIAL" 1 'ERROR NOTE_EDITORIAL' pagel n4
+newpage n5; mut $W/n5/page.md "$S1" "$S1 Acme Model 7.5 尚未核实，仅供参考。"
+expect "page: '尚未核实' / '仅供参考' -> NOTE_DISCLAIMER" 1 'ERROR NOTE_DISCLAIMER' pagel n5
+newpage n6; mut $W/n6/page.md "$S1" "$S1 The served revision is Not verified. <!-- gap: other-output -->"
+expect "page: missing-value label in a prose sentence -> NOTE_LABEL_IN_PROSE" 1 'ERROR NOTE_LABEL_IN_PROSE' pagel n6
+newpage n7; mut $W/n7/page.md 'fictional text model; this page' 'fictional text model; output price Not published; this page'
+expect "page: missing-value label in meta_description -> NOTE_LABEL_IN_PROSE" 1 'ERROR NOTE_LABEL_IN_PROSE' pagel n7
+newpage n8; mut $W/n8/page.md '| Other Cloud | $3.33 |' '| Other Cloud (as listed) | $3.33 |'
+expect "page: disclaimer inside a table cell -> NOTE_DISCLAIMER" 1 'ERROR NOTE_DISCLAIMER' pagel n8
+newpage n9; mut $W/n9/page.md "$S1" "Acme Model 7.5, also known as Acme Seven, is a fictional text model. Acme documents its rates."
+expect "page: plain attribution and 'also known as' are not notes" 0 '!NOTE_' pagel n9
 "$PY" - "$S" <<'PY' && ok "page: lint config = entity+aliases, central_entity, H1 as primary_keyword" || bad "page: lint_config" "see above"
 import sys; sys.path.insert(0, sys.argv[1]); import check_page as c
 cfg = c.lint_config("<!-- module: M1 shown -->\n```\n# not me\n```\n# Acme Model 7.5 API\n\ntext\n", "Acme Model 7.5", ["Acme-7.5"], "en")

@@ -43,7 +43,16 @@ facts: facts.json
   no facts must be hidden.
 - A shown module with an `h2` pattern starts with an `##` heading matching it.
 - `default_endpoint` ≠ `auto`: every price shown in M1 belongs to a fact of that endpoint.
-  `auto`: M1 states that version/price can vary by the endpoint hit.
+  `auto`: M1 states as a fact that the version and price follow the endpoint a request is routed
+  to, and points to the per-endpoint table ("ZenMux routes each request to one of the 6 endpoints
+  below; the version and price of each are in its row; the price varies by endpoint"). No "may
+  vary" hedge.
+- **Labels only in table cells.** A missing-value label (`Not verified`, `Not published`,
+  `No data`) is a value: it appears only in a table cell, never inside a prose sentence, a list
+  item, an FAQ answer, the title or the meta description (`NOTE_LABEL_IN_PROSE`). A sentence whose
+  only content is that a value is unknown, unverified or unpublished is deleted. Its gap stays in
+  `facts.json`; put the gap marker on the table cell for that value, or as a bare
+  `<!-- gap: id -->` comment on the line where the value would have been stated.
 - **Gap markers.** Every line that shows a missing-value label (`Not verified`, `Not published`,
   `No data`, or any other value in the spec's `missing_value_labels`) carries an invisible
   `<!-- gap: <id> -->` (several: `<!-- gap: a, b -->`) naming entries in facts.json `gaps[]`.
@@ -91,6 +100,36 @@ between a sentence rule and a page rule, the page rule wins only where it says s
 - **Links:** real paths only (hub, related models, docs). No `#`, no "click here" anchors.
 - No superlatives without a source; no marketing claims the facts don't carry.
 - **Voice:** neutral and third person ("ZenMux lists…", "DeepSeek documents…"). No "we/our".
+- **No disclaimers, third-party voice or production notes** (SKILL.md rule 8; checked by
+  `check_page.py` as `NOTE_*` errors and by the review as `N1`). The page states facts and stops.
+  Rewrite or remove, without exception:
+  - *Vague disclaimers and uncertainty notes:* "cannot be determined / confirmed", "not yet
+    verified", "unverified", "is not the same as / does not mean", "may / can vary", "subject to
+    change", "for reference only", "as listed", "in the sources checked", "at the time of
+    writing", "X does not publish / state Y", "no published end date", "it is unclear whether",
+    "verify / test before relying on it". Chinese pages: 无法确定, 尚未核实, 未经证实, 不等同于,
+    不代表, 仅供参考, 以…为准, 可能有所不同, 截至撰写时, 请自行核实.
+  - *Third-party or reviewer voice:* the page is ZenMux's own page, not a review of it. No "ZenMux
+    says / claims / states / describes / calls", "according to ZenMux / users / reviewers", "is
+    widely regarded / considered as", "reportedly", "users report", "a solid choice", "worth
+    considering", "in our tests", "we found". Chinese: 被认为, 业内普遍认为, 据用户反馈, 口碑,
+    评测显示, 值得一试. State ZenMux's data directly ("ZenMux lists $8 per million input
+    tokens"); attribute developer facts with a plain verb ("OpenAI documents…").
+  - *Production notes:* text meant for the writer or editor: "suggested wording", "建议这样表述",
+    "rephrase as", "TODO", "TBD", "to be confirmed", "待确认", "Note:", "备注：".
+  - *Data-assurance tails:* a sentence after a statement that explains how reliable, complete or
+    current its data is, or limits the reader's reliance on it ("These are estimates and leave
+    out…", "Prices can change; check the provider's page"). Keep the statement, delete the tail.
+    A condition that changes the value (peak hours, cache hit, a promotion) is part of the fact
+    and stays with the number: that is a condition, not a disclaimer. Where the template asks
+    to keep two things apart (M5: "TTFT != total latency", "request success rate != time-based
+    uptime"), define what each metric measures ("Time to first token measures the wait until
+    the first output token arrives") instead of writing "X is not Y". The time window and date
+    of the data are stated once, as facts ("These figures date from 2026-10-28"), with no
+    "they change every hour" tail.
+
+  Fix a hit by rewriting the sentence as a plain attributed fact or by deleting it. A synonym
+  that slips past the pattern is still a violation.
 
 ### Sentence rules (Wendy Writes constitution, adapted for model pages)
 
@@ -100,7 +139,7 @@ review step (`references/review.md`); `—` = writer discipline only.
 | # | Rule | On a model page | Checked by |
 |---|---|---|---|
 | 1 | **Answer first** | The first sentence under every H2/H3 answers that heading. No preamble, no restating the heading. A yes/no heading (FAQ "Does it support…?") opens with Yes or No. | review (A1, A3) |
-| 2 | **Certainty** | No hedges: might, maybe, perhaps, possibly, probably. Uncertainty is expressed with the missing-value labels and attribution ("DeepSeek documents…"), never with a hedge word. Keep "can/may/could" under 10% of sentences. | lint (B1, B3) |
+| 2 | **Certainty** | No hedges: might, maybe, perhaps, possibly, probably. An unknown value is a missing-value label in its table cell; prose never discusses the uncertainty (rule 20). Attribute sourced facts ("DeepSeek documents…"). Keep "can/may/could" under 10% of sentences. | lint (B1, B3) |
 | 3 | **Exact numbers** | No "many / several / various / a lot" before something countable. Use the fact's number, or name the items. No number in the ledger → a missing label, not a vague word. | lint (B2) |
 | 4 | **Literal, domain-precise** | No metaphors or analogies. No "however / moreover / additionally" sentence openers. Precise verbs (route, bill, cache, stream, poll, deploy) instead of make/do/get. | lint (E5, C6), review (E6) |
 | 5 | **One fact per sentence** | Short sentences, one fact each; ≤ 30 words. Vary the length (a few short sentences between longer ones); paragraphs ≤ 4 sentences / 90 words. Active voice (passive ≤ 15%). | lint (C4, C5, C7, E3) |
@@ -118,6 +157,7 @@ review step (`references/review.md`); `—` = writer discipline only.
 | 17 | **Opening paragraph** | The paragraph under the H1 names the model, says what it does and what the page answers (pricing and providers, API usage), in ≤ 3 sentences; its first sentence contains the model name. | lint (G1a: name in H1 and first sentence), review (D2, D8) |
 | 18 | **Comparisons are complete** | A comparison names both models, the criterion and the direction ("V4.1 Flash lists a lower input price than V4 Pro on the DeepSeek endpoint"). No bare "better". | review (A5) |
 | 19 | **Claims carry evidence** | A claim is followed within 2 sentences by a fact, an example or the mechanism. Superlatives only with a sourced reason. | review (D5, B5) |
+| 20 | **Statement, then stop** | No vague disclaimer, third-party or reviewer voice, production note, or data-assurance sentence after a statement; no missing-value label inside a sentence. Rewrite as a plain attributed fact or delete (page rule "No disclaimers…"). | check_page (NOTE_*), review (N1) |
 
 Banned phrases (lint E2) include "in today's fast-paced world", "delve", "unlock",
 "navigate the landscape", "it's important to note". Write plainly.

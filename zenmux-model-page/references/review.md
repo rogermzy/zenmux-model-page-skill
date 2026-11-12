@@ -2,7 +2,9 @@
 
 Adapted from the Wendy Writes judge (`judge.py`, 14 semantic rules). It covers the sentence
 rules a script can't check: answer-first, opening paragraph, staying on topic, evidence after
-claims, comparisons, superlatives, metaphors, plurals, list parallelism, define-before-link.
+claims, comparisons, superlatives, metaphors, plurals, list parallelism, define-before-link, and
+(rule N1, added for model pages) disclaimers, reviewer voice and production notes that the
+`NOTE_*` patterns in `check_page.py` miss.
 `check_page.py` reads the result (`review.json`) and fails the page on any unwaived blocker.
 
 ## Who reviews
@@ -35,7 +37,9 @@ PAGE CONVENTIONS (not violations):
 - The front matter (title, meta_description and the other keys between the --- lines) is not
   prose. Never flag its length: long titles and descriptions are intended.
 - "Not published", "Not verified", "No data", "Varies by provider" are the template's required
-  labels for missing or uncertain values. They are not hedges and not unsupported claims.
+  labels for missing or uncertain values. In a table cell they are not hedges and not unsupported
+  claims. Inside a prose sentence, list item or FAQ answer, a missing-value label is an N1
+  violation.
 - Module order is fixed by the approved template (the context block lists it). Never flag
   section order (D7) for a page that follows that order.
 - Tables, code blocks and link-only lines (CTAs, "Sources:" lines) are exempt from sentence
@@ -111,6 +115,27 @@ FAIL; quote the inconsistent items.
 A concept is explained in plain text before a link is placed on it. A link on a term's first,
 unexplained mention = FAIL. Links to docs for the model ID, endpoint or a named ZenMux feature
 already introduced in the sentence pass.
+
+[N1] NO DISCLAIMERS, THIRD-PARTY VOICE OR PRODUCTION NOTES (blocker, per sentence)
+The page is ZenMux's own model page. It states facts and stops. FAIL any sentence or table-cell
+text that is:
+- a vague disclaimer or uncertainty note: says a value cannot be determined, is not yet verified,
+  is unclear, may vary, is subject to change, is "not the same as" something, is for reference
+  only, or was not found "in the sources checked"; says a source does not publish or state
+  something; or tells the reader to verify or test before relying on it. Chinese equivalents:
+  无法确定, 尚未核实, 不等同于, 仅供参考, 以…为准;
+- a third-party or reviewer voice: ZenMux "says / claims / describes" its own data, hearsay
+  ("users report", "is widely regarded as", "reportedly"), or an evaluator's judgment ("a solid
+  choice", "worth considering", "in our tests");
+- a production note meant for the writer or editor: suggested wording ("建议这样表述"),
+  "rephrase as", TODO/TBD, "to be confirmed", "Note:";
+- a data-assurance tail: a sentence after a statement that explains how reliable, complete or
+  current that statement's data is, or limits reliance on it ("These are estimates and leave
+  out…", "Prices can change; check the provider's page");
+- a sentence or FAQ answer built around a missing-value label ("The revision is Not verified").
+NOT N1: plain attribution of a sourced fact ("OpenAI documents…", "ZenMux lists…"); a condition
+that changes the value and sits with the number (peak hours, cache hit, promotion); a missing-value
+label in a table cell. fix_instruction: the plain factual rewrite, or "delete the sentence".
 
 OUTPUT SCHEMA (strict):
 {"violations": [{"rule": "A1", "severity": "blocker" | "warning" | "info",

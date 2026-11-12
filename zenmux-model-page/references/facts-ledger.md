@@ -83,7 +83,9 @@ A gap is anything the page writer needed and could not state as a fact: the clie
 doesn't publish it, says it two different ways, disagrees with the model developer's docs, shows
 a value that looks wrong, or only draws it with JavaScript (invisible in the HTML search engines
 read first). Each gap is logged once here; every page line that shows `Not verified` /
-`Not published` / `No data` points to it with `<!-- gap: id -->` (see page-format.md).
+`Not published` / `No data` points to it with `<!-- gap: id -->` (see page-format.md). The page
+shows those labels only in table cells and never explains a gap in prose; a gap with no table
+slot is referenced by a bare marker comment and lives on in `site-fix-requests.md`.
 `scripts/site_fixes.py` collects the client-owned gaps from all pages into
 `site-fix-requests.md`: the change requests for the ZenMux site team.
 
@@ -103,5 +105,5 @@ read first). Each gap is logged once here; every page line that shows `Not verif
 | `priority` | `high` (wrong or contradictory price/ID/version on a live page) · `medium` · `low`. |
 | `status` | `open` → `sent` → `resolved`. On `resolved`, update the fact and the page, and drop the marker. |
 
-Rules: never resolve a gap by picking a side. A contradiction stays `Not verified` on the page
+Rules: never resolve a gap by picking a side. A contradiction stays `Not verified` in its table cell
 until the client answers. A gap is not a fact: nothing in `gaps[]` may supply a number to the page.

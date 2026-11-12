@@ -76,8 +76,8 @@ in the report.
 |---|---|
 | VERIFIED | Set `verdict: "VERIFIED"`. Nothing else. |
 | REFUTED | Fix the fact (value, label, condition or source) to what the source supports, fix every place the page uses it, set the verdict on the corrected fact, then re-run `check_page.py`. A page that still uses a REFUTED fact fails the check. |
-| NUANCED | Narrow the wording to the source: attribute it ("DeepSeek documents …"), scope it ("on Chat Completions"), or add the condition. Put the reason in the fact's `note`. |
-| UNVERIFIABLE | Set the verdict. The page shows `Not verified` for it, and it goes on the report's list for a person to decide. Never upgrade it yourself. |
+| NUANCED | Narrow the wording to the source: attribute it ("DeepSeek documents …"), scope it ("on Chat Completions"), or add the condition. Never narrow it with a disclaimer ("may vary", "not the same as", "in the sources checked"). Put the reason in the fact's `note`. |
+| UNVERIFIABLE | Set the verdict. The page shows `Not verified` in that value's table cell, or deletes the sentence that stated it (no "could not be verified" prose: page-format rule 20), and it goes on the report's list for a person to decide. Never upgrade it yourself. |
 
 Problems that point at ZenMux's own site go into `gaps[]` too, not only into the report. Examples:
 an inconsistency between two ZenMux pages, a value the checker couldn't confirm anywhere, or a

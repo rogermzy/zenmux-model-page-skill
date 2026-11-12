@@ -22,8 +22,9 @@ shell, outbound HTTPS, and ideally web search for finding developer docs. No oth
    `Not verified`, `No data`). Writing a remembered value and attaching a source is the same
    violation. Invented model names, aliases or version numbers too.
 2. **Developer docs never override ZenMux's own data silently.** When ZenMux's page, ZenMux's
-   docs and the model developer's docs disagree, the page shows the missing/`Not verified` label
-   for that value and a gap records both quotes. Don't pick a side.
+   docs and the model developer's docs disagree, the value's table cell shows the missing/`Not
+   verified` label (or the value is left out) and a gap records both quotes. Don't pick a side,
+   and don't explain the disagreement on the page (rule 8).
 3. **Hidden beats empty.** Conditional modules show only when their `show_if` is met by facts in
    the ledger. Never show `$0`, `100%`, an empty chart or a generic leaderboard as filler.
 4. **Never skip the checks.** `check_page.py` must PASS (facts, structure, writing lint and
@@ -39,6 +40,25 @@ shell, outbound HTTPS, and ideally web search for finding developer docs. No oth
    `gaps[]` with quotes. These become the site-fix list for the ZenMux site team.
 7. **Unsupported model types stop.** Transcription, embeddings, rerank and other types have no
    template. Say so and stop; don't improvise one.
+8. **No disclaimers, third-party voice or production notes on the page.** The page states facts
+   and stops. Rewrite or remove every:
+   - vague disclaimer or uncertainty note: "cannot be determined", "not yet verified", "is not
+     the same as", "may vary", "subject to change", "in the sources checked", "X does not
+     publish Y", "check before relying on it" (Chinese pages: 无法确定, 尚未核实, 不等同于,
+     仅供参考, 以…为准);
+   - third-party or reviewer voice: "ZenMux says / claims / describes", "according to users",
+     "is widely regarded as", "a solid choice", "in our tests";
+   - production note meant for the writer or editor: "suggested wording", "建议这样表述",
+     TODO, "to be confirmed", "Note:";
+   - sentence after a statement that explains how reliable or complete its data is, or
+     disclaims it ("The figures are estimates and leave out…", "Prices can change; verify with
+     the provider").
+
+   Missing-value labels (`Not verified`, `Not published`, `No data`) appear only as values in
+   table cells, never inside a prose sentence. If a sentence's only content is that something is
+   unknown, unverified or unpublished, delete it. The gap stays in `facts.json`, and the gap
+   marker moves to the table cell or line where the value would be. Attribution stays
+   ("DeepSeek documents …", "ZenMux lists …"): naming a fact's source is not a disclaimer.
 
 ## Read before working
 
@@ -46,7 +66,7 @@ shell, outbound HTTPS, and ideally web search for finding developer docs. No oth
 |---|---|
 | `references/plan.md` | Always. Appendix A (JSON) = module order, fields, rules, `show_if`, `entity_variants`, missing labels. Part 4 = per-type rules and acceptance. |
 | `references/facts-ledger.md` | Before touching `facts.json` (schema for facts and gaps). |
-| `references/page-format.md` | Before writing `page.md` (front matter, module markers, page rules, and the 19 sentence rules from the Wendy Writes writing constitution). |
+| `references/page-format.md` | Before writing `page.md` (front matter, module markers, page rules, and the 20 sentence rules: 19 from the Wendy Writes writing constitution plus rule 20, no disclaimers or production notes). |
 | `references/fact-check.md` | At the fact-check step. |
 | `references/review.md` | At the writing-review step (the reviewer prompt and `review.json`). |
 | `examples/deepseek-v4-pro/`, `examples/gpt-image-2/` | Finished pages (text, image) with their ledgers and reports. Match their quality, not their facts. |
@@ -142,12 +162,15 @@ example, generation time; audio: voices/languages/limits, not Chat).
 ### 5. Write page.md
 
 Follow `references/page-format.md`, module by module in template order, in English, applying
-both the page rules and the 19 sentence rules as you write (it is cheaper than fixing them
+both the page rules and the 20 sentence rules as you write (it is cheaper than fixing them
 later). Every number you type must already be a fact's `display` value (or one of its
 `aliases`). Missing value → the template's label plus `<!-- gap: <id> -->` on the same line
 (inside the table cell for tables). FAQ answers restate facts already on the page; never a
 second hand-typed copy. Set `entity_aliases` in the front matter to the short names the page
 really uses for the model (e.g. `[V4 Pro]`), so paragraph openers using them count.
+Write each statement once and stop: no disclaimer, hedge, data-reliability caveat or note to
+the editor after it, and no missing-value label in a sentence (rule 8). An unknown value goes in
+its table cell as the label; prose about it is deleted, not softened.
 Write the `title` and `meta_description` long: there is no character limit, and more name
 variants and related entities (model ID, aliases, revision, developer, providers, billing
 conditions, context, capabilities, example languages) are better. Never trim them to a length.
@@ -165,7 +188,11 @@ Common errors: a number with no fact (`UNTRACED_NUMBER`), a quote not found in i
 (`QUOTE_NOT_FOUND`), a missing label with no gap behind it (`UNLOGGED_GAP`), a module out of
 order or missing its marker, and `lint:<rule>` blockers from the writing lint (a paragraph
 opening with It/This, a hedge word, a banned phrase, a link on a paragraph's first word, the
-model name missing from the H1 or the first sentence). `lint:<rule>` warnings (passive voice,
+model name missing from the H1 or the first sentence), and rule 8 errors: `NOTE_DISCLAIMER`,
+`NOTE_THIRD_PARTY`, `NOTE_EDITORIAL` (a disclaimer, reviewer voice or production note) and
+`NOTE_LABEL_IN_PROSE` (a missing-value label inside a sentence). Fix those by rewriting the
+sentence as a plain attributed fact or deleting it, never by finding a synonym that slips past the
+pattern. `lint:<rule>` warnings (passive voice,
 generic verbs, uniform sentence length, long paragraphs, paragraphs not opening with the model
 name) are the same rules at lower severity: fix them unless the fix makes a sentence worse.
 `REVIEW_MISSING` is expected until step 8.

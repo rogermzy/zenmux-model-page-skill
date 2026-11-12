@@ -11,7 +11,8 @@ Usage:
 
 Enforces (references/page-format.md, facts-ledger.md, template-spec.md): front matter, title/H1
 patterns, one marker per spec module in order, required/conditional/hidden rules, h2 patterns,
-facts.json validity, gap logging (every Not verified / Not published / No data line carries a
+facts.json validity, no disclaimers / third-party voice / production notes / missing-value labels in prose
+(NOTE_*, with lint), gap logging (every Not verified / Not published / No data line carries a
 <!-- gap: id --> marker that resolves to facts.json gaps[]), number provenance (every number token must be a fact's `display` or alias,
 verbatim), fact source/quote traceability against snapshots (--sources; default
 <plan dir>/sources/index.json), M1 price endpoint, status tables, derived_from, secrets, links, open placeholders.
@@ -580,6 +581,7 @@ def check(page_path: Path, plan_path: Path, facts_arg, allow_draft, do_lint, sou
 
     body = "\n".join(lines[body_start:])
     if do_lint:
+        check_notes(lines, fence_flag, body_start, labels, fm, E)
         cfg = lint_config(body, entity, aliases, fm.get("language") or spec.get("page_language") or "en")
         run_lint(body, cfg["language"], W, E, cfg)
     review_block(page_path, text, review_arg, rep, E, W)
@@ -646,6 +648,121 @@ def check_sources(flist, sources_arg, plan_path, E, W):
 # are nav/fit lists), E7 wants inline [CITE] markers (numbers are traced through facts.json here).
 LINT_SKIP_RULES = {"A4", "E7"}
 _CTA_ROW = re.compile(r"^\s*(\[[^\]]+\]\([^)]+\)\s*[·|•,]?\s*)+$")
+
+
+# No disclaimers, production notes or third-party voice on the page (page-format.md, page rule
+# "No disclaimers or production notes"; sentence rule 20). Every hit is an ERROR: rewrite the
+# sentence as a plain attributed fact or remove it. The review (rule N1) catches what these
+# patterns can't, e.g. a statement followed by a sentence about how reliable its data is.
+# English patterns are case-insensitive; the template's missing-value labels are blanked out
+# before matching, so they are judged only by NOTE_LABEL_IN_PROSE.
+NOTE_PATTERNS = {
+    "NOTE_EDITORIAL": [  # notes to the writer/editor left in the copy
+        r"\b(?:suggest(?:ed)?|recommend(?:ed)?|proposed|preferred) (?:phrasing|wording|copy)\b",
+        r"\b(?:we )?(?:suggest|recommend) (?:phrasing|wording|saying|writing|stating)\b",
+        r"\b(?:rephrase|reword) (?:as|to|this)\b",
+        r"\b(?:TODO|TBD|FIXME)\b",
+        r"\b(?:to be|pending|needs?|awaiting) (?:confirm|verif|check)\w*",
+        r"\bnote to (?:editor|self|reviewer|writer)\b",
+        r"^\W*(?:editor'?s |writer'?s |internal |production )?note\s*:",
+        r"建议(?:这样|如此|按此|如下)?(?:表述|措辞|写法|写成|改为|改写)", r"待(?:确认|核实|核查|补充|定)",
+        r"(?:备注|编者按|编辑注|写作说明|制作说明)\s*[:：]", r"^\W*注\s*[:：]",
+    ],
+    "NOTE_DISCLAIMER": [  # vague disclaimers, uncertainty statements, data-reliability caveats
+        r"\b(?:can ?not|can'?t|could not|couldn'?t|unable to) (?:be )?(?:determined?|confirm(?:ed)?|verif(?:y|ied)|establish(?:ed)?)\b",
+        r"\b(?:not yet|has not been|have not been|hasn'?t been|haven'?t been|was not|wasn'?t|were not|weren'?t) (?:independently )?(?:verified|confirmed|checked|validated)\b",
+        r"\b(?:unverified|unconfirmed)\b",
+        r"\b(?:is|are) not (?:necessarily )?(?:the same as|equivalent to|equal to|identical to)\b",
+        r"\bnot (?:necessarily )?(?:the same|equivalent|identical)\b",
+        r"\b(?:does|do|did) not (?:necessarily )?(?:mean|imply|equal|guarantee|reflect)\b",
+        r"\b(?:doesn'?t|don'?t|didn'?t) (?:necessarily )?(?:mean|imply|equal|guarantee|reflect)\b",
+        r"\b(?:does|do|did) not (?:publish|state|say|document|disclose|specify)\b",
+        r"\b(?:doesn'?t|don'?t|didn'?t) (?:publish|state|say|document|disclose|specify)\b",
+        r"\bnot (?:publicly )?(?:published|documented|disclosed|stated|specified)\b",
+        r"\bno (?:published|public|official|documented|stated) \w+",
+        r"\b(?:sources?|pages?|docs?) (?:we )?(?:checked|reviewed|consulted)\b",
+        r"\b(?:at|as of) the time of (?:writing|checking|publication|review)\b",
+        r"\bas of (?:this|the) (?:writing|check|review)\b",
+        r"\bas listed\b(?! (?:in|on|below|above|under))",
+        r"\bsubject to change\b", r"\bfor reference only\b", r"\bat your own risk\b",
+        r"\b(?:may|might|can|could) (?:also )?(?:vary|differ|change)\b",
+        r"\b(?:no|without) guarantee\b", r"\bnot guaranteed\b",
+        r"\b(?:verify|confirm|check|test)\b[^.;]{0,60}\bbefore (?:relying|using|switching|deploying|production|going|you)\b",
+        r"\b(?:test|try|verify|check|confirm)\b[^.;]{0,30}\b(?:first|yourself|for yourself|on your own)\b",
+        r"\bpublish(?:es|ed)? no\b",
+        r"\b(?:last )?(?:checked|verified|reviewed|updated) (?:on|against|as of)\b",
+        r"\bplease (?:verify|confirm|check|note)\b",
+        r"\b(?:it is|it'?s) (?:unclear|not clear|uncertain)\b", r"\b(?:unclear|not clear|uncertain) (?:whether|if|how|what|when)\b",
+        r"\bto the best of (?:our|my) knowledge\b",
+        r"\bbased on (?:available|public|publicly available|current) (?:information|data|sources)\b",
+        r"\b(?:accuracy|completeness) (?:is not|isn'?t|cannot|can'?t|of this)\b",
+        r"无法(?:确定|确认|核实|核查|判断|保证)", r"(?:尚未|暂未|未经|未能|没有)(?:核实|确认|证实|验证|公开|公布)",
+        r"不等同于?", r"不等于", r"(?:并)?不代表", r"仅供参考", r"以.{0,10}为准",
+        r"可能(?:会)?(?:有所)?(?:不同|变化|变动|差异|调整)", r"不(?:作|做)?(?:任何)?保证",
+        r"截至(?:撰写|发稿|核查|发布|本文)", r"根据(?:现有|公开|目前)(?:信息|资料|数据)", r"请(?:自行)?(?:核实|确认|以)",
+        r"存在不确定性", r"尚不(?:清楚|明确)",
+    ],
+    "NOTE_THIRD_PARTY": [  # outside-reviewer / hearsay voice
+        r"\b(?:widely|generally|often|commonly)?\s?(?:regarded|viewed|praised|touted|hailed|seen) (?:as|to be)\b",
+        r"\b(?:widely|generally|often|commonly) considered\b", r"\bconsidered (?:one of|among|to be)\b",
+        r"\breportedly\b", r"\b(?:it is|it'?s) (?:said|reported|believed|claimed)\b",
+        r"\b(?:users|developers|reviewers|critics|testers|the community|many people|people) (?:say|said|report|reported|find|found|praise|praised|claim|claimed|consider|considered|describe|described|rate|rated)\b",
+        r"\baccording to (?:reviews?|users|reviewers|testers|the community|reports|observers|critics|third[- ]part(?:y|ies))\b",
+        r"\bin (?:our|my) (?:tests?|testing|experience|view|opinion|assessment)\b",
+        r"\b(?:we|I) (?:found|tested|believe|think|feel|consider)\b",
+        r"\b(?:a )?(?:solid|great|excellent|strong|decent|good|safe) (?:choice|option|pick|bet)\b",
+        r"\bworth (?:considering|trying|a look|a try)\b",
+        r"\bZenMux (?:says|said|claims|claimed|states|stated|notes|noted|admits|reports|reported|describes|calls)\b",
+        r"\baccording to ZenMux\b",
+        r"被(?:普遍|广泛)?(?:认为|视为|誉为|称为)", r"(?:普遍|业内|外界|社区)(?:认为|评价)", r"据(?:用户|开发者|社区|报道|称|悉|传)",
+        r"(?:用户|开发者|社区)(?:反馈|评价|普遍)", r"口碑", r"好评", r"评测(?:显示|认为|表明)",
+        r"我们(?:认为|发现|测试|觉得)", r"值得一试", r"(?:不错|理想|稳妥)的选择", r"ZenMux\s*(?:称|表示|声称|指出)",
+    ],
+}
+_NOTE_RX = {code: [re.compile(p, re.I | re.M) for p in pats] for code, pats in NOTE_PATTERNS.items()}
+_CODE_SPAN_RX = re.compile(r"`[^`\n]*`")
+
+
+def _note_hits(text, labels):
+    """(code, matched text) for each NOTE_PATTERNS family that hits `text`, after blanking the template's labels."""
+    for lb in labels:
+        text = text.replace(lb, " ")
+    out = []
+    for code, rxs in _NOTE_RX.items():
+        for rx in rxs:
+            m = rx.search(text)
+            if m:
+                out.append((code, m.group(0).strip()))
+                break
+    return out
+
+
+def check_notes(lines, fence_flag, body_start, labels, fm, E):
+    """No vague disclaimers, third-party voice or production notes (NOTE_EDITORIAL / NOTE_DISCLAIMER /
+    NOTE_THIRD_PARTY), and no missing-value label inside a prose sentence (NOTE_LABEL_IN_PROSE): a label is a
+    value, so it lives only in a table cell. Checks the title, meta_description and every line outside code
+    blocks and HTML comments. All findings are ERRORS."""
+    for key in ("title", "meta_description"):
+        val = str(fm.get(key) or "")
+        for code, hit in _note_hits(_CODE_SPAN_RX.sub(" ", val), labels):
+            E(code, f"front matter {key}: {hit!r} — remove it or state the fact plainly")
+        for lb in labels:
+            if lb in val:
+                E("NOTE_LABEL_IN_PROSE", f"front matter {key}: missing-value label {lb!r}; leave the unknown value out")
+    for i in range(body_start, len(lines)):
+        if fence_flag[i]:
+            continue
+        ln = _CODE_SPAN_RX.sub(" ", re.sub(r"<!--.*?-->", " ", lines[i]))
+        if not ln.strip():
+            continue
+        for code, hit in _note_hits(ln, labels):
+            E(code, f"{hit!r} in: {ln.strip()[:110]} — rewrite as a plain attributed fact or remove the sentence", i + 1)
+        if not ln.lstrip().startswith("|"):
+            for lb in labels:
+                if lb in ln:
+                    E("NOTE_LABEL_IN_PROSE", f"{lb!r} in a prose line: {ln.strip()[:110]} — a label belongs only in its "
+                      "table cell; remove the sentence (the gap stays in facts.json)", i + 1)
+                    break
 
 
 def lint_prose(body):

@@ -55,6 +55,16 @@ Codex CLI as the reviewer, end the command with `< /dev/null`
 (`codex exec -s read-only --skip-git-repo-check -o out.txt "<prompt>" < /dev/null`): without it,
 `codex exec` waits for stdin and never finishes in the background.
 
+## No disclaimers or production notes
+
+Pages state facts and stop. Vague disclaimers ("cannot be determined", "not yet verified",
+"is not the same as", "may vary", "for reference only"), third-party or reviewer voice
+("ZenMux says…", "users report…", "a solid choice"), production notes ("suggested wording",
+TODO, "to be confirmed") and sentences that follow a statement to caveat its data are rewritten
+as plain attributed facts or removed. Missing-value labels (`Not verified`, `Not published`,
+`No data`) appear only in table cells. `check_page.py` blocks these as `NOTE_*` errors and the
+writing review checks them as rule N1.
+
 ## What a person still decides
 
 - Whether to publish a page; the skill never marks one as ready while items are open.

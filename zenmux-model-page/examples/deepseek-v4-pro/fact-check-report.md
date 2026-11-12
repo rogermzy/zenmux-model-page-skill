@@ -14,7 +14,7 @@ Verdicts per fact are in `facts.json` (`verdict`, plus `note` on the NUANCED fac
 
 | Item | Finding | Page now says |
 |---|---|---|
-| DeepSeek endpoint "bills on the same two tiers" | The ZenMux peak bands (business minutes 60–240 and 360–600, weekdays 1–5) line up with DeepSeek's 01:00–04:00 / 06:00–10:00 UTC. ZenMux states no time zone and has no Chinese-public-holiday exception. | "line up with those hours; ZenMux does not state the time zone, or whether Chinese public holidays bill at the off-peak rate" |
+| DeepSeek endpoint "bills on the same two tiers" | The ZenMux peak bands (business minutes 60–240 and 360–600, weekdays 1–5) line up with DeepSeek's 01:00–04:00 / 06:00–10:00 UTC. ZenMux states no time zone and has no Chinese-public-holiday exception. | "line up with those hours"; the missing time zone and holiday rule are a gap (`time-schedule`), not page text |
 | Tencent / Baidu / Alibaba "trigger Not published" | The embedded data shows time-of-day bands. Tencent's bands are DeepSeek's but apply every day; Baidu and Alibaba split at business minute 840. No time zone is given. | "Time-of-day rates; schedule and time zone Not published" |
 | `version.deepseek` (0813) | DeepSeek's docs describe api.deepseek.com, not ZenMux's `deepseek` provider. ZenMux does title the model "0813". | Attributed: "DeepSeek documents DeepSeek-V4-Pro-0813 for its own API" |
 | Tool calling "on all endpoints" (parameter list) | `tools` appears in all 18 provider × protocol lists. `tool_choice` and `parallel_tool_calls` are missing from some Responses and Messages lists. | Detail narrowed to what each protocol lists |
