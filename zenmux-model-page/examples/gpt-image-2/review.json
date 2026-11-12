@@ -1,42 +1,6 @@
 {
-  "reviewed_at": "2026-11-12T04:17:49Z",
+  "reviewed_at": "2026-11-12T00:00:00Z",
   "reviewer": "claude-opus-5-5",
-  "page_sha256": "0c9a80459abddd3587512e01e04766750e1aefb82fe9b5a1b0a69d98bc7597f9",
-  "violations": [
-    {
-      "rule": "C7",
-      "severity": "warning",
-      "location": "GPT Image 2 Capabilities & Use Cases sent#2",
-      "evidence": "ZenMux lists streaming parameters for both providers.",
-      "fix_instruction": "Name the parameters in the same sentence: \"ZenMux lists the streaming parameters `stream` and `partial_images` for both providers.\""
-    },
-    {
-      "rule": "C3",
-      "severity": "warning",
-      "location": "GPT Image 2 Capabilities & Use Cases sent#3",
-      "evidence": "Its Images guide documents reference-image and mask edits on this protocol.",
-      "fix_instruction": "Sentences 2-4 each open with a new source (streaming parameters, Images guide, OpenAI's model page) and \"this protocol\" has no antecedent. Name the protocol and tie it to the prior sentence, e.g. \"On the OpenAI Images protocol, ZenMux's Images guide documents reference-image and mask edits.\""
-    },
-    {
-      "rule": "D5",
-      "severity": "warning",
-      "location": "GPT Image 2 Capabilities & Use Cases sent#13",
-      "evidence": "Larger sizes cost more, and ZenMux marks sizes above 2560x1440 as experimental.",
-      "fix_instruction": "Follow \"Larger sizes cost more\" with the mechanism or a number (e.g. more image output tokens per image, with an example price at two sizes), or delete the clause; the page's own estimates show 1536x1024 cheaper than 1024x1024 for GPT Image 2."
-    },
-    {
-      "rule": "A5",
-      "severity": "warning",
-      "location": "Compare GPT Image 2 Alternatives sent#6",
-      "evidence": "OpenAI's estimates are lower there.",
-      "fix_instruction": "Name both models and the criterion: \"At 1024x1024 in medium or high quality, OpenAI's per-image estimates for GPT Image 1.5 are lower than for GPT Image 2.\""
-    },
-    {
-      "rule": "A5",
-      "severity": "warning",
-      "location": "Compare GPT Image 2 Alternatives sent#8",
-      "evidence": "Its estimates are lower in the other four combinations listed",
-      "fix_instruction": "Name both models: \"OpenAI's per-image estimates for GPT Image 2 are lower than for GPT Image 1.5 in the other four size and quality combinations listed.\""
-    }
-  ]
+  "page_sha256": "9a3e7fb231fd6a2853a59ad8ddb9f20317802c806c2aa21cc452b3e853134a1b",
+  "violations": []
 }

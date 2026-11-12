@@ -108,6 +108,7 @@ skill 本体是 `zenmux-model-page/` 这个文件夹（里面有 `SKILL.md`）�
   - gemini-3.8-flash-tts（语音）：37 条核实，7 条收窄措辞，记录 15 个问题。
 - 加入 Wendy 写作规则后，在 Codex 里端到端跑了 claude-opus-5.5（文本）：检查 PASS，59 条事实全部核实，写作评审 0 个问题，每段都以模型名开头（之前的页面每页有 20–30 段不符合）。
 - 写作评审（2026-11-01，评审模型 gpt-6.1-sol，经 Codex CLI）：3 个线上页面共发现 4 个阻断项（开头段落缺「本页回答什么」、模块首句没有直接回答、FAQ 是非题没有以 Yes 开头），各用 1–2 轮只改被标记的句子后全部消除，3 页检查均 PASS；剩余少量警告级问题留给人决定。`examples/` 里的两个示例页就是评审后的版本，附 `review.json`。
+- 验收评审（2026-11-12，评审模型 claude-opus-5-5）：两个示例页第一轮共发现 4 个失败的阻断项，均为写作评审没有拦住的内容问题：GPT Image 2 写「尺寸越大越贵」，与页面自己的价格表矛盾；GPT Image 2 的次 CTA 不符合图像模型规则；计费项表行名不是 ZenMux 的计费项代码；DeepSeek 的供应商表写着 V4-Pro-0813，与页面自己的下线公告矛盾。GPT Image 2 经 3 轮修改后两项评审都通过，检查 PASS。DeepSeek V4 Pro 在 3 轮后仍有 1 个验收阻断项和 2 个写作阻断项，需要人决定，详见其 `fact-check-report.md` 末尾。
 - 自动化测试：`cd zenmux-model-page && bash tests/run_tests.sh && bash tests/test_new_page.sh`（共 234 项，不需要联网）。
 
 ## 修改模板

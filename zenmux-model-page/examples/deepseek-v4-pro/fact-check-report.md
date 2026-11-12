@@ -28,7 +28,7 @@ Verdicts per fact are in `facts.json` (`verdict`, plus `note` on the NUANCED fac
 
 ## Open items for ZenMux (not fixable from public sources)
 
-1. **Revision conflict.** ZenMux's own model description says Tencent Cloud and Alibaba Cloud serve the "0731" revision and the other providers serve "0424". The page title says 0813, and DeepSeek's docs list only DeepSeek-V4-Pro-0813 (GA 2026-08-13). The page shows "Not verified" for the five non-DeepSeek providers until ZenMux confirms what each one serves.
+1. **Revision conflict.** ZenMux's own model description says Tencent Cloud and Alibaba Cloud serve the "0731" revision and the other providers serve "0424". The page title says 0813, and DeepSeek's docs list only DeepSeek-V4-Pro-0813 (GA 2026-08-13). The page shows "Not verified" in the Served version column for all six providers until ZenMux confirms what each one serves. The DeepSeek row joined them on 2026-11-12, after the acceptance review (G5) found that it showed DeepSeek-V4-Pro-0813 while the page's own phase-out notice says DeepSeek has routed deepseek-v4-pro to V4.1 Flash since 2026-09-14.
 2. **Time-of-day pricing.** ZenMux should publish the schedule and time zone for its tiered rates (DeepSeek, Tencent Cloud, Baidu, Alibaba Cloud) and say how Chinese public holidays are billed.
 3. **Promotions.** End dates for SiliconFlow's 75% OFF (V4 Pro) and the V4.1 Flash discount.
 4. **SiliconFlow cache-read list price.** Listed at $0.44: ten times the $0.044 that DeepSeek, Tencent Cloud, Baidu and Streamlake list, and over three times Alibaba Cloud's $0.127. Worth confirming it isn't a data-entry error.
@@ -39,3 +39,11 @@ Verdicts per fact are in `facts.json` (`verdict`, plus `note` on the NUANCED fac
 ## Live API test
 
 Skipped by the user's decision on 2026-10-30. The code example was written from ZenMux's docs and has not been run. The plan's acceptance check ("the example returns a real response") stays open for this page until ZenMux confirms or someone with an account runs it.
+
+## Writing and acceptance reviews (2026-11-12): open after 3 rounds
+
+The first acceptance review failed G5: the Served version cell for DeepSeek said DeepSeek-V4-Pro-0813 while the phase-out notice says DeepSeek has routed deepseek-v4-pro to V4.1 Flash since 2026-09-14. That cell is now Not verified. After the rewrite limit (3 rounds), three blockers remain and `check_page.py` reports FAIL until a person rewrites or waives them:
+
+1. **accept:G5.** M1, M4 ("Jobs you can schedule"), M5 and the FAQ ("Pin `deepseek`") still present the `deepseek` endpoint as serving V4 Pro. The round-2 acceptance reviewer passed this, because the page keeps DeepSeek's own API separate from ZenMux's endpoint. The round-3 reviewer failed it. Settling it needs ZenMux's answer to open item 7 (what the `deepseek` endpoint serves today).
+2. **review:N1** on "These figures date from 2026-10-28." in M5. `page-format.md` allows stating the data date once; the reviewer suggests moving the date into the first M5 sentence.
+3. **review:N1** on the FAQ answer "Which revision will I get?". Round 2 failed the earlier answer for not answering directly (A1), and round 3 failed the direct answer as a "varies" statement (N1).

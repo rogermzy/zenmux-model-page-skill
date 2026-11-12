@@ -1,6 +1,21 @@
 {
-  "reviewed_at": "2026-11-12T04:15:55Z",
+  "reviewed_at": "2026-11-12T00:00:00Z",
   "reviewer": "claude-opus-5-5",
-  "page_sha256": "9545a5c98f98e0b86684f224f781575430b56c05770af5eec9156b6092f4f944",
-  "violations": []
+  "page_sha256": "e9599eed3beb1ec74b01b87225fdb069a8719bfb3c0427beb86138dd455370e6",
+  "violations": [
+    {
+      "rule": "N1",
+      "severity": "blocker",
+      "location": "DeepSeek V4 Pro Performance & Availability sent#5",
+      "evidence": "These figures date from 2026-10-28.",
+      "fix_instruction": "Delete this standalone sentence, which only says how current the data is. If the date is needed, put it next to the numbers in the first sentence: \"On 2026-10-28, DeepSeek V4 Pro's latest-hour P50 time to first token on ZenMux ranged from 1.04 s on DeepSeek to 4.16 s on Alibaba Cloud.\""
+    },
+    {
+      "rule": "N1",
+      "severity": "blocker",
+      "location": "DeepSeek V4 Pro FAQ > Which revision will I get? sent#1",
+      "evidence": "The revision depends on the provider that serves your request, and the pricing table has a Served version entry for each provider.",
+      "fix_instruction": "Delete the sentence. It says the value varies and sends the reader to Served version cells that all read Not verified. Open the answer with the sourced fact: \"DeepSeek's pricing page lists DeepSeek-V4-Pro-0813 for its own API, and since 04:00 UTC on Sept 14, 2026, DeepSeek routes deepseek-v4-pro requests on that API to V4.1 Flash.\""
+    }
+  ]
 }

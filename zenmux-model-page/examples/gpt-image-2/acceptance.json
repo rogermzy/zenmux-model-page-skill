@@ -1,0 +1,117 @@
+{
+  "reviewed_at": "2026-11-12T00:00:00Z",
+  "reviewer": "claude-opus-5-5",
+  "page_sha256": "9a3e7fb231fd6a2853a59ad8ddb9f20317802c806c2aa21cc452b3e853134a1b",
+  "entity_type": "image",
+  "example": "examples/deepseek-v4-pro (structure only; this page is the image example)",
+  "items": [
+    {
+      "id": "G1",
+      "result": "pass",
+      "location": "front matter / M1",
+      "note": "The H1 is exactly 'GPT Image 2 API'. The title starts with 'GPT Image 2 API' and ends with '| ZenMux'. The title, meta description, H1 and opening paragraph all name GPT Image 2. Everything the title and meta list is answered on the page: providers, token rates, billing items, sizes, reference images, 10K context, Python/cURL examples, alternatives and FAQ."
+    },
+    {
+      "id": "G2",
+      "result": "pass",
+      "location": "M1 / M2 / M8",
+      "note": "M1 says both providers list the same prices and that default routing sends each request to OpenAI or Azure. M1, M2 and the FAQ all give $8 image input, $30 image output and $5 prompt. M3 uses openai/gpt-image-2, the ID shown in M1. M4 scopes the capabilities that differ by provider (Gemini-protocol reference images)."
+    },
+    {
+      "id": "G3",
+      "result": "pass",
+      "location": "M1 / M2",
+      "note": "M1 says the serving provider and its version vary by request, and only reports which aliases ZenMux and OpenAI list. M2 gives each provider row a Served version of Not verified."
+    },
+    {
+      "id": "G4",
+      "result": "pass",
+      "location": "M1 / M2 / M5 / M6",
+      "note": "Nothing uses $0 or 100% as a placeholder. Missing values appear as Not published / Not verified in their table cells (OpenAI max output, per-image price, served version, reference-image maximum). M5 and M6 are hidden."
+    },
+    {
+      "id": "G5",
+      "result": "pass",
+      "location": "whole page",
+      "note": "Checked across modules: prices ($8/$30/$2/$5/$1.25), context 10K, max output, aliases, size rules (3840 px, 16 px, 3:1, 655,360–8,294,400), quality values, images per request, streaming status and the M7 estimate table against its 'Choose…' sentences (GPT Image 1.5 lower at 1024x1024 medium/high; GPT Image 2 lower in the other four combinations). None of them conflict. The cache-read rates sit beside OpenAI's attributed caveat, and the two statements are attributed to different sources, so this is not a self-contradiction."
+    },
+    {
+      "id": "G6",
+      "result": "pass",
+      "location": "M1 / M9",
+      "note": "The primary CTA reads 'Get your API key', which is the same wording as the reference examples. The secondary CTA is 'Try the API'. There is no Chat CTA."
+    },
+    {
+      "id": "G7",
+      "result": "pass",
+      "location": "M3",
+      "note": "All three examples call the Images API (/images/generations, images.generate) and read the key from $ZENMUX_API_KEY. None contains a real key. They use openai/gpt-image-2, the ID in M1, and the M3 prose explains that ZenMux's guide uses the alias gpt-image-2."
+    },
+    {
+      "id": "G8",
+      "result": "pass",
+      "location": "M9",
+      "note": "The anchors are model names or guide topics. The related models are same-task image models: GPT Image 1.5 (also the same series) and Qwen Image 2.0. The Sunset Gemini 3 Pro Image Preview link was removed. Links are site-relative paths; checking that they resolve is site acceptance."
+    },
+    {
+      "id": "G9",
+      "result": "pass",
+      "location": "M1–M9",
+      "note": "Each shown module carries facts specific to GPT Image 2: per-provider max output, the fee-item table, the alias explanation, protocol-scoped capabilities with the streaming conflict, the size rules, and the 1.5-versus-2 estimate trade-off."
+    },
+    {
+      "id": "G10",
+      "result": "pass",
+      "location": "whole page vs example",
+      "note": "Every question the example covers is answered here too: what the model is, price and its conditions, providers, how to call it, capabilities and limits, alternatives and FAQ. Performance is correctly hidden: perf.azure.latency does not qualify under IMG-5. The example's FAQ also has a 'Which revision will I get?' question. This FAQ has none, but the revision question is answered in M1 and M2 (version.alias.zenmux, version.snapshot.openai), so it is not a coverage gap."
+    },
+    {
+      "id": "G11",
+      "result": "n/a",
+      "location": "M1",
+      "note": "Both endpoints (openai, azure) are active in facts.json."
+    },
+    {
+      "id": "G12",
+      "result": "needs_person",
+      "location": "M3",
+      "note": "fact-check-report.md says the live API test was skipped by the user's decision on 2026-10-30. No call that returned a real image has been recorded, and the model ID (openai/gpt-image-2 or the alias gpt-image-2) has not been confirmed on /images/generations."
+    },
+    {
+      "id": "IMG-1",
+      "result": "pass",
+      "location": "M1 / M2 / M4",
+      "note": "Shown: sizes (ZenMux examples plus OpenAI's four rules), the reference-image maximum as Not published in its M1 cell, the 50MB edit limit, images per request (1-10 on the Gemini protocol), and the billing items. Context and max output stay because billing is per token. The Images-protocol maximum for n is a ledger gap (max-n) and only appears in prose. An M1 row could show it as a label, but its absence is not a quotable failure."
+    },
+    {
+      "id": "IMG-2",
+      "result": "pass",
+      "location": "M1",
+      "note": "Max output is shown per provider: 'Azure: 10,000 tokens; OpenAI: Not published'. Context is the same for both (10K)."
+    },
+    {
+      "id": "IMG-3",
+      "result": "pass",
+      "location": "M2",
+      "note": "The billing-items rows use ZenMux's fee-item codes (image_output, image_input, image_input_cache, prompt, input_cache_read). The Per image row shows Not published. The M7 per-image figures are labelled as OpenAI estimates, not as a ZenMux price."
+    },
+    {
+      "id": "IMG-4",
+      "result": "pass",
+      "location": "M4",
+      "note": "Capabilities are scoped by protocol: the OpenAI Images protocol versus the Google Gemini (Vertex AI) protocol. The ledger shows the model's suitable_api as images,imagen only. Where they conflict on streaming, the page shows both ZenMux's listing and OpenAI's statement and marks it Not verified."
+    },
+    {
+      "id": "IMG-5",
+      "result": "pass",
+      "location": "M5",
+      "note": "M5 is hidden. The Azure 99.5 s latency cell and 72.9 tps figure appear nowhere in the published text. The 'up to 2 minutes' line was removed."
+    },
+    {
+      "id": "IMG-6",
+      "result": "pass",
+      "location": "M3",
+      "note": "M3 says 'ZenMux's Images guide uses the alias `gpt-image-2` in its generation examples'."
+    }
+  ]
+}

@@ -4,7 +4,7 @@ entity: DeepSeek V4 Pro
 entity_type: text
 url: /deepseek/deepseek-v4-pro
 title: DeepSeek V4 Pro API (deepseek/deepseek-v4-pro, DeepSeek-V4-Pro-0813): Pricing & Providers on DeepSeek, Tencent Cloud, Baidu, Alibaba Cloud, Streamlake & SiliconFlow, Peak and Off-Peak Rates, Cache Pricing, 1M Context, 384K Max Output, Python, JavaScript & cURL Examples, Alternatives and FAQ | ZenMux
-meta_description: DeepSeek V4 Pro (model ID deepseek/deepseek-v4-pro) is DeepSeek's open-weight Mixture-of-Experts text model with 1.6 trillion total parameters and 49 billion activated per token. On ZenMux it runs on DeepSeek, Tencent Cloud, Baidu, Alibaba Cloud, Streamlake and SiliconFlow: compare their input, output and cache-read prices with peak and off-peak conditions, check the 1M context window and 384K max output, see which revision each provider serves, read DeepSeek's V4 Pro phase-out notice, compare alternatives, and copy a Chat Completions example in Python, JavaScript or cURL.
+meta_description: DeepSeek V4 Pro (model ID deepseek/deepseek-v4-pro) is DeepSeek's open-weight Mixture-of-Experts text model with 1.6 trillion total parameters and 49 billion activated per token. On ZenMux it runs on DeepSeek, Tencent Cloud, Baidu, Alibaba Cloud, Streamlake and SiliconFlow: compare their input, output and cache-read prices with peak and off-peak conditions, check the 1M context window and 384K max output, see the revision DeepSeek lists for its own API, read DeepSeek's V4 Pro phase-out notice, compare alternatives, and copy a Chat Completions example in Python, JavaScript or cURL.
 default_endpoint: deepseek
 checked_date: 2026-10-28
 facts: facts.json
@@ -41,7 +41,7 @@ All prices are USD per million tokens. Where a cell shows two prices, the first 
 
 | Provider | Served version | Input | Output | Cache read | Context | Price condition |
 | :- | :- | :- | :- | :- | :- | :- |
-| DeepSeek (`deepseek`) | DeepSeek-V4-Pro-0813 (per DeepSeek docs) | $0.66 / $1.32 | $1.98 / $3.96 | $0.022 / $0.044 | 1M | Off-peak / peak; weekday peak bands match DeepSeek's UTC hours |
+| DeepSeek (`deepseek`) | Not verified <!-- gap: revision, phaseout --> | $0.66 / $1.32 | $1.98 / $3.96 | $0.022 / $0.044 | 1M | Off-peak / peak; weekday peak bands match DeepSeek's UTC hours |
 | Tencent Cloud (`tencent-cloud`) | Not verified | $0.66 / $1.32 | $1.98 / $3.96 | $0.022 / $0.044 | 1M | Time-of-day rates; schedule and time zone Not published <!-- gap: revision, time-schedule --> |
 | Baidu (`baidu`) | Not verified | $0.66 / $1.32 | $1.98 / $3.96 | $0.022 / $0.044 | 1M | Time-of-day rates; schedule and time zone Not published <!-- gap: revision, time-schedule --> |
 | Alibaba Cloud (`alibaba`) | Not verified | $0.636 / $1.272 | $1.908 / $3.816 | $0.064 / $0.127 | 1M | Time-of-day rates; schedule and time zone Not published <!-- gap: revision, time-schedule --> |
@@ -162,7 +162,7 @@ On the DeepSeek endpoint: $0.66 input and $1.98 output per million tokens at the
 `deepseek/deepseek-v4-pro`. Add a provider suffix such as `:deepseek` to pin one provider.
 
 **Which revision will I get?**
-DeepSeek's pricing page lists DeepSeek-V4-Pro-0813 for its own API. DeepSeek has also announced that it routes deepseek-v4-pro requests on its own API to V4.1 Flash. <!-- gap: revision, phaseout -->
+The revision depends on the provider that serves your request, and the pricing table has a Served version entry for each provider. DeepSeek's pricing page lists DeepSeek-V4-Pro-0813 for its own API, and DeepSeek has announced that it routes deepseek-v4-pro requests on its own API to V4.1 Flash. <!-- gap: revision, phaseout -->
 
 **What is the context window?**
 1M tokens, with a max output of 384K tokens.

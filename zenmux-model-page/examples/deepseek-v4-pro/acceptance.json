@@ -1,0 +1,94 @@
+{
+  "reviewed_at": "2026-11-12T00:00:00Z",
+  "reviewer": "claude-opus-5-5",
+  "page_sha256": "e9599eed3beb1ec74b01b87225fdb069a8719bfb3c0427beb86138dd455370e6",
+  "entity_type": "text",
+  "example": "examples/gpt-image-2 (structure only; this page is the text example)",
+  "items": [
+    {
+      "id": "G1",
+      "result": "pass",
+      "location": "Front matter title / meta_description; M1 H1 and opening paragraph",
+      "note": "The H1 is exactly 'DeepSeek V4 Pro API'. The title starts with 'DeepSeek V4 Pro API' and ends with '| ZenMux', and the title, meta description, H1 and opening paragraph all name DeepSeek V4 Pro. Each title item is answered on the page. The bare 'DeepSeek-V4-Pro-0813' in the title is borderline, because the body attributes it only to DeepSeek's own API, but plan.md's sample title uses the same string."
+    },
+    {
+      "id": "G2",
+      "result": "pass",
+      "location": "M1 fact card, M2 DeepSeek row, M8 FAQ 'How much does DeepSeek V4 Pro cost?'",
+      "note": "M1 names the DeepSeek endpoint. M1, M2 and the FAQ all show $0.66 / $1.32 input and $1.98 / $3.96 output. M3 uses the unpinned ID, says the provider, revision and price can differ between requests, and shows ':deepseek' for pinning. M4 capabilities are scoped to all providers or per protocol."
+    },
+    {
+      "id": "G3",
+      "result": "pass",
+      "location": "M1 revision line; M2 Served version column; M8 'Which revision will I get?'",
+      "note": "M1 attributes DeepSeek-V4-Pro-0813 to DeepSeek's own API. M2 shows 'Not verified' per provider. The FAQ says the revision depends on the serving provider. The title's bare revision string follows plan.md's sample title (see G1)."
+    },
+    {
+      "id": "G4",
+      "result": "pass",
+      "location": "M2, M5, M6",
+      "note": "There is no $0, 100% or empty chart. Unknown values use 'Not verified' or 'Not published' in their cells. M6 is hidden with no benchmark source. '75% OFF' is a sourced promotion (discount.siliconflow), not filler."
+    },
+    {
+      "id": "G5",
+      "result": "fail",
+      "location": "M1 hero (also M5, M4 'Jobs you can schedule', M8 'Which provider should I choose?')",
+      "evidence": "On ZenMux you call DeepSeek V4 Pro with one API key through six providers: DeepSeek, Tencent Cloud, Baidu, Alibaba Cloud, Streamlake and SiliconFlow.",
+      "fix_instruction": "Other side (M1): 'From 04:00 UTC on Sept 14, 2026, DeepSeek routes deepseek-v4-pro requests on its own API to V4.1 Flash, billed at V4.1 Flash rates.' The page dates its data 2026-10-28, after that switch, and the last review already failed the DeepSeek row on this conflict. Yet the page still says DeepSeek serves V4 Pro: M5 ('DeepSeek V4 Pro's latest-hour P50 ... 1.04 s on DeepSeek'), M4 ('Jobs you can schedule. On the DeepSeek endpoint ...') and the FAQ ('Pin `deepseek` to use the DeepSeek endpoint'). Scope these to what ZenMux lists, e.g. 'ZenMux lists DeepSeek V4 Pro on six providers: …'. Keep the DeepSeek row's model and revision 'Not verified' (gaps revision, phaseout; facts alt.deepseek.route, alt.deepseek.route_start). Then drop the DeepSeek-specific off-peak bullet in M4 and the 'Pin deepseek' advice in the FAQ, or tie each one to the phase-out notice, until ZenMux confirms what the deepseek endpoint serves."
+    },
+    {
+      "id": "G6",
+      "result": "pass",
+      "location": "M1 CTA row; M9 closing CTA",
+      "note": "The primary CTA reads 'Get your API key', the same wording as the gpt-image-2 reference example. The secondary CTA is 'Try it in Chat', which is allowed for text models."
+    },
+    {
+      "id": "G7",
+      "result": "pass",
+      "location": "M3",
+      "note": "The cURL, Python and JavaScript examples send Chat Completions 'messages', read $ZENMUX_API_KEY / os.environ / process.env, contain no real key, and use deepseek/deepseek-v4-pro as shown in M1."
+    },
+    {
+      "id": "G8",
+      "result": "pass",
+      "location": "M1, M2, M3, M7, M9 links",
+      "note": "All link anchors name models or topics. M9 lists DeepSeek V4.1 Flash (same task and series) and DeepSeek V3.2 (same series), and neither is marked Sunset or unavailable."
+    },
+    {
+      "id": "G9",
+      "result": "pass",
+      "location": "M1–M9",
+      "note": "Each shown module carries information specific to this model: per-provider time-of-day pricing, protocol and parameter differences such as Alibaba's enable_thinking, per-provider latency, the phase-out notice and the trade-off against V4.1 Flash."
+    },
+    {
+      "id": "G10",
+      "result": "pass",
+      "location": "Whole page vs examples/gpt-image-2/page.md",
+      "note": "The page covers every question the example answers: what the model is, price and conditions, providers, how to call it, capabilities and limits, performance, alternatives and FAQ. Every fact id in facts.json is used on the page, so no unused fact would add a missing answer."
+    },
+    {
+      "id": "G11",
+      "result": "n/a",
+      "location": "M1",
+      "note": "n/a: all six endpoints in facts.json have status active."
+    },
+    {
+      "id": "G12",
+      "result": "needs_person",
+      "location": "M3",
+      "note": "fact-check-report.md says the live API test was skipped by the user's decision on 2026-10-30 and the example has not been run. Someone with an authorised account needs to run the M3 example once."
+    },
+    {
+      "id": "TXT-1",
+      "result": "pass",
+      "location": "M1 fact card, M2 table, M3",
+      "note": "Context (1M) and max output (384K) are shown and stated as the same on every endpoint. Prices are 'USD per million tokens', and M3 sends a user message."
+    },
+    {
+      "id": "TXT-2",
+      "result": "pass",
+      "location": "M5",
+      "note": "M5 shows P50 TTFT and throughput as latest-hour values of live gateway traffic, dated 2026-10-28. TTFT is defined as the wait until the first output token, not as total latency."
+    }
+  ]
+}

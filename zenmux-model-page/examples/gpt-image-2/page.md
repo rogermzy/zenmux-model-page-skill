@@ -29,22 +29,23 @@ GPT Image 2 is an image generation and editing model from OpenAI; ZenMux lists i
 
 Both providers list the same prices. ZenMux's default routing sends each request to OpenAI or Azure, so the serving provider and its version vary by request. ZenMux lists the aliases `gpt-image-2` and `gpt-image-2-2026-04-21`; OpenAI lists the snapshot `gpt-image-2-2026-04-21`. See the pricing table below. <!-- gap: revision, model-id -->
 
-[Get your API key](/docs/guide/quickstart.html) · [Read the Image Studio guide](/docs/guide/studio/studio-image.html)
+[Get your API key](/docs/guide/quickstart.html) · [Try the API](/docs/guide/advanced/openai-image-generation.html)
 
 <!-- module: M2 shown -->
 ## GPT Image 2 Pricing & Providers
 
 GPT Image 2 is billed per token on ZenMux: $30 per million image output tokens and $8 per million image input tokens, at the same rates on both providers. ZenMux's `prompt` fee item is $5 per million tokens. <!-- gap: per-image-price -->
 
-All prices are USD per million tokens. ZenMux's provider table shows Input, Output and Cache read; they correspond to the image input, image output and cached image input rates below.
+All prices are USD per million tokens. ZenMux's provider table shows Input, Output and Cache read; they correspond to the `image_input`, `image_output` and `image_input_cache` rates below.
 
 | Billing item | Rate | What it covers |
 | :- | :- | :- |
-| Image output | $30 | Tokens of the generated image |
-| Image input | $8 | Tokens of input images, such as reference images for an edit |
-| Cached image input | $2 | Listed as "Cache read" in the provider table |
-| Prompt | $5 | ZenMux fee item `prompt` |
-| Other cache read | $1.25 | ZenMux fee item `input_cache_read` |
+| `image_output` | $30 | Tokens of the generated image |
+| `image_input` | $8 | Tokens of input images, such as reference images for an edit |
+| `image_input_cache` | $2 | Listed as "Cache read" in the provider table |
+| `prompt` | $5 | Processing of the input prompt |
+| `input_cache_read` | $1.25 | Cache read operations |
+| Per image | Not published <!-- gap: per-image-price --> | A flat price per generated image |
 
 OpenAI says that for GPT Image 2, cached input pricing applies only to the image generation tool in its Responses API, not to direct Images API requests. <!-- gap: cache-write, cache-read-images-api -->
 
@@ -109,7 +110,7 @@ For edits, post one or more reference images to `https://zenmux.ai/api/v1/images
 <!-- module: M4 shown -->
 ## GPT Image 2 Capabilities & Use Cases
 
-GPT Image 2 takes text and images and returns an image; it does not return text. ZenMux lists streaming parameters for both providers. Its Images guide documents reference-image and mask edits on this protocol. OpenAI's model page lists function calling and structured outputs as Not supported.
+GPT Image 2 takes text and images and returns an image; it does not return text. ZenMux lists the streaming parameters `stream` and `partial_images` for both providers. Its Images guide documents reference-image and mask edits on this protocol. OpenAI's model page lists function calling and structured outputs as Not supported.
 
 | Capability | Status | Detail |
 | :- | :- | :- |
@@ -121,7 +122,7 @@ GPT Image 2 takes text and images and returns an image; it does not return text.
 | Streaming partial images | Not verified | ZenMux lists `stream` and `partial_images` for both providers; `partial_images` set to 0 returns only the final image, 1 to 3 returns partial images. OpenAI's model page lists Streaming as Not supported <!-- gap: streaming --> |
 | Google Gemini (Vertex AI) protocol | Supported | `generate_images`; images per request 1-10 on this protocol |
 | Reference images on the Gemini protocol | Varies by provider | `referenceImages` is listed for OpenAI; Azure lists `sampleCount` and `outputOptions` only, so Azure is Not verified <!-- gap: azure-gemini-ref-images --> |
-| Transparent background | Not verified | Images protocol parameter `background` <!-- gap: transparent-background --> |
+| Transparent background | Not verified | Images protocol parameter `background` <!-- gap: transparent-background -->; Gemini protocol: Not supported |
 | Function calling, structured outputs | Not supported | Per OpenAI's model page |
 | Reasoning | Not supported | ZenMux marks reasoning as unsupported on both protocols |
 
@@ -129,13 +130,11 @@ GPT Image 2 takes text and images and returns an image; it does not return text.
 
 OpenAI's guide, in its Earlier GPT Image models section, says gpt-image-2 accepts any size that meets four rules. The longest edge is at most 3840 px. Both edges are multiples of 16 px, and the long-to-short ratio is at most 3:1. Total pixels fall between 655,360 and 8,294,400. It lists `2048x2048` (2K square) and `3840x2160` (4K landscape) among popular sizes, and `auto` is the default.
 
-ZenMux's Gemini protocol applies the same limits to custom sizes, which it supports for openai/gpt-image-2 only. Larger sizes cost more, and ZenMux marks sizes above 2560x1440 as experimental.
+ZenMux's Gemini-protocol guide lists the same constraints for custom sizes, which only openai/gpt-image-2 supports. On that protocol, size affects generation time and token cost, and sizes above 2560x1440 are experimental.
 
 **Quality and format.** ZenMux lists quality values low, medium, high and auto; OpenAI lists low, medium and high for gpt-image-2, with auto as the default. ZenMux's examples of output formats are png, jpeg and webp, and compression runs from 0 to 100 for jpeg and webp.
 
 **Images per request.** The Gemini protocol guide gives a range of 1-10. <!-- gap: max-n -->
-
-**Completion time.** OpenAI's guide, in its section on newer GPT Image models, says complex prompts may take up to 2 minutes to process. <!-- gap: azure-latency -->
 
 **Context.** ZenMux's provider table lists a context of 10K tokens for both providers.
 
@@ -159,7 +158,7 @@ ZenMux's Gemini protocol applies the same limits to custom sizes, which it suppo
 
 GPT Image 1.5 is another OpenAI image model on ZenMux, and the cost gap depends on size and quality ([GPT Image 1.5 on ZenMux](/openai/gpt-image-1.5)). On ZenMux its image output rate is $32 per million tokens against $30 for GPT Image 2, with the same image input rate.
 
-| Model | ZenMux image input / output | OpenAI per-image estimate at 1024x1024 (low / medium / high) | OpenAI per-image estimate at 1536x1024 (low / medium / high) | Context |
+| Model | ZenMux image input / output | OpenAI per-image estimate at 1024x1024, image output at OpenAI's rates (low / medium / high) | OpenAI per-image estimate at 1536x1024, image output at OpenAI's rates (low / medium / high) | Context |
 | :- | :- | :- | :- | :- |
 | GPT Image 2 | $8 / $30 | $0.006 / $0.053 / $0.211 | $0.005 / $0.041 / $0.165 | 10K |
 | GPT Image 1.5 | $8 / $32 | $0.009 / $0.034 / $0.133 | $0.013 / $0.05 / $0.2 | 10K |
